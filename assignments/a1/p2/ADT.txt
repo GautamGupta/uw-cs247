@@ -1,0 +1,32 @@
+Q2 ADT Design
+=============
+
+# BCode
+
+ a) Value-based as BCode represents a value and objects with the same attribute value are considered equal.
+ b) Deep-copy as the ADT is value-based. It's also passed by value and is meant to be immutable.
+ c) Constructor: Own with a code parameter which performs validity checks.
+    Destructor: Provided by compiler as we do not store anything on the heap (no pointers.
+    Copy constructor: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+    Assignment operator: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+    Equality operator: Own as we need to compare values (strings) stored in the ADT.
+
+# Building
+
+ a) Entity-based as Building represents a real-world object and has a distinct identity.
+ b) Shallow copy as the ADT is entity-based. We would refer to buildings with pointers, and they would be mutable.
+ c) Constructor: Own as we need to pass in parameters for the code and name.
+    Destructor: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+    Copy constructor: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+    Assignment operator: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+    Equality operator: Provided by compiler as we do not store anything on the heap (no members that are pointers).
+
+# Collection
+
+ a) Entity-based as Collection represents a collection of real-world object and has a distinct identity.
+ b) Shallow copy as the ADT is entity-based. Collections would be mutable.
+ c) Constructor: Own as we need to initiate the member pointer variables with NULL.
+    Destructor: Own as we need to destroy the items we store on the heap (members that are pointers).
+    Copy constructor: Own as we would want to copy over the Building linked list.
+    Assignment operator: Own as we would want to copy over the Building linked list.
+    Equality operator: Own as we would want to check if the Building linked list matches in both the Collections being compared.
