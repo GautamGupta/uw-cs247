@@ -184,8 +184,136 @@ How does a compiler know to move or copy? Language rules, eg. for return values,
 #include " " // keep relative
 ```
 
+*Lec 7 - May 24*
+
+## "modifies" vs "const"
+
+ - modifies: lists all data changed, including global variables
+ - const: immutability checked by compiler. ensures `this->minutes == this->balance@pre + fee + (minutes->freeminutes ? minutes->freeminutes * rate : 0)`
+
+## Comparing Specifications
+
+NB:one isn't necessarily better than the other ie. each has a place.
+
+Strong => tolerant on input, demanding on output
+
+Weak => demanding on inputs, tolerant on outputs
+
+a module with strong specifications can always substitute for a module with weak specs
 
 
+### "Confirming Specifications" slide
+
+5 >= 2 == 4 >= 3 => 1
+
+# Exception Handling
+
+## Return values / global error flags
+
+### Disadvantages
+
+ - Passive / no enforcement of checking 
+ - Error value might have changed before check (multi-threaded environment)
+ - Checks proliferate through code + have to be maintained => inefficient
+ - Could mix in valid + error values => have to parse
+ - Doesn't work for all situations eg. constructor fails
+ - Testing has to be local, but may not be right "level"
+ - Non-local error handling may need to pass up more than one error value => proliferation of errors
+
+## Exceptions
+
+Let's separate error handling code from "regular" code
+ - Termination exception handling mode:
+ 
+```
+most specific (catch blocks)
+ | try {
+ | 	...
+ | } catch (...) {}
+\/
+least
+```
+
+Re-raise
+
+```
+throw; // inside a catch statement
+```
+
+*Lec 8 - May 25*
+
+## Stack unwinding
+
+See `exception.cpp`
+
+Can embed try/catch in initializer
+
+```
+MyClass::MyClass(C c, C* p2) 
+	try: c_©, p_(new c), p2_(p2) {}
+	catch (...) {
+		delete p_;
+		throw MyClass::Error();
+	}
+	
+```
+
+C++ standard library provides:
+
+ - At least basic guarantee for all operations
+ - Strong guarantee on a few key operations eg. push_back, single element insert on a list, uninitialized copy()
+ - No throw on swap() of 2 containers + pop_back()
+ 
+`unique_ptr<Rational> ar(new Rational());`
+ 
+Works only if you don't leave things in an invalid state, don't leak resources and destructors can't throw exceptions.
+
+Resources could be memory, file locks, network connections, etc.
+
+"Source and Sink Idiom" useful only if creation/consumption
+
+ - `unique_ptr` not the same thing as "regular" C++ pointer so can't assign one to other
+ - Can't assign multiple `unique_ptr`s to same object
+ - Can't pass as reference for either parameter or return value; passing by value transfers ownership
+ - `auto_ptr` is deprecated; do not use -- use other `unique_ptr` or `shared_ptr`/`weak_ptr` instead
+ 
+ - Use assertions to check for logic errors
+ - Use exceptions to report "environmental" errors esp if client input is in error since can be handled; whereas assertion violation would terminate program
+ - Since assertion violation terminates program right away, helpful since cause is "logically near". Therefore easier to debug.
+ 
+throwexceptions:
+ - in constructor if can't create valid object
+ - in mutators if they try to set state to be invalid => ensure object is in previous, valid state
+
+Never throw exceptions:
+ - in destructors (hard to catch + deal with)
+ - Copy constructor / assignment operator
+ - Accessors
+ - Value operators eg. operation ==, <, &&
+ - Try to avoid mutating operators eg. operation +, etc
+ 
+# Abstraction Function
+
+ - No duplicate values forall `0 <= i`, `j < size` |
+ 	`i != j => elements[i] != elements[j]`
+ - Above size, pointers are null forall `i > size-1` | `elements[i] == nullptr`
+      => in remove, set `elements[size-1] == nullptr` before decrement size
+  => initialize array in constructor
+ - default constructor causes memory leak, but doesn't violate rep inv.
+ 
+List with dummy header node whose `(Data*) == nullptr`; all other nodes have `(Data*) != nullptr` & circualr, doubly-linked list
+
+# Representation Invariant
+
+ - Must have a header node (ie. not null)
+ - Data field of header node is null
+ - Node object pointed to by only one next and one previous field
+ - For any 2 objects `n1 + n2` if `n1.next == n2` then `n2.prev == n1`
+ - Header node has null data field
+ - List entries do not have null data fields 
+ 
+ `Node(Data*, Node *p, Node *n)`
+ 
 
 .
 
