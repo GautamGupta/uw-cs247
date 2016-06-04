@@ -20,6 +20,14 @@ struct Date::Impl {
  */
 
 namespace {
+    bool isLeapYear(int year) {
+        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+            return true;
+        }
+
+        return false;
+    }
+
     map<string, int> createMonthNumberMap() {
         map<string, int> m;
         m["January"]   =  1;
@@ -38,15 +46,11 @@ namespace {
         return m;
     }
 
-    map<string, int> const monthNumber = createMonthNumberMap();
-    int const monthNumDays[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    string const monthNames[] = {"", "January", "February", "March", "April", "May",
-            "June", "July", "August", "September", "October", "November", "December"};
-
     /**
      * Get month number from month name. Returns 0 if month isn't found.
      */
     int getMonthNumber(string month) {
+        map<string, int> const monthNumber = createMonthNumberMap();
         map<string, int>::const_iterator monthSearch = monthNumber.find(month);
         if (monthSearch == monthNumber.end()) {
             return 0;
@@ -54,56 +58,39 @@ namespace {
         return monthSearch->second;
     }
 
-    int getMonthNumDays(int month) {
-        return monthNumDays[month];
-    }
-
-    string getMonthName(int month) {
-        return monthNames[month];
-    }
-
-    bool isLeapYear(int year) {
-        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
-            return true;
+    /**
+     * Assumes valid input
+     */
+    int getMonthNumDays(int month, int year = 0) {
+        int const monthNumDays[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int numDays = monthNumDays[month];
+        if (month == 2 && isLeapYear(year)) {
+            numDays++;
         }
 
-        return false;
+        return numDays;
     }
 
     /**
-     * Assumes valid month and year
+     * Assumes valid input
+     */
+    string getMonthName(int month) {
+        string const monthNames[] = {"", "January", "February", "March", "April", "May",
+                "June", "July", "August", "September", "October", "November", "December"};
+        return monthNames[month];
+    }
+
+    /**
+     * Assumes valid day, month, and year
      *
      * @return int Day of year. Returns 0 if date is invalid
      */
     int dayOfYear(int day, int month, int year) {
-        // Prelim tests
-        if (day > 31 || day < 1) {
-            return 0;
-        }
-
-        /* Index, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec */
-
-        bool isLeap = isLeapYear(year);
-
-        // Check for Feb and leap
-        if ((month != 2 || !isLeap) && day > getMonthNumDays(month)) {
-            return 0;
-        } else if (month == 2 && isLeap && day > (getMonthNumDays(month) + 1)) {
-            return 0;
-        }
-
-        int day_of_year = 0;
-
         // Count the days
+        int day_of_year = day;
         for (int i = 1; i < month; i++) {
-            day_of_year += getMonthNumDays(i);
+            day_of_year += getMonthNumDays(i, year);
         }
-        // Add 1 for leap year Feb
-        if (month > 2 && isLeap) {
-            day_of_year++;
-        }
-
-        day_of_year += day;
 
         return day_of_year;
     }
@@ -116,10 +103,33 @@ namespace {
     }
 
     Date incDate(Date date, int incYears, int incMonths = 0, long incDays = 0) {
-        int newDays     = date.day() + incDays;
-        string newMonth = getMonthName((getMonthNumber(date.month()) + incMonths) % 12);
-        int newYear     = date.year() + incYears + (incMonths / 12);
-        return Date(newDays, newMonth, newYear);
+        // Let's calculate without days first
+        int newYear  = date.year() + incYears;
+        int newMonth = getMonthNumber(date.month()) + incMonths;
+        while (newMonth > 12) {
+            newYear++;
+            newMonth -= 12; // Need to implement loop because months start at 1 not 0
+        }
+
+        // Round down for month increment
+        int monthNumDays = getMonthNumDays(newMonth, newYear);
+        if (date.day() > monthNumDays) {
+            incDays -= date.day() - monthNumDays;
+        }
+
+        // Increment months and years for days
+        long newDays = date.day() + incDays;
+        while (newDays > monthNumDays) {
+            newDays -= monthNumDays;
+            newMonth += 1;
+            if (newMonth > 12) {
+                newYear++;
+                newMonth = 1;
+            }
+            monthNumDays = getMonthNumDays(newMonth, newYear);
+        }
+
+        return Date(newDays, getMonthName(newMonth), newYear);
     }
 } // namespace
 
@@ -151,7 +161,7 @@ int Date::checkMonth(int month) {
 }
 
 int Date::checkDay(int day, int month, int year) {
-    if (dayOfYear(day, month, year) == 0) {
+    if (day > getMonthNumDays(month, year) || day < 1) {
         throw "Invalid day of the month.";
         return 0;
     } else {
@@ -220,9 +230,9 @@ ostream& operator<<(ostream& sout, const Date &date) {
 istream& operator>>(istream& sin, Date &date) {
     int newDay, newYear;
     string newMonth;
-    char comma;
 
-    sin >> newDay >> newMonth >> comma >> newYear;
+    sin >> newDay >> newMonth >> newYear;
+    newMonth = newMonth.substr(0, newMonth.length()-1);
 
     date = Date(newDay, newMonth, newYear);
 
