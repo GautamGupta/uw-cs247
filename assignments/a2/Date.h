@@ -4,6 +4,14 @@
 #include <iostream>
 #include <string>
 
+/**
+ * Date Declaration
+ *  - Private Implementation (PImpl idiom)
+ *  - Immutable ADT
+ *      - no mutators
+ *      - assignment and copy are deep copies
+ *      - all new values are constructed
+ */
 
 class Date {
 public:
@@ -16,8 +24,12 @@ public:
 	int year() const;                               // accessor
 	Date& operator= (const Date&);                  // assignment
 private:
-	struct	Impl;
-	Impl*	pimpl;
+	struct Impl;
+	Impl* date_;
+
+	static int checkYear(int);
+	static int checkMonth(int);
+	static int checkDay(int, int, int);
 };
 
 
