@@ -8,9 +8,9 @@ class Collection {
 public:
     Collection();
     ~Collection();
-    Building* findBuilding(string) const;
-    void insert(string, string);
-    void remove(string);
+    Building* findBuilding(std::string) const;
+    void insert(std::string, std::string);
+    void remove(std::string);
 
 private:
     struct Node {

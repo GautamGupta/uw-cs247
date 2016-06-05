@@ -1,6 +1,10 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "BCode.h"
+#include "Building.h"
+#include "Collection.h"
+#include "Graph.h"
 
 using namespace std;
 

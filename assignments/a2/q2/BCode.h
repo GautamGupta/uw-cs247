@@ -1,19 +1,22 @@
 #ifndef BCODE_H
 #define BCODE_H
 
+#include <iostream>
+#include <string>
+
 class BCode {
 public:
-    explicit BCode(const string);   /* Building code */
-    string code() const;            /* Accessor -- string code */
-    friend ostream& operator<<(ostream&, const BCode&);
-    friend bool operator==(const BCode&, const string&);
+    explicit BCode(const std::string);                            /* Building code */
+    std::string code() const;                                     /* Accessor -- string code */
+    friend std::ostream& operator<<(std::ostream&, const BCode&);
+    friend bool operator==(const BCode&, const std::string&);
     friend bool operator==(const BCode&, const BCode&);
     friend bool operator!=(const BCode&, const BCode&);
     friend bool operator<(const BCode&, const BCode&);
     friend bool operator>(const BCode&, const BCode&);
 
 private:
-    string _code;
+    std::string _code;
 };
 
 #endif

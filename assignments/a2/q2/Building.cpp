@@ -1,5 +1,4 @@
 #include <iostream>
-#include "BCode.h"
 #include "Building.h"
 
 using namespace std;

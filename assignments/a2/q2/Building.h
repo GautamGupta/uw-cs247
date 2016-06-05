@@ -2,18 +2,20 @@
 #define BUILDING_H
 
 #include <iostream>
+#include <string>
+#include "BCode.h"
 
 class Building {
 public:
-    explicit Building(const BCode, const string);
-    explicit Building(const string, const string);
+    explicit Building(const BCode, const std::string);
+    explicit Building(const std::string, const std::string);
     BCode code() const;
-    string name() const;
-    friend ostream& operator<<(ostream&, const Building&);
+    std::string name() const;
+    friend std::ostream& operator<<(std::ostream&, const Building&);
 
 private:
     BCode _code;
-    string _name;
+    std::string _name;
 };
 
 #endif

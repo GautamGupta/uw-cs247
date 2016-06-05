@@ -1,4 +1,8 @@
 #include <iostream>
+#include <string>
+#include "BCode.h"
+
+using namespace std;
 
 /**
  * Converts a string into a building code after checking for requiremets
