@@ -102,7 +102,7 @@ namespace {
         return dayOfYear(date.day(), getMonthNumber(date.month()), date.year());
     }
 
-    Date incDate(Date date, int incYears, int incMonths = 0, long incDays = 0) {
+    Date incDate(const Date &date, int incYears, int incMonths = 0, long incDays = 0) {
         // Let's calculate without days first
         int newYear  = date.year() + incYears;
         int newMonth = getMonthNumber(date.month()) + incMonths;
