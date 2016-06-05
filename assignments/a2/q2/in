@@ -1,0 +1,11 @@
+b B1 Bio1
+b B2 Bio2
+m 2
+n B1
+f B1
+n B2
+e B1 B2 tunnel
+g
+c
+a
+q

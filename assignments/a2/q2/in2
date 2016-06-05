@@ -1,0 +1,13 @@
+b B1 Bio1
+b B2 Bio2
+b B3 Bio3
+n B1
+n B2
+n B3
+e B1 B2 tunnel
+e B2 B3 hall
+g
+v B2
+g
+v B1
+g

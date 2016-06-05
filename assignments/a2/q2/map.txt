@@ -1,0 +1,106 @@
+b DWE	Douglas Wright Engineering Building
+b E2	Engineering 2
+b E3	Engineering 3
+b PHY	Physics
+b ML	Modern Languages
+b ESC	Earth Sciences & Chemistry
+b B1	Biology 1
+b LIB	Dana Porter Arts Library
+b AL	Arts Lecture Hall
+b EV1	Environment 1
+b RCH	J.R. Coutts Engineering Lecture Hall
+b CSB	Central Services Building
+b B2	Biology 2
+b GSC	General Services Complex
+b COM	Commissary
+b SCH	South Campus Hall
+b MC	Mathematics & Computer Building
+b PAC	Physical Activities Complex
+b SLC	Student Life Centre
+b UC	University Club
+b C2	Chemistry 2
+b CPH	Carl A. Pollock Hall
+b PAS	Psychology, Anthropology, Sociology
+b NH	Ira G. Needles Hall
+b BMH	B.C. Matthews Hall
+b EV2	Environment 2
+b DC	William G. Davis Computer Research Centre
+b EIT	Centre for Environmental and Information Technology
+b TC	William M. Tatham Centre for Co-operative Education & Career Services
+b ERC	Energy Research Centre
+b QNC	Mike & Ophelia Lazaridis Quantum-Nano Centre
+b E5	Engineering 5
+b M3	Mathematics 3
+b EV3	Environment 3
+b E6	Engineering 6
+b GH	Graduate House
+b HH	Hagey Hall
+m 2
+n DWE
+n E2
+n E3
+n PHY
+n ML
+n ESC
+n B1
+n LIB
+n AL
+n EV1
+n CSB
+n B2
+n GSC
+n COM
+n SCH
+n MC
+n PAC
+n SLC
+n UC
+n C2
+n CPH
+n PAS
+n NH
+n BMH
+n EV2
+n DC
+n EIT
+n TC
+n ERC
+n QNC
+n E5
+n M3
+n EV3
+n E6
+n GH
+n HH
+e DC E3	bridge
+e E3 EIT bridge
+e E3 E2	hall
+e E3 E5	bridge
+e E2 PHY hall
+e PHY EIT hall
+e DC C2	bridge
+e C2 ESC bridge
+e C2 MC	tunnel
+e MC M3	bridge
+e MC DC	bridge
+e DC M3	bridge
+e MC QNC bridge
+e SCH TC tunnel
+e TC AL	tunnel
+e EV1 HH bridge
+e DWE RCH tunnel
+e RCH PHY tunnel
+e PAC SLC bridge
+e EV1 EV2 hall
+e EV2 PAS bridge
+e EV2 EV3 hall
+e EV1 ML tunnel
+e EV1 AL tunnel
+e E2 CPH hall
+e CPH DWE bridge
+e ESC EIT bridge
+e ESC B1 hall
+e B1 B2 hall
+e QNC B2 bridge
+e AL ML tunnel
+d
