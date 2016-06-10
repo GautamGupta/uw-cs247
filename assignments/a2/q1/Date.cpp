@@ -232,8 +232,11 @@ istream& operator>>(istream& sin, Date &date) {
     string newMonth;
 
     sin >> newDay >> newMonth >> newYear;
-    newMonth = newMonth.substr(0, newMonth.length()-1);
+    if (!sin) {
+        return sin;
+    }
 
+    newMonth = newMonth.substr(0, newMonth.length()-1);
     date = Date(newDay, newMonth, newYear);
 
     return sin;
