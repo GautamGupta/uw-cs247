@@ -43,6 +43,10 @@ namespace {
         cout << "This command results in no changes to the collection of buildings or to maps." << endl;
     }
 
+    void printNoChangeMessage(int mapNum) {
+        cout << "This command results in no changes to map" << mapNum << "." << endl;
+    }
+
     void readBuilding(istream &source, Collection *buildings, Graph *map = NULL) {
         string code, name, name2;
         bool first = true;
@@ -153,6 +157,8 @@ int main( int argc, char *argv[] ) {
     Op op = convertOp( command );
 
     while ( !cin.eof() ) {
+        int mapNum = (map == &map1) ? 1 : 2;
+
         switch (op) {
 
                 // set variable map to point to new graph (map1 or map2)
@@ -183,9 +189,8 @@ int main( int argc, char *argv[] ) {
                 try {
                     map->addNode( buildings.findBuilding( code ) );
                 } catch(Graph::BCodeNotFoundException &e) {
-                    int mapNum = (map == &map1) ? 1 : 2;
                     cout << endl << "ERROR: There is no building with the code \"" << code << "\"." << endl;
-                    cout << "This command results in no changes to map" << mapNum << "." << endl;
+                    printNoChangeMessage(mapNum);
                 }
 
                 string junk;
@@ -214,7 +219,23 @@ int main( int argc, char *argv[] ) {
             case edge: {
                 string code1, code2, type;
                 cin >> code1 >> code2 >> type;
-                map->addEdge( code1, code2, type );
+
+                try {
+                    map->addEdge( code1, code2, type );
+                } catch(Graph::BCodeNotFoundException &e) {
+                    cout << endl << "ERROR: There is no building \"" << e.code() << "\" in map" << mapNum << " to use in the new edge." << endl;
+                    printNoChangeMessage(mapNum);
+                } catch(Graph::SelfConnectException &e) {
+                    cout << endl << "ERROR: Cannot connect node \"" << e.code() << "\" to itself." << endl;
+                    printNoChangeMessage(mapNum);
+                } catch(Graph::InvalidConnectorTypeException &e) {
+                    cout << endl << "ERROR:  There is no building connector of type \"" << e.type() << "\"." << endl;
+                    printNoChangeMessage(mapNum);
+                } catch(Graph::EdgeExistsException &e) {
+                    cout << endl << "ERROR: There is already an edge between \"" << code1 << "\" and \"" << code2 << "\" in map" << mapNum << "." << endl;
+                    printNoChangeMessage(mapNum);
+                }
+
                 string junk;
                 getline ( cin, junk );
                 break;
@@ -231,7 +252,17 @@ int main( int argc, char *argv[] ) {
             case remEdge: {
                 string code1, code2;
                 cin >> code1 >> code2;
-                map->removeEdge( code1, code2 );
+
+                try {
+                    map->removeEdge( code1, code2 );
+                } catch(Graph::BCodeNotFoundException &e) {
+                    cout << endl << "ERROR: There is no building \"" << code1 << "\" in map" << mapNum << "." << endl;
+                    printNoChangeMessage(mapNum);
+                } catch(Graph::NoEdgeException &e) {
+                    cout << endl << "ERROR: There is no edge in map" << mapNum << " between buildings \"" << code1 << "\" and \"" << code2 << "\" to be removed." << endl;
+                    printNoChangeMessage(mapNum);
+                }
+
                 string junk;
                 getline ( cin, junk );
                 break;
@@ -241,7 +272,14 @@ int main( int argc, char *argv[] ) {
             case remNode: {
                 string code;
                 cin >> code;
-                map->removeNode( code );
+
+                try {
+                    map->removeNode( code );
+                } catch(Graph::BCodeNotFoundException &e) {
+                    cout << endl << "ERROR: There is no building \"" << e.code() << "\" in map" << mapNum << " to be removed." << endl;
+                    printNoChangeMessage(mapNum);
+                }
+
                 string junk;
                 getline( cin, junk );
                 break;
@@ -297,9 +335,16 @@ int main( int argc, char *argv[] ) {
             case path: {
                 string code1, code2, all;
                 cin >> code1 >> code2 >> all;
+
                 cout << "Paths from " << code1 << " to " << code2 << " are: " << endl;
                 bool printall = ( all.length() > 0 && all.at(0) == 't' ) ? true : false;
-                map->printPaths( code1, code2, printall );
+
+                try {
+                    map->printPaths( code1, code2, printall );
+                } catch(Graph::BCodeNotFoundException &e) {
+                    cout << endl << "ERROR: There is no building \"" << e.code() << "\" in map" << mapNum << "." << endl;
+                }
+
                 string junk;
                 getline( cin, junk );
                 break;

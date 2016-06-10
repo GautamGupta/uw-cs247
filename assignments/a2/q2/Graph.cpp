@@ -5,6 +5,49 @@ using namespace std;
 
 Graph::BCodeNotFoundException::BCodeNotFoundException() {}
 
+Graph::BCodeNotFoundException::BCodeNotFoundException(string code)
+        : code_(code) {}
+
+string Graph::BCodeNotFoundException::code() const {
+    return code_;
+}
+
+Graph::SelfConnectException::SelfConnectException(string code)
+        : code_(code) {}
+
+string Graph::SelfConnectException::code() const {
+    return code_;
+}
+
+Graph::NoEdgeException::NoEdgeException(string code, string code2)
+        : code_(code), code2_(code2) {}
+
+string Graph::NoEdgeException::code() const {
+    return code_;
+}
+
+string Graph::NoEdgeException::code2() const {
+    return code2_;
+}
+
+Graph::EdgeExistsException::EdgeExistsException(string code, string code2)
+        : code_(code), code2_(code2) {}
+
+string Graph::EdgeExistsException::code() const {
+    return code_;
+}
+
+string Graph::EdgeExistsException::code2() const {
+    return code2_;
+}
+
+Graph::InvalidConnectorTypeException::InvalidConnectorTypeException(string type)
+        : type_(type) {}
+
+string Graph::InvalidConnectorTypeException::type() const {
+    return type_;
+}
+
 Graph::Graph() :
         _node(NULL) {}
 
@@ -50,29 +93,44 @@ void Graph::addNode(Building* building) {
 
 void Graph::removeNode(string code) {
     Graph::Node *node = nodes();
+    bool found = false;
 
-    if (node == NULL) { // no nodes
-        return;
+    if (node != NULL) { // no nodes
+
+        if (node->building->code() == code) { // head node
+            _node = deleteNode(node);
+            found = true;
+        } else { // further nodes
+            while (node->next != NULL) {
+                if (node->next->building->code() == code) {
+                    node->next = deleteNode(node->next);
+                    found = true;
+                    break;
+                }
+                node = node->next;
+            }
+        }
+
     }
 
-    if (node->building->code() == code) { // head node
-        _node = deleteNode(node);
-    } else { // further nodes
-        while (node->next != NULL) {
-            if (node->next->building->code() == code) {
-                node->next = deleteNode(node->next);
-                break;
-            }
-            node = node->next;
-        }
+    if (!found) {
+        throw BCodeNotFoundException();
     }
 }
 
 void Graph::addEdge(string b1_code, string b2_code, string type) {
     Node *node1 = findNode(b1_code);
     Node *node2 = findNode(b2_code);
-    if (node1 == NULL || node2 == NULL) {
-        return;
+    if (node1 == NULL) {
+        throw BCodeNotFoundException(b1_code);
+    } else if (node2 == NULL) {
+        throw BCodeNotFoundException(b2_code);
+    } else if (node1 == node2) {
+        throw SelfConnectException(b2_code);
+    } else if (type != "bridge" && type != "tunnel" && type != "hall") {
+        throw InvalidConnectorTypeException(type);
+    } else if (areConnected(node1, node2)) {
+        throw EdgeExistsException(b1_code, b2_code);
     }
 
     addConnector(node1, node2, type);
@@ -82,20 +140,33 @@ void Graph::addEdge(string b1_code, string b2_code, string type) {
 void Graph::removeEdge(string b1_code, string b2_code) {
     Node *node1 = findNode(b1_code);
     Node *node2 = findNode(b2_code);
-    if (node1 == NULL || node2 == NULL) {
-        return;
+    if (node1 == NULL) {
+        throw BCodeNotFoundException(b1_code);
+    } else if (node2 == NULL) {
+        throw BCodeNotFoundException(b2_code);
     }
 
     removeEdge(node1, node2);
 }
 
 void Graph::removeEdge(Node *node1, Node *node2) {
+    if (node1 == NULL || node2 == NULL
+            || node1->building == NULL || node2->building == NULL) {
+        return;
+    }
+
     deleteConnector(node1, node2->building->code());
     deleteConnector(node2, node1->building->code());
 }
 
 void Graph::printPaths(string b1_code, string b2_code, const bool all) const {
-
+    Node *node1 = findNode(b1_code);
+    Node *node2 = findNode(b2_code);
+    if (node1 == NULL) {
+        throw BCodeNotFoundException(b1_code);
+    } else if (node2 == NULL) {
+        throw BCodeNotFoundException(b2_code);
+    }
 }
 
 void Graph::deleteGraph() {
@@ -123,8 +194,6 @@ Graph::Node* Graph::deleteNode(Graph::Node *node) {
 
     Graph::Node *next = node->next;
 
-    cout << "delNode " << (node->connector != NULL) << endl;
-
     while (node->connector != NULL) {
         // cout << "delCon" << (node->connector->next != NULL) << endl;
         Connector *next = node->connector->next;
@@ -149,27 +218,45 @@ void Graph::addConnector(Node *from, Node *to, string type) {
  * @return Graph::Connector* The next connector
  */
 void Graph::deleteConnector(Node *node, BCode connected_code) {
-    if (node == NULL || node->connector == NULL) {
-        return;
-    }
+    bool found = false;
 
-    cout << node->building->code() << " del " <<  connected_code.code() << endl;
-
-    if (node->connector->node->building->code() == connected_code) { // head
-        delete node->connector;
-        node->connector = NULL;
-    } else { // further
-        Graph::Connector* connector = node->connector;
-        while (connector->next != NULL) {
-            if (connector->next->node->building->code() == connected_code) {
-                Graph::Connector* next = connector->next->next;
-                delete connector->next;
-                connector->next = next;
-                break;
+    if (node != NULL && node->connector != NULL) {
+        if (node->connector->node->building->code() == connected_code) { // head
+            delete node->connector;
+            node->connector = NULL;
+            found = true;
+        } else { // further
+            Graph::Connector* connector = node->connector;
+            while (connector->next != NULL) {
+                if (connector->next->node->building->code() == connected_code) {
+                    Graph::Connector* next = connector->next->next;
+                    delete connector->next;
+                    connector->next = next;
+                    found = true;
+                    break;
+                }
+                connector = connector->next;
             }
-            connector = connector->next;
         }
     }
+
+    if (!found) {
+        throw NoEdgeException(node->building->code().code(), connected_code.code());
+    }
+}
+
+/**
+ * Check if an edge exists between two nodes
+ */
+bool Graph::areConnected(Node* node1, Node* node2) {
+    Graph::Connector* connector = node1->connector;
+    while (connector != NULL) {
+        if (connector->node->building->code() == node2->building->code()) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**

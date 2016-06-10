@@ -10,12 +10,57 @@ public:
     class BCodeNotFoundException {
     public:
         BCodeNotFoundException();
+        BCodeNotFoundException(const std::string);
+        std::string code() const;
+
+    private:
+        std::string code_;
+    };
+
+    class SelfConnectException {
+    public:
+        SelfConnectException(const std::string);
+        std::string code() const;
+
+    private:
+        std::string code_;
+    };
+
+    class NoEdgeException {
+    public:
+        NoEdgeException(const std::string, const std::string);
+        std::string code() const;
+        std::string code2() const;
+
+    private:
+        std::string code_;
+        std::string code2_;
+    };
+
+    class EdgeExistsException {
+    public:
+        EdgeExistsException(const std::string, const std::string);
+        std::string code() const;
+        std::string code2() const;
+
+    private:
+        std::string code_;
+        std::string code2_;
+    };
+
+    class InvalidConnectorTypeException {
+    public:
+        InvalidConnectorTypeException(const std::string);
+        std::string type() const;
+
+    private:
+        std::string type_;
     };
 
     Graph();                                                             // constructor
     ~Graph();                                                            // destructor
     Graph(const Graph&);                                                 // copy constructor
-    void addNode(Building*);                                            // mutator - add node to graph
+    void addNode(Building*);                                             // mutator - add node to graph
     void removeNode(std::string);                                        // mutator - remove node from graph
     Building* findBuilding(std::string) const;                           // accessor - find building stored in node in graph
     void addEdge(std::string, std::string, std::string);                 // mutator - add edge to graph
@@ -52,6 +97,7 @@ private:
     Node* findNode(std::string) const;
     Node* deleteNode(Node*);
     void addConnector(Node*, Node*, std::string);
+    bool areConnected(Node*, Node*);
     void deleteConnector(Node*, BCode);
     bool static isNodeEqual(Node*, Node*);
 
