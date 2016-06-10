@@ -3,9 +3,15 @@
 
 #include <iostream>
 #include "Building.h"
+#include "Collection.h"
 
 class Graph {
 public:
+    class BCodeNotFoundException {
+    public:
+        BCodeNotFoundException();
+    };
+
     Graph();                                                             // constructor
     ~Graph();                                                            // destructor
     Graph(const Graph&);                                                 // copy constructor

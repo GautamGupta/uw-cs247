@@ -3,6 +3,8 @@
 
 using namespace std;
 
+Graph::BCodeNotFoundException::BCodeNotFoundException() {}
+
 Graph::Graph() :
         _node(NULL) {}
 
@@ -28,7 +30,7 @@ Building* Graph::findBuilding(string code) const {
 
 void Graph::addNode(Building* building) {
     if (building == NULL) {
-        return;
+        throw BCodeNotFoundException();
     }
 
     Node *new_node = new Node(building, NULL, NULL);

@@ -12,30 +12,84 @@ using namespace std;
 //  Test Harness Helper functions
 //************************************************************************
 
-//  test-harness operators
-enum Op { NONE, mapPtr, building, wreckage, findB, node, remNode, edge, remEdge, delGraph, copyGraph, assignGraph, eq, path, print };
+namespace {
 
-Op convertOp( string opStr ) {
-    switch( opStr[0] ) {
-        case 'm': return mapPtr;
-        case 'b': return building;
-        case 'w': return wreckage;
-        case 'f': return findB;
-        case 'n': return node;
-        case 'v': return remNode;
-        case 'e': return edge;
-        case 'r': return remEdge;
-        case 'd': return delGraph;
-        case 'c': return copyGraph;
-        case 'a': return assignGraph;
-        case 'q': return eq;
-        case 'p': return path;
-        case 'g': return print;
-        default: {
-            return NONE;
+    //  test-harness operators
+    enum Op { NONE, mapPtr, building, wreckage, findB, node, remNode, edge, remEdge, delGraph, copyGraph, assignGraph, eq, path, print };
+
+    Op convertOp( string opStr ) {
+        switch( opStr[0] ) {
+            case 'm': return mapPtr;
+            case 'b': return building;
+            case 'w': return wreckage;
+            case 'f': return findB;
+            case 'n': return node;
+            case 'v': return remNode;
+            case 'e': return edge;
+            case 'r': return remEdge;
+            case 'd': return delGraph;
+            case 'c': return copyGraph;
+            case 'a': return assignGraph;
+            case 'q': return eq;
+            case 'p': return path;
+            case 'g': return print;
+            default: {
+                return NONE;
+            }
         }
     }
-}
+
+    void printNoChangeMessage() {
+        cout << "This command results in no changes to the collection of buildings or to maps." << endl;
+    }
+
+    void readBuilding(istream &source, Collection *buildings, Graph *map = NULL) {
+        string code, name, name2;
+        bool first = true;
+
+        while (true) {
+            source >> code;
+            if (first) {
+                source >> name;
+                getline(source, name2);
+                first = false;
+            }
+            if (!source) {
+                break;
+            }
+
+            try {
+                buildings->insert(code, name+name2);
+                if (map != NULL) {
+                    map->addNode(buildings->findBuilding(code));
+                }
+                break;
+            } catch(BCode::InvalidFormatException &e) {
+                e.printError();
+                if (map != NULL) {
+                    printNoChangeMessage();
+                } else {
+                    cout << "Please enter a new building code: ";
+                }
+            } catch(Collection::BCodeExistsException &e) {
+                e.printError();
+                if (map != NULL) {
+                    printNoChangeMessage();
+                } else {
+                    cout << "Please enter a new building code: ";
+                }
+            } catch(Collection::BCodeExistedException &e) {
+                e.printError();
+                if (map != NULL) {
+                    printNoChangeMessage();
+                } else {
+                    cout << "Please enter a new building code: ";
+                }
+            }
+        }
+    }
+
+} // namespace
 
 //******************************************************************
 // Test Harness for Graph ADT
@@ -64,13 +118,7 @@ int main( int argc, char *argv[] ) {
 
                     // add a new building to the collection of Buildings, and add the building to map1
                 case building : {
-                    string code;
-                    string name;
-                    string name2;
-                    source >> code >> name;
-                    getline( source, name2 );
-                    buildings.insert( code, name+name2 );
-                    map1.addNode( buildings.findBuilding ( code ) );
+                    readBuilding(source, &buildings, &map1);
                     break;
                 }
 
@@ -123,12 +171,7 @@ int main( int argc, char *argv[] ) {
 
                 // add a new building to the collection of buildings
             case building : {
-                string code;
-                string name;
-                string name2;
-                cin >> code >> name;
-                getline( cin, name2 );
-                buildings.insert( code, name+name2 );
+                readBuilding(cin, &buildings);
                 break;
             }
 
@@ -136,7 +179,15 @@ int main( int argc, char *argv[] ) {
             case node: {
                 string code;
                 cin >> code;
-                map->addNode( buildings.findBuilding( code ) );
+
+                try {
+                    map->addNode( buildings.findBuilding( code ) );
+                } catch(Graph::BCodeNotFoundException &e) {
+                    int mapNum = (map == &map1) ? 1 : 2;
+                    cout << endl << "ERROR: There is no building with the code \"" << code << "\"." << endl;
+                    cout << "This command results in no changes to map" << mapNum << "." << endl;
+                }
+
                 string junk;
                 getline( cin, junk );
                 break;
@@ -200,9 +251,16 @@ int main( int argc, char *argv[] ) {
             case wreckage: {
                 string code;
                 cin >> code;
-                map1.removeNode( code );
-                map2.removeNode( code );
-                buildings.remove ( code );
+
+                try {
+                    buildings.remove( code );
+                    map1.removeNode( code );
+                    map2.removeNode( code );
+                } catch(Collection::BCodeNotFoundException &e) {
+                    e.printError();
+                    printNoChangeMessage();
+                }
+
                 string junk;
                 getline ( cin, junk );
                 break;
@@ -252,6 +310,7 @@ int main( int argc, char *argv[] ) {
             }
         }
 
+        cout << endl;
         cout << "Command: ";
         cin >> command;
         op = convertOp( command );

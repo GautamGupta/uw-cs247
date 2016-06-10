@@ -4,33 +4,60 @@
 
 using namespace std;
 
+BCode::BCodeException::BCodeException(string code)
+        : code_(code) {}
+
+string BCode::BCodeException::code() const {
+    return code_;
+}
+
+BCode::InvalidFormatException::InvalidFormatException(string code, string message)
+        : BCodeException(code), message_(message) {}
+
+string BCode::InvalidFormatException::message() const {
+    return message_;
+}
+
+void BCode::InvalidFormatException::printError() const {
+    cout << endl << "ERROR: Building Code \"" << code() << "\" has an invalid format." << endl;
+    cout << message();
+}
+
 /**
  * Converts a string into a building code after checking for requiremets
  */
 BCode::BCode(const string code) {
+    string message;
+
     // length should be b/w 1-3 chars
     if (code.length() < 1 || code.length() > 3) {
-        exit(1);
+        message += "\t- must have length of 2-3 characters\n";
+
+    }
+    // first char should be a letter
+    if (!isupper(code[0])) {
+        message += "\t- must start with a capital letter\n";
     }
     // all chars should be uppercase letters / numbers
     for (int i = 1; i < code.length(); ++i) {
-        if (!isdigit(code[i]) && (!isalpha(code[i]) || !isupper(code[i]))) {
-            exit(1);
+        if (!isdigit(code[i]) && !isupper(code[i])) {
+            message += "\t- must consist of only capital letters and digits\n";
+            break;
         }
     }
-    // first char should be a letter
-    if (!isalpha(code[0])) {
-        exit(1);
+
+    if (!message.empty()) {
+        throw InvalidFormatException(code, message);
     }
 
-    _code = code;
+    code_ = code;
 }
 
 /**
  * @return string Building Code
  */
 string BCode::code() const {
-    return _code;
+    return code_;
 }
 
 ostream& operator<<(ostream &sout, const BCode &code) {
