@@ -314,6 +314,28 @@ List with dummy header node whose `(Data*) == nullptr`; all other nodes have `(D
  
  `Node(Data*, Node *p, Node *n)`
  
+*Lecture - Jun 7*
+
+# Design Patterns
+
+Patterns are similar to recipes:
+
+ - more concrete than principles, which are like what ingredients go together, how cooking affects and ingredient, etc.
+ - more abstract than libraries (prepackaged solutions). eg. package of buns, condiments, etc. must be adapted to the situation
+ 
+Help in situations where we recognize a need to:
+
+ - improve the design
+ - refine the design
+ - improve cohesion
+ - loosen coupling
+ - preserve information hiding
+
+But adds cost of complexity, so don't use lightly. Often use clever indirection, interfaces, polymorphism, info hiding & intermediate objects.
+
+Adapter design pattern could be for classes or objects; object adapter is more common, that's the one we'll be focusing on.
+
+
 
 .
 
