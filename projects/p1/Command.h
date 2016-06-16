@@ -6,10 +6,10 @@
 
 enum Type { PLAY, DISCARD, DECK, QUIT, RAGEQUIT, BAD_COMMAND };
 
-struct Command{
+struct Command {
 	Type type;
 	Card card;
-	
+
 	Command() : type(BAD_COMMAND), card(SPADE, ACE) {}
 };
 
