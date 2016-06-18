@@ -2,18 +2,23 @@
  * To ensure that the your cards are ordered the same way as
  * the given program, use this shuffling algorithm.
  *
- * CARD_COUNT is the constant 52
+ * NUM_CARDS is the constant 52
  * cards_ is an array of pointers to cards
  */
 
+#include "main.h"
+#include "card.h"
 #include <random>
+#include <vector>
+
+using namespace std;
 
 int seed = 0;
 
-void shuffle() {
+void shuffle(vector<Card*> cards_) {
     static mt19937 rng(seed);
 
-	int n = CARD_COUNT;
+	int n = NUM_CARDS;
 
 	while (n > 1) {
 		int k = (int) (rng() % n);

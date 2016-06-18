@@ -2,10 +2,12 @@
 #define ST_CONTROLLER_H
 
 class Model;
+class View;
 
 class Controller {
 public:
    Controller(Model*, View*);
+   void start();
 
 private:
    Model *model_;

@@ -4,11 +4,10 @@
  * Created by Bo Peng and Gautam Gupta
  */
 
+#include "main.h"
 #include "model.h"
 #include "controller.h"
 #include "view.h"
-
-const int NUM_PLAYERS = 4;
 
 int main(int argc, char* argv[]) {
 	Model model;                            // Create model
