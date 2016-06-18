@@ -1,7 +1,7 @@
 #ifndef _COMMAND_
 #define _COMMAND_
 
-#include "Card.h"
+#include "card.h"
 #include <istream>
 
 enum Type { PLAY, DISCARD, DECK, QUIT, RAGEQUIT, BAD_COMMAND };

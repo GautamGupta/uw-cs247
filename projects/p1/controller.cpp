@@ -9,10 +9,5 @@
 
 Controller::Controller(Model *m, View *v) : model_(m), view_(v) {}
 
-void Controller::nextButtonClicked() {
-     model_->nextCard();
-}
-
-void Controller::resetButtonClicked() {
-     model_->resetCards();
+void Controller::start() {
 }

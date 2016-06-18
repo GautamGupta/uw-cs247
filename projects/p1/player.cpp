@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "player.h"
 #include <string>
 #include <cassert>
 using namespace std;
