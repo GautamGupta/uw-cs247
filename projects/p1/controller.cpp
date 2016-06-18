@@ -5,8 +5,9 @@
 
 #include "controller.h"
 #include "model.h"
+#include "view.h"
 
-Controller::Controller(Model *m) : model_(m) {}
+Controller::Controller(Model *m, View *v) : model_(m), view_(v) {}
 
 void Controller::nextButtonClicked() {
      model_->nextCard();
