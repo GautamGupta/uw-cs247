@@ -128,6 +128,11 @@ void View::displayCards(Cards cards) {
             cout << " ";
         }
     }
+
+    // Next line if no cards
+    if (cards.size() == 0) {
+        cout << endl;
+    }
 }
 
 void View::displayVictory(int playerNum) {

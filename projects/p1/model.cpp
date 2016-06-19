@@ -49,11 +49,11 @@ bool Model::isGameOver() {
 }
 
 int Model::lowestScore() {
-    int lowestScore = player(0)-> calculateScore();
+    int lowestScore = player(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
-      if(player(i)-> calculateScore() < lowestScore){
-        lowestScore = player(i) ->calculateScore();
-      }
+        if (player(i)-> calculateScore() < lowestScore) {
+            lowestScore = player(i) ->calculateScore();
+        }
     }
     return lowestScore;
 }
