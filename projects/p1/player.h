@@ -23,6 +23,7 @@ public:
 
     void addCard(std::shared_ptr<Card>);
     void startRound();
+    std::string endRound();
     void playCard(Card);
     void discardCard(Card);
 

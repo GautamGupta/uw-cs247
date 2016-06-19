@@ -17,6 +17,20 @@ void Player::startRound() {
     discardedCards_.clear();
 }
 
+// This method records the cards discarded in a string format and also updates the player's score for the turn
+string Player::endRound() {
+    int score = 0;
+    string discards;
+    for (int i = 0; i < getDiscardedCards().size(); i++) {
+      score += getDiscardedCards().at(i)->getRank();
+      discards += " ";
+      discards += getDiscardedCards().at(i)->getRank();
+      discards += getDiscardedCards().at(i)->getSuit();
+    }
+    score_ = score;
+    return discards;
+}
+
 /* Get functions */
 
 vector< shared_ptr<Card> > Player::getOriginalCards() const {
