@@ -111,7 +111,7 @@ void View::displayRageQuit(int playerNum) {
 
 void View::displayCards(vector<Rank> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
-        cout << ranks.at(i) << " ";
+        cout << ranks.at(i) + 1 << " ";
     }
 
     cout << endl;
