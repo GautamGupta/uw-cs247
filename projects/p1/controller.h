@@ -7,7 +7,9 @@ class View;
 class Controller {
 public:
    Controller(Model*, View*);
-   void start();
+   Model* model();
+   View* view();
+   void inputPlayers();
 
 private:
    Model *model_;

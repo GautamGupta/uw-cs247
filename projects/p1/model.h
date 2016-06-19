@@ -7,11 +7,16 @@
 #define ST_MODEL_H
 
 #include "card.h"
+#include "player.h"
+#include <vector>
 
 class Model {
 public:
     Model();
+    void addPlayer(std::shared_ptr<Player>);
+
 private:
+    std::vector< std::shared_ptr<Player> > players_;
 }; // Model
 
 

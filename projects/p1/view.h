@@ -11,6 +11,8 @@ class View {
 public:
     View( Model* );
 	virtual ~View();
+    Model* model();
+    char inputPlayer(int);
 
 private:
 	Model *model_;

@@ -3,6 +3,8 @@
 
 #include <ostream>
 
+enum PlayerType { HUMAN, COMPUTER };
+
 class Player {
 public:
     Player();

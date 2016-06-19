@@ -14,7 +14,5 @@ int main(int argc, char* argv[]) {
     View view(&model);                      // Create the view -- is passed handle model
     Controller controller(&model, &view);   // Create controller -- is passed handle to view and model
 
-    controller.start();
-
 	return 0;
 }
