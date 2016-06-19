@@ -82,21 +82,32 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
 //   }
 // }
 //
-// // FOR HUMAN: Discard card, need to convert a string into a card
-// void Player::discardCard(shared_ptr <Card> discardedCard){
-//   if(getLegalPlays().size() > 0){
+// FOR HUMAN: Discard card, need to convert a string into a card
+// void Player::discardCard(Cards cardsOnTable, shared_ptr <Card> discardedCard){
+//   if(getLegalPlays(cardsOnTable).size() > 0){
 //     cout << "You have a legal play. You may not discard." << endl;
 //   }
-//   else{
+//   else {
 //     discardedCards_.push_back(discardedCard);
 //     int index = 0;
+//     bool cardInHand = false;
+//
+//     // Find index of discardedCard
+//     // Need to check if discardedCard is actually in current hand
 //     for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != currentCards_.end(); ++it) {
 //       if((*it)->getSuit() == discardedCard->getSuit() && (*it)->getRank() == discardedCard->getRank()) {
+//         cardInHand = true;
 //         break;
 //       }
 //       index++;
 //     }
-//     currentCards_.erase(index);
+//
+//     if(cardInHand){
+//       currentCards_.erase(currentCards_.begin() + index); // Removes the card in hand
+//     }
+//     else {
+//       cout << "CANNOT DISCARD A CARD NOT IN YOUR HAND" << endl;
+//     }
 //   }
 // }
 
