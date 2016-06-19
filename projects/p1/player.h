@@ -18,7 +18,7 @@ public:
     int getScore() const;
     int getPreviousScore() const;
 
-    Cards getLegalPlays();
+    Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
     virtual void playCard(Card*) = 0;
     // virtual void discardCard() = 0;

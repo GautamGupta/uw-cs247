@@ -110,9 +110,9 @@ void Controller::startRound() {
         cout << (playerNum+1) << " " << player->isHuman() << endl;
 
         if (player->isHuman()) {
-            view()->displayCardsOnTable(model()->getCardsOnTable());
+            view()->displayCardsOnTable(model()->getSuitCardsOnTable());
             view()->displayHand(player->getCurrentCards());
-            // view()->displayLegalPlays(player->getLegalPlays());
+            view()->displayLegalPlays(player->getLegalPlays(model()->getCardsOnTable()));
         }
     }
 }

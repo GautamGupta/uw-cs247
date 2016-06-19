@@ -75,6 +75,12 @@ void View::displayHand(Cards cards) {
     displayCards(cards);
 }
 
+void View::displayLegalPlays(Cards cards) {
+    cout << "Legal plays: ";
+
+    displayCards(cards);
+}
+
 void View::displayCards(vector<Rank> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
         cout << ranks.at(i) << " ";

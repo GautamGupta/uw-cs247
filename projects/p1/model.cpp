@@ -13,13 +13,27 @@
 
 using namespace std;
 
-Model::Model() {}
+Model::Model() : players_(NULL), startPlayer_(0) {}
 
 shared_ptr<Player> Model::player(int i) {
     return players_.at(i);
 }
 
-SuitCards Model::getCardsOnTable() {
+Cards Model::getCardsOnTable() {
+    Cards cards;
+    shared_ptr<Card> card(new Card(CLUB, EIGHT));
+    cards.push_back(card);
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        for (int j = 0; j < player(i)->getPlayedCards().size(); j++) {
+            cards.insert(cards.end(), player(i)->getPlayedCards().begin(), player(i)->getPlayedCards().end());
+        }
+    }
+
+    return cards;
+}
+
+SuitCards Model::getSuitCardsOnTable() {
     SuitCards suitCards;
 
     for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
