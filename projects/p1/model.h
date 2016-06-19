@@ -13,10 +13,13 @@
 class Model {
 public:
     Model();
+    Players players();
+    int startPlayer();
     std::shared_ptr<Player> player(int);
+    Cards getDeck();
     Cards getCardsOnTable();
     SuitCards getSuitCardsOnTable();
-    int startPlayer();
+    Cards getLegalPlays(int);
 
     void setStartPlayer(int);
     void addPlayer(std::shared_ptr<Player>);

@@ -12,6 +12,7 @@
 #include "humanplayer.h"
 #include "card.h"
 #include "command.h"
+#include <stdlib.h>
 #include <string>
 #include <cassert>
 #include <iostream>
@@ -35,7 +36,7 @@ View* Controller::view() {
 }
 
 void Controller::inputPlayers() {
-    for (int i = 1; i <= NUM_PLAYERS; i++) {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
         string types = "hc";
 
         // Read in the type, make sure it's valid
@@ -105,18 +106,76 @@ void Controller::startRound() {
     assignCards();
 
     int startPlayer = model()->startPlayer();
-    view()->startRound(startPlayer + 1); // index + 1
+    view()->startRound(startPlayer);
 
     for (int i = 0; i < NUM_CARDS; i++) {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;
-        shared_ptr<Player> player = model()->player(playerNum);
         cout << i << " t " << playerNum << endl;
-        cout << (playerNum+1) << " " << player->isHuman() << endl;
 
-        if (player->isHuman()) {
+        if (model()->player(playerNum)->isHuman()) {
             view()->displayCardsOnTable(model()->getSuitCardsOnTable());
-            view()->displayHand(player->getCurrentCards());
-            view()->displayLegalPlays(player->getLegalPlays(model()->getCardsOnTable()));
+            view()->displayHand(model()->player(playerNum)->getCurrentCards());
+            view()->displayLegalPlays(model()->getLegalPlays(playerNum));
+            playHuman(playerNum);
+        } else {
+            // playComputer(playerNum);
         }
     }
+}
+
+/**
+ * Human's turn to play. Get input and perform the play
+ *
+ * @param player Player index
+ */
+void Controller::playHuman(int playerNum) {
+    Cards legalPlays = model()->getLegalPlays(playerNum);
+
+    Command command;
+    cin >> command;
+
+    switch (command.type) {
+        case PLAY : {
+            bool canPlay = false;
+            for (int i = 0; i < legalPlays.size(); i++) {
+                if (*legalPlays.at(i) == command.card) {
+                    canPlay = true;
+                    break;
+                }
+            }
+
+            if (!canPlay) {
+                // view()->errorNotLegalPlay();
+                return playHuman(playerNum);
+            } else {
+                // player->playCard()
+                // view()->playCard(playerNum + 1, command.card);
+            }
+
+            break;
+        }
+
+        case DISCARD : {
+            // try {
+            //     model()->discardCard(command.card);
+            // }
+            break;
+        }
+
+        case DECK :
+            view()->displayCards(model()->getDeck());
+            return playHuman(playerNum);
+
+        case QUIT :
+            return exit(EXIT_SUCCESS);
+
+        case RAGEQUIT :
+            view()->displayRageQuit(playerNum);
+            return;// playComputer(playerNum);
+
+        default :
+            // TODO exception
+            break;
+    }
+
 }

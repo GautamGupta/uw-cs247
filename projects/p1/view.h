@@ -15,11 +15,14 @@ public:
     View(Model*);
 	virtual ~View();
     Model* model();
+
     char inputPlayer(int);
+
     void startRound(int);
     void displayCardsOnTable(SuitCards);
     void displayHand(Cards);
     void displayLegalPlays(Cards);
+    void displayRageQuit(int);
 
     void displayCards(std::vector<Rank>);
     void displayCards(Cards);

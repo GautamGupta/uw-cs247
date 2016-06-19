@@ -16,6 +16,7 @@ public:
    void inputPlayers();
    void assignCards();
    void startRound();
+   void playHuman(int);
 
    void shuffleCards(Cards &);
 

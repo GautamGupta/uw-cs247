@@ -3,6 +3,7 @@
  * the top card of the deck.
  */
 
+#include "main.h"
 #include "view.h"
 #include "model.h"
 #include "card.h"
@@ -23,7 +24,7 @@ Model* View::model() {
 char View::inputPlayer(int playerNum) {
     char type;
 
-    cout << "Is player " << playerNum << " a human(h) or a computer(c)?" << endl;
+    cout << "Is player " << (playerNum + 1) << " a human(h) or a computer(c)?" << endl;
     cin >> type;
     assert ( !cin.fail() );
 
@@ -31,7 +32,7 @@ char View::inputPlayer(int playerNum) {
 }
 
 void View::startRound(int playerNum) {
-    cout << "A new round begins. It’s player " << playerNum << "'s turn to play." << endl;
+    cout << "A new round begins. It’s player " << (playerNum + 1) << "'s turn to play." << endl;
 }
 
 void View::displayCardsOnTable(SuitCards suitCards) {
@@ -71,13 +72,11 @@ void View::displayCardsOnTable(SuitCards suitCards) {
 
 void View::displayHand(Cards cards) {
     cout << "Your hand: ";
-
     displayCards(cards);
 }
 
 void View::displayLegalPlays(Cards cards) {
     cout << "Legal plays: ";
-
     displayCards(cards);
 }
 
@@ -91,8 +90,17 @@ void View::displayCards(vector<Rank> ranks) {
 
 void View::displayCards(Cards cards) {
     for (int i = 0; i < cards.size(); i++) {
-        cout << *cards.at(i) << " ";
-    }
+        cout << *cards.at(i);
 
-    cout << endl;
+        // Newline at the end of 13 cards (mainly for deck) / end of list
+        if ((i+1) % CARDS_PER_PLAYER == 0 || (i+1) == cards.size()) {
+            cout << endl;
+        } else {
+            cout << " ";
+        }
+    }
+}
+
+void View::displayRageQuit(int playerNum) {
+    cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
 }

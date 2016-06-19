@@ -15,14 +15,34 @@ using namespace std;
 
 Model::Model() : startPlayer_(-1) {}
 
+Players Model::players() {
+    return players_;
+}
+
+int Model::startPlayer() {
+    return startPlayer_;
+}
+
 shared_ptr<Player> Model::player(int i) {
-    return players_.at(i);
+    return players().at(i);
 }
 
 void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->startRound();
     }
+}
+
+Cards Model::getDeck() {
+    Cards cards;
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        for (int j = 0; j < player(i)->getOriginalCards().size(); j++) {
+            cards.insert(cards.end(), player(i)->getOriginalCards().begin(), player(i)->getPlayedCards().end());
+        }
+    }
+
+    return cards;
 }
 
 Cards Model::getCardsOnTable() {
@@ -55,8 +75,12 @@ SuitCards Model::getSuitCardsOnTable() {
     return suitCards;
 }
 
-int Model::startPlayer() {
-    return startPlayer_;
+/**
+ * Get legal plays for a player
+ * @param  playerNum Index position of player
+ */
+Cards Model::getLegalPlays(int playerNum) {
+    return player(playerNum)->getLegalPlays(getCardsOnTable());
 }
 
 void Model::setStartPlayer(int startPlayer) {
