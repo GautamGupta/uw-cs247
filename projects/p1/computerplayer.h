@@ -8,6 +8,7 @@ class ComputerPlayer : public Player {
 public:
     ComputerPlayer();
 
+    bool isHuman();
     void playCard(Card*);
     void discardCard(Card*);
 };

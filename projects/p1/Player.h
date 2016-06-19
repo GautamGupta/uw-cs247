@@ -15,8 +15,10 @@ public:
     std::vector< std::shared_ptr<Card> > getCurrentCards() const;
     std::vector< std::shared_ptr<Card> > getDiscardedCards() const;
     int getScore() const;
+    int getPreviousScore() const;
 
     std::vector< std::shared_ptr<Card> > getLegalPlays();
+    virtual bool isHuman() = 0;
     virtual void playCard(Card*) = 0;
     virtual void discardCard(Card*) = 0;
 
@@ -25,6 +27,7 @@ private:
     std::vector< std::shared_ptr<Card> > currentCards_;
     std::vector< std::shared_ptr<Card> > discardedCards_;
     int score_;
+    int previousScore_;
 };
 
 std::ostream &operator<<(std::ostream &, const Player &);
