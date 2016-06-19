@@ -10,7 +10,7 @@ public:
 
     bool isHuman();
     void playCard(Card*);
-    void discardCard(Card*);
+    void discardCard(Cards, std::shared_ptr<Card>);
 };
 
 #endif

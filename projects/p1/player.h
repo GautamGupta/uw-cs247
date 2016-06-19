@@ -21,8 +21,7 @@ public:
     Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
     virtual void playCard(Card*) = 0;
-    // virtual void discardCard() = 0;
-    virtual void discardCard(Card*) = 0;
+    virtual void discardCard(Cards, std::shared_ptr<Card>) = 0;
 
     void addOriginalCard(std::shared_ptr<Card>);
     void startRound();

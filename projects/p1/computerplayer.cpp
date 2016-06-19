@@ -12,6 +12,6 @@ void ComputerPlayer::playCard(Card* card) {
 
 }
 
-void ComputerPlayer::discardCard(Card* card) {
+void ComputerPlayer::discardCard(Cards, std::shared_ptr<Card>){
 
 }
