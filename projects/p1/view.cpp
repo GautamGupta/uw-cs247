@@ -129,10 +129,6 @@ void View::displayCards(Cards cards) {
     }
 }
 
-void View::displayRageQuit(int playerNum) {
-    cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
-}
-
 void View::displayVictory(int playerNum) {
     cout << "Player " << (playerNum + 1) << " wins!" << endl;
 }

@@ -35,8 +35,6 @@ public:
 
     void displayVictory(int);
 
-private:
-	Model *model_;
 }; // View
 
 #endif
