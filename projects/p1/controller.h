@@ -1,6 +1,9 @@
 #ifndef ST_CONTROLLER_H
 #define ST_CONTROLLER_H
 
+#include "Card.h"
+#include <vector>
+
 class Model;
 class View;
 
@@ -10,6 +13,8 @@ public:
    Model* model();
    View* view();
    void inputPlayers();
+   void assignCards();
+   void shuffleCards(std::vector< std::shared_ptr<Card> > &);
 
 private:
    Model *model_;

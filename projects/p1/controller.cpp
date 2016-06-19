@@ -10,13 +10,17 @@
 #include "player.h"
 #include "computerplayer.h"
 #include "humanplayer.h"
+#include "card.h"
 #include <string>
 #include <cassert>
+#include <iostream>
+#include <random>
 
 using namespace std;
 
 Controller::Controller(Model *m, View *v) : model_(m), view_(v) {
     inputPlayers();
+    assignCards();
 }
 
 /* Get functions */
@@ -52,5 +56,32 @@ void Controller::inputPlayers() {
             }
 
         }
+    }
+}
+
+void Controller::assignCards() {
+    vector< shared_ptr<Card> > cards;
+
+    for (int suit = CLUB; suit != SPADE; suit++) {
+        for (int rank = ACE; rank != KING; rank++) {
+            shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
+            cards.push_back(card);
+        }
+    }
+
+    shuffleCards(cards);
+}
+
+void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
+    static mt19937 rng(seed);
+
+    int n = cards.size();
+
+    while (n > 1) {
+        int k = (int) (rng() % n);
+        --n;
+        shared_ptr<Card> card = cards[n];
+        cards[n] = cards[k];
+        cards[k] = card;
     }
 }
