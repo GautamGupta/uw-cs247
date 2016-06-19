@@ -13,6 +13,7 @@ public:
 	virtual ~View();
     Model* model();
     char inputPlayer(int);
+    void startRound(int);
 
 private:
 	Model *model_;

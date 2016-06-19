@@ -27,3 +27,7 @@ char View::inputPlayer(int playerNum) {
 
     return type;
 }
+
+void View::startRound(int playerNum) {
+    cout << "A new round begins. It’s player " << playerNum << "'s turn to play." << endl;
+}

@@ -102,5 +102,11 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
 }
 
 void Controller::startRound() {
-    // view()->startRound();
+    int startPlayer = model()->startPlayer();
+    view()->startRound(startPlayer + 1); // index + 1
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        int playerNum = (i + startPlayer) % NUM_PLAYERS;
+        cout << playerNum << endl;
+    }
 }
