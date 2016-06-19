@@ -6,6 +6,7 @@
 #define ST_VIEW_H
 
 #include "Card.h"
+#include "Player.h"
 #include <vector>
 
 class Model;
@@ -19,6 +20,8 @@ public:
     char inputPlayer(int);
 
     void startRound(int);
+    void endRound(int, Player);
+    void displayDiscards(Cards);
     void displayCardsOnTable(SuitCards);
     void displayHand(Cards);
     void displayLegalPlays(Cards);
@@ -26,6 +29,8 @@ public:
 
     void displayCards(std::vector<Rank>);
     void displayCards(Cards);
+
+    void displayVictory(int);
 
 private:
 	Model *model_;

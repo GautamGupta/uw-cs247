@@ -25,6 +25,9 @@ public:
     void addPlayer(std::shared_ptr<Player>);
     void addPlayerCard(int, std::shared_ptr<Card>);
     void startRound();
+    void endRound();
+    bool checkVictory();
+    int lowestScore();
     void debug();
 
 private:

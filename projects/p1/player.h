@@ -17,6 +17,7 @@ public:
     Cards getDiscardedCards() const;
     int getScore() const;
     int getPreviousScore() const;
+    int calculateScore() const;
 
     Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
@@ -25,7 +26,9 @@ public:
 
     void addOriginalCard(std::shared_ptr<Card>);
     void startRound();
-    std::string endRound();
+    void endRound();
+    bool checkEndGame();
+
 
 private:
     Cards originalCards_;

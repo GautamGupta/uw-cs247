@@ -35,6 +35,18 @@ void View::startRound(int playerNum) {
     cout << "A new round begins. It’s player " << (playerNum + 1) << "'s turn to play." << endl;
 }
 
+void View::endRound(int playerNum, Player player) {
+    cout << "Player " << (playerNum + 1) << "'s discards:";
+    displayCards(player.getDiscardedCards());
+    cout << endl;
+
+    cout << "Player " << (playerNum + 1) << "'s score: " << player.getPreviousScore() << " + " << player.getScore() << " = " <<  player.getPreviousScore() + player.getScore() << endl;
+}
+
+void View::displayDiscards(Cards cards) {
+    displayCards(cards);
+}
+
 void View::displayCardsOnTable(SuitCards suitCards) {
     cout << "Cards on the table:" << endl;
 
@@ -103,4 +115,8 @@ void View::displayCards(Cards cards) {
 
 void View::displayRageQuit(int playerNum) {
     cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
+}
+
+void View::displayVictory(int playerNum) {
+    cout << "Player " << (playerNum + 1) << " wins!" << endl;
 }

@@ -17,18 +17,19 @@ void Player::startRound() {
     discardedCards_.clear();
 }
 
-// This method records the cards discarded in a string format and also updates the player's score for the turn
-string Player::endRound() {
+void Player::endRound() {
     int score = 0;
-    string discards;
     for (int i = 0; i < getDiscardedCards().size(); i++) {
       score += getDiscardedCards().at(i)->getRank();
-      discards += " ";
-      discards += getDiscardedCards().at(i)->getRank();
-      discards += getDiscardedCards().at(i)->getSuit();
     }
     score_ = score;
-    return discards;
+}
+
+bool Player::checkEndGame() {
+    if(calculateScore() >= 80){
+      return true;
+    }
+    return false;
 }
 
 /* Get functions */
@@ -49,8 +50,15 @@ vector< shared_ptr<Card> > Player::getDiscardedCards() const {
     return discardedCards_;
 }
 
+int Player::getPreviousScore() const {
+    return previousScore_;
+}
 int Player::getScore() const {
     return score_;
+}
+
+int Player::calculateScore() const {
+    return previousScore_ + score_;
 }
 
 // Get legal plays

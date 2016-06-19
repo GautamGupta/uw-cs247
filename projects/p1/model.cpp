@@ -33,6 +33,31 @@ void Model::startRound() {
     }
 }
 
+void Model::endRound() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        player(i)->endRound();
+    }
+}
+
+bool Model::checkVictory() {
+    bool victory = false;
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+      if(player(i)->checkEndGame()){
+        victory = true;
+      }
+    }
+}
+
+int Model::lowestScore() {
+    int lowestScore = player(0)-> calculateScore();
+    for (int i = 1; i < NUM_PLAYERS; i++) {
+      if(player(i)-> calculateScore() < lowestScore){
+        lowestScore = player(i) ->calculateScore();
+      }
+    }
+    return lowestScore;
+}
+
 Cards Model::getDeck() {
     Cards cards;
 

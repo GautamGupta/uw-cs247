@@ -123,6 +123,24 @@ void Controller::startRound() {
     }
 }
 
+void Controller::endRound() {
+    model()->endRound();
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        view()->endRound(i, *model()->player(i));
+    }
+    if(model()->checkVictory()){
+        int lowestScore = model()->lowestScore();
+        for (int i = 0; i < NUM_PLAYERS; i++) {
+          if(model()->player(i)->calculateScore() == lowestScore){
+            view()->displayVictory(i);
+          }
+        }
+    }
+    else {
+      startRound();
+    }
+}
+
 /**
  * Human's turn to play. Get input and perform the play
  *
