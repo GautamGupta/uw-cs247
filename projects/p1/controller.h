@@ -16,6 +16,4 @@ private:
    View *view_;
 }; // Controller
 
-
-
 #endif
