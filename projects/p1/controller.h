@@ -12,8 +12,11 @@ public:
    Controller(Model*, View*);
    Model* model();
    View* view();
+
    void inputPlayers();
    void assignCards();
+   void startRound();
+
    void shuffleCards(std::vector< std::shared_ptr<Card> > &);
 
 private:

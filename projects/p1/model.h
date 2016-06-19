@@ -13,12 +13,16 @@
 class Model {
 public:
     Model();
+    int startPlayer();
+    void setStartPlayer(int);
+
     void addPlayer(std::shared_ptr<Player>);
     void addPlayerCard(int, std::shared_ptr<Card>);
     void debug();
 
 private:
     std::vector< std::shared_ptr<Player> > players_;
+    int startPlayer_; // Index of player that starts the round (has 7S)
 }; // Model
 
 

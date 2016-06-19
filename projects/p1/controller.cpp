@@ -21,6 +21,7 @@ using namespace std;
 Controller::Controller(Model *m, View *v) : model_(m), view_(v) {
     inputPlayers();
     assignCards();
+    startRound();
 }
 
 /* Get functions */
@@ -72,10 +73,14 @@ void Controller::assignCards() {
     shuffleCards(cards);
 
     int cardsPerPlayer = NUM_CARDS / NUM_PLAYERS;
+    Card startingCard(SPADE, SEVEN);
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = cardsPerPlayer * i; j < cardsPerPlayer * (i+1); j++) {
             model()->addPlayerCard(i, cards.at(j));
+            if (*(cards.at(j)) == startingCard) {
+                model()->setStartPlayer(i);
+            }
         }
     }
 
@@ -94,4 +99,8 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
         cards[n] = cards[k];
         cards[k] = card;
     }
+}
+
+void Controller::startRound() {
+    // view()->startRound();
 }

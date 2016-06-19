@@ -12,6 +12,14 @@ using namespace std;
 
 Model::Model() {}
 
+int Model::startPlayer() {
+    return startPlayer_;
+}
+
+void Model::setStartPlayer(int startPlayer) {
+    startPlayer_ = startPlayer;
+}
+
 /**
  * Add player to our players array
  * @param Player* Pointer to player object
@@ -28,10 +36,12 @@ void Model::addPlayerCard(int playerNum, shared_ptr<Card> card) {
 }
 
 void Model::debug() {
-    cout << players_.size() << endl;
     for (int i = 0; i < 4; i++) {
+        cout << "Player " << i << "'s hand" << endl;
         for (int j = 0; j < 13; j++) {
             cout << i << " " << j << " " << *((players_.at(i)->getOriginalCards()).at(j)) << endl;
         }
     }
+
+    cout << startPlayer() << endl;
 }
