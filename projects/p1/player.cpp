@@ -1,6 +1,9 @@
 #include "player.h"
 #include <string>
 #include <cassert>
+#include <vector>
+#include <iostream>
+
 using namespace std;
 
 Player::Player() {}
@@ -43,7 +46,39 @@ int Player::getScore() const {
 //   }
 //   return legalPlays;
 // }
-
+//
+// // Discard card, need to convert a string into a card
+// void Player::discardCard(){
+//
+//   // for computer player
+//   // If a computer player has legal plays, he is not able to discard
+//   if(getLegalPlays().size() > 0){
+//     cout << "You have a legal play. You may not discard." << endl;
+//   }
+//   // If a computer player has no legal plays, he must discard his first card.
+//   else{
+//     discardedCards_.push_back(getCurrentCards().at(0));
+//     currentCards_.erase(0);
+//   }
+// }
+//
+// // FOR HUMAN: Discard card, need to convert a string into a card
+// void Player::discardCard(shared_ptr <Card> discardedCard){
+//   if(getLegalPlays().size() > 0){
+//     cout << "You have a legal play. You may not discard." << endl;
+//   }
+//   else{
+//     discardedCards_.push_back(discardedCard);
+//     int index = 0;
+//     for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != currentCards_.end(); ++it) {
+//       if((*it)->getSuit() == discardedCard->getSuit() && (*it)->getRank() == discardedCard->getRank()) {
+//         break;
+//       }
+//       index++;
+//     }
+//     currentCards_.erase(index);
+//   }
+// }
 
 
 
