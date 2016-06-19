@@ -74,9 +74,7 @@ Cards Model::getCardsOnTable() {
     Cards cards;
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < player(i)->getPlayedCards().size(); j++) {
-            cards.insert(cards.end(), player(i)->getPlayedCards().begin(), player(i)->getPlayedCards().end());
-        }
+        cards.insert(cards.end(), player(i)->getPlayedCards().begin(), player(i)->getPlayedCards().end());
     }
 
     return cards;
