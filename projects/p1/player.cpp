@@ -34,25 +34,26 @@ bool Player::checkEndGame() {
 
 /* Get functions */
 
-vector< shared_ptr<Card> > Player::getOriginalCards() const {
+const Cards& Player::getOriginalCards() const {
     return originalCards_;
 }
 
-vector< shared_ptr<Card> > Player::getCurrentCards() const {
+const Cards& Player::getCurrentCards() const {
     return currentCards_;
 }
 
-vector< shared_ptr<Card> > Player::getPlayedCards() const {
+const Cards& Player::getPlayedCards() const {
     return playedCards_;
 }
 
-vector< shared_ptr<Card> > Player::getDiscardedCards() const {
+const Cards& Player::getDiscardedCards() const {
     return discardedCards_;
 }
 
 int Player::getPreviousScore() const {
     return previousScore_;
 }
+
 int Player::getScore() const {
     return score_;
 }
@@ -94,22 +95,23 @@ int Player::cardInHand(Card card) {
     int index = 0;
     bool cardInHand = false;
 
-    for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != getCurrentCards().end(); ++it) {
-        if (**it == card) {
+    for (int i = 0; i < getCurrentCards().size(); i++) {
+        if (*getCurrentCards().at(i) == card) {
             cardInHand = true;
             break;
         }
         index++;
     }
-    if(!cardInHand){
+    if (!cardInHand) {
       index = -1;
     }
+
     return index;
 }
 
 void Player::playCard(Card card) {
     int index = cardInHand(card);
-    if(index >= 0){
+    if (index >= 0) {
         playedCards_.push_back(getCurrentCards().at(index));
         currentCards_.erase(getCurrentCards().begin() + index);
     } else {

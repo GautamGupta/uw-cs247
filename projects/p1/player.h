@@ -11,10 +11,10 @@ class Player {
 public:
     Player();
 
-    Cards getOriginalCards() const;
-    Cards getCurrentCards() const;
-    Cards getPlayedCards() const;
-    Cards getDiscardedCards() const;
+    const Cards& getOriginalCards() const;
+    const Cards& getCurrentCards() const;
+    const Cards& getPlayedCards() const;
+    const Cards& getDiscardedCards() const;
     int getScore() const;
     int getPreviousScore() const;
     int calculateScore() const;

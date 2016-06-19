@@ -220,11 +220,11 @@ void Controller::playComputer(int playerNum) {
 
     if (legalPlays.size() > 0) {
         model()->player(playerNum)->playCard(*legalPlays.at(0));
-        view()->displayPlayCard(playerNum + 1, *legalPlays.at(0));
+        view()->displayPlayCard(playerNum, *legalPlays.at(0));
     } else {
         // Discard first card
         Card card = *(model()->player(playerNum)->getCurrentCards().at(0));
         model()->player(playerNum)->discardCard(card);
-        view()->displayDiscardCard(playerNum + 1, card);
+        view()->displayDiscardCard(playerNum, card);
     }
 }
