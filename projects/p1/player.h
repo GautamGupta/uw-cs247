@@ -25,6 +25,7 @@ public:
 
     void addOriginalCard(std::shared_ptr<Card>);
     void startRound();
+    std::string endRound();
 
 private:
     Cards originalCards_;
