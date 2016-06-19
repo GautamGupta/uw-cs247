@@ -72,11 +72,10 @@ void Controller::assignCards() {
 
     shuffleCards(cards);
 
-    int cardsPerPlayer = NUM_CARDS / NUM_PLAYERS;
     Card startingCard(SPADE, SEVEN);
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = cardsPerPlayer * i; j < cardsPerPlayer * (i+1); j++) {
+        for (int j = CARDS_PER_PLAYER * i; j < CARDS_PER_PLAYER * (i+1); j++) {
             model()->addPlayerCard(i, cards.at(j));
             if (*(cards.at(j)) == startingCard) {
                 model()->setStartPlayer(i);
@@ -107,6 +106,13 @@ void Controller::startRound() {
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;
-        cout << playerNum << endl;
+        shared_ptr<Player> player = model()->player(playerNum);
+        cout << (playerNum+1) << " " << player->isHuman() << endl;
+
+        if (player->isHuman()) {
+            view()->displayCardsOnTable(model()->getCardsOnTable());
+            // view()->displayHand(player->getCurrentCards());
+            // view()->displayLegalPlays(player->getLegalPlays());
+        }
     }
 }

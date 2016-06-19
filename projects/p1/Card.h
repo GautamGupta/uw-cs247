@@ -1,8 +1,10 @@
 #ifndef _CARD_
 #define _CARD_
 
-#include <ostream>
 #include <istream>
+#include <ostream>
+#include <vector>
+#include <map>
 
 enum Suit { CLUB, DIAMOND, HEART, SPADE, SUIT_COUNT };
 enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
@@ -26,5 +28,8 @@ bool operator==(const Card &, const Card &);
 //output/input Card in the format <rank><suit>
 std::ostream &operator<<(std::ostream &, const Card &);
 std::istream &operator>>(std::istream &, Card &);
+
+typedef std::vector< std::shared_ptr< Card > > Cards;
+typedef std::map< Suit, Cards > SuitCards;
 
 #endif

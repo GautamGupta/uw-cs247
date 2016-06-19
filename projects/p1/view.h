@@ -5,15 +5,21 @@
 #ifndef ST_VIEW_H
 #define ST_VIEW_H
 
+#include "Card.h"
+#include <vector>
+
 class Model;
 
 class View {
 public:
-    View( Model* );
+    View(Model*);
 	virtual ~View();
     Model* model();
     char inputPlayer(int);
     void startRound(int);
+    void displayCardsOnTable(SuitCards);
+
+    void displayCards(std::vector<Rank>);
 
 private:
 	Model *model_;

@@ -17,7 +17,7 @@ public:
    void assignCards();
    void startRound();
 
-   void shuffleCards(std::vector< std::shared_ptr<Card> > &);
+   void shuffleCards(Cards &);
 
 private:
    Model *model_;

@@ -13,9 +13,11 @@
 class Model {
 public:
     Model();
+    std::shared_ptr<Player> player(int);
+    SuitCards getCardsOnTable();
     int startPlayer();
-    void setStartPlayer(int);
 
+    void setStartPlayer(int);
     void addPlayer(std::shared_ptr<Player>);
     void addPlayerCard(int, std::shared_ptr<Card>);
     void debug();
