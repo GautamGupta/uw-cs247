@@ -21,7 +21,7 @@ public:
     Cards getLegalPlays();
     virtual bool isHuman() = 0;
     virtual void playCard(Card*) = 0;
-    virtual void discardCard() = 0;
+    // virtual void discardCard() = 0;
     virtual void discardCard(Card*) = 0;
 
     void addOriginalCard(std::shared_ptr<Card>);
@@ -36,5 +36,7 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &, const Player &);
+
+typedef std::vector< std::shared_ptr<Player> > Players;
 
 #endif

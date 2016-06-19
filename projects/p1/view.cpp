@@ -60,6 +60,9 @@ void View::displayCardsOnTable(SuitCards suitCards) {
             case SPADE :
                 cout << "Spades: ";
                 break;
+
+            default :
+                break;
         }
 
         displayCards(ranks);

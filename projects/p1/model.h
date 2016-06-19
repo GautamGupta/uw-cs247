@@ -23,9 +23,8 @@ public:
     void debug();
 
 private:
-    std::vector< std::shared_ptr<Player> > players_;
+    Players players_;
     int startPlayer_; // Index of player that starts the round (has 7S)
 }; // Model
-
 
 #endif
