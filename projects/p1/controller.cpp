@@ -148,7 +148,12 @@ void Controller::playHuman(int playerNum) {
                 view()->errorPlayCard();
                 return playHuman(playerNum);
             } else {
-                // player->playCard()
+                try {
+                    model()->player(playerNum)->playCard(command.card);
+                } catch (Player::CardNotFoundException &e) {
+                    exit(EXIT_FAILURE);
+                }
+
                 view()->displayPlayCard(playerNum + 1, command.card);
             }
 

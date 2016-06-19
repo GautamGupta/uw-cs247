@@ -12,9 +12,8 @@ class Model;
 
 class View {
 public:
-    View(Model*);
-	virtual ~View();
-    Model* model();
+    View();
+	~View();
 
     char inputPlayer(int);
 
@@ -31,8 +30,6 @@ public:
     void displayCards(std::vector<Rank>);
     void displayCards(Cards);
 
-private:
-	Model *model_;
 }; // View
 
 #endif

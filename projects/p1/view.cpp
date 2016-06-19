@@ -13,13 +13,9 @@
 
 using namespace std;
 
-View::View(Model *m) : model_(m) {}
+View::View() {}
 
 View::~View() {}
-
-Model* View::model() {
-    return model_;
-}
 
 char View::inputPlayer(int playerNum) {
     char type;

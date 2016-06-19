@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	Model model;                            // Create model
-    View view(&model);                      // Create the view -- is passed handle model
+    View view;                              // Create the view
     Controller controller(&model, &view);   // Create controller -- is passed handle to view and model
 
 	return 0;
