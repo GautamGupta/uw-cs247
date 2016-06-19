@@ -17,6 +17,8 @@ Controller::Controller(Model *m, View *v) : model_(m), view_(v) {
     inputPlayers();
 }
 
+/* Get functions */
+
 Model* Controller::model() {
     return model_;
 }
@@ -50,4 +52,3 @@ void Controller::inputPlayers() {
         model()->addPlayer(player);
     }
 }
-

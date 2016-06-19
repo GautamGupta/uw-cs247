@@ -13,8 +13,6 @@
 
 using namespace std;
 
-int seed = 0;
-
 void shuffle(vector<Card*> cards_) {
     static mt19937 rng(seed);
 
