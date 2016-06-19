@@ -111,7 +111,7 @@ void Controller::startRound() {
 
         if (player->isHuman()) {
             view()->displayCardsOnTable(model()->getCardsOnTable());
-            // view()->displayHand(player->getCurrentCards());
+            view()->displayHand(player->getCurrentCards());
             // view()->displayLegalPlays(player->getLegalPlays());
         }
     }

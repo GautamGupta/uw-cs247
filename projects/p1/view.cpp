@@ -69,9 +69,23 @@ void View::displayCardsOnTable(SuitCards suitCards) {
     }
 }
 
+void View::displayHand(Cards cards) {
+    cout << "Your hand: ";
+
+    displayCards(cards);
+}
+
 void View::displayCards(vector<Rank> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
         cout << ranks.at(i) << " ";
+    }
+
+    cout << endl;
+}
+
+void View::displayCards(Cards cards) {
+    for (int i = 0; i < cards.size(); i++) {
+        cout << *cards.at(i) << " ";
     }
 
     cout << endl;
