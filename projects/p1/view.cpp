@@ -13,13 +13,9 @@
 
 using namespace std;
 
-View::View(Model *m) : model_(m) {}
+View::View() {}
 
 View::~View() {}
-
-Model* View::model() {
-    return model_;
-}
 
 char View::inputPlayer(int playerNum) {
     char type;
@@ -90,6 +86,26 @@ void View::displayHand(Cards cards) {
 void View::displayLegalPlays(Cards cards) {
     cout << "Legal plays: ";
     displayCards(cards);
+}
+
+void View::displayPlayCard(int playerNum, Card card) {
+    cout << "Player " << (playerNum + 1) << " plays " << card << "." << endl;
+}
+
+void View::errorPlayCard() {
+    cout << "This is not a legal play." << endl;
+}
+
+void View::displayDiscardCard(int playerNum, Card card) {
+    cout << "Player " << (playerNum + 1) << " discards " << card << "." << endl;
+}
+
+void View::errorDiscardCard() {
+    cout << "You have a legal play. You may not discard." << endl;
+}
+
+void View::displayRageQuit(int playerNum) {
+    cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
 }
 
 void View::displayCards(vector<Rank> ranks) {

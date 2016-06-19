@@ -21,14 +21,16 @@ public:
 
     Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
-    virtual void playCard(Card*) = 0;
-    virtual void discardCard(Cards, std::shared_ptr<Card>) = 0;
 
-    void addOriginalCard(std::shared_ptr<Card>);
+    void addCard(std::shared_ptr<Card>);
     void startRound();
     void endRound();
     bool checkEndGame();
 
+    void playCard(Card);
+    void discardCard(Card);
+
+    class CardNotFoundException{};
 
 private:
     Cards originalCards_;

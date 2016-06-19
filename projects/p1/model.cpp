@@ -124,7 +124,7 @@ void Model::addPlayer(shared_ptr<Player> player) {
  * Add card to player
  */
 void Model::addPlayerCard(int playerNum, shared_ptr<Card> card) {
-    player(playerNum)->addOriginalCard(card);
+    player(playerNum)->addCard(card);
 }
 
 void Model::debug() {
