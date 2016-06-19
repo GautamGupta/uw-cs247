@@ -25,6 +25,7 @@ public:
     virtual void discardCard(Card*) = 0;
 
     void addOriginalCard(std::shared_ptr<Card>);
+    void startRound();
 
 private:
     Cards originalCards_;

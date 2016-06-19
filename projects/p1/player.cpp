@@ -6,7 +6,16 @@
 
 using namespace std;
 
-Player::Player() {}
+Player::Player() : score_(0), previousScore_(0) {}
+
+void Player::startRound() {
+    previousScore_ += score_;
+    score_ = 0;
+    originalCards_.clear();
+    currentCards_.clear();
+    playedCards_.clear();
+    discardedCards_.clear();
+}
 
 /* Get functions */
 
@@ -41,7 +50,6 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
         // If card in hand has same suit and is +/- 1 rank of a played card, then it is legal. It is also legal if card is a 7
         if (getCurrentCards().at(i)->getRank() == SEVEN) {
             isLegalPlay = true;
-            cout << 1;
         } else {
             for (int j = 0; j < cardsOnTable.size(); j++) {
                 if (cardsOnTable.at(j)->getSuit() == getCurrentCards().at(i)->getSuit()

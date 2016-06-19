@@ -13,16 +13,20 @@
 
 using namespace std;
 
-Model::Model() : players_(NULL), startPlayer_(0) {}
+Model::Model() : startPlayer_(-1) {}
 
 shared_ptr<Player> Model::player(int i) {
     return players_.at(i);
 }
 
+void Model::startRound() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        player(i)->startRound();
+    }
+}
+
 Cards Model::getCardsOnTable() {
     Cards cards;
-    shared_ptr<Card> card(new Card(CLUB, EIGHT));
-    cards.push_back(card);
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = 0; j < player(i)->getPlayedCards().size(); j++) {

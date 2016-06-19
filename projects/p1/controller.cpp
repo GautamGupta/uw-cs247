@@ -20,7 +20,6 @@ using namespace std;
 
 Controller::Controller(Model *m, View *v) : model_(m), view_(v) {
     inputPlayers();
-    assignCards();
     startRound();
 }
 
@@ -101,6 +100,9 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
 }
 
 void Controller::startRound() {
+    model()->startRound();
+    assignCards();
+
     int startPlayer = model()->startPlayer();
     view()->startRound(startPlayer + 1); // index + 1
 

@@ -21,6 +21,7 @@ public:
     void setStartPlayer(int);
     void addPlayer(std::shared_ptr<Player>);
     void addPlayerCard(int, std::shared_ptr<Card>);
+    void startRound();
     void debug();
 
 private:
