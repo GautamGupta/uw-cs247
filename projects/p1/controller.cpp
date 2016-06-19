@@ -8,6 +8,8 @@
 #include "model.h"
 #include "view.h"
 #include "player.h"
+#include "computerplayer.h"
+#include "humanplayer.h"
 #include <string>
 #include <cassert>
 
@@ -36,19 +38,25 @@ void Controller::inputPlayers() {
         PlayerType playerType = (PlayerType) types.find(type);
         assert(playerType != string::npos);
 
-        shared_ptr<Player> player(new Player());
+        // shared_ptr<Player> player;
 
-        /* switch (playerType) {
-            case HUMAN:
-                player = new Player();
+        switch (playerType) {
+            case HUMAN: {
+                // player = new HumanPlayer();
+                shared_ptr<Player> humanPlayer(new HumanPlayer());
+                model()->addPlayer(humanPlayer);
                 break;
+            }
 
-            case COMPUTER:
-                player = new Player();
+            case COMPUTER: {
+                // player = new ComputerPlayer();
+                shared_ptr<Player> computerPlayer(new ComputerPlayer());
+                model()->addPlayer(computerPlayer);
                 break;
+            }
 
-        } */
+        }
 
-        model()->addPlayer(player);
+        // model()->addPlayer(player);
     }
 }

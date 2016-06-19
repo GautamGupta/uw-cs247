@@ -5,6 +5,18 @@ using namespace std;
 
 Player::Player() {}
 
+vector< shared_ptr<Card> > Player::getOriginalCards() const {
+    return originalCards_;
+}
+
+vector< shared_ptr<Card> > Player::getCurrentCards() const {
+    return currentCards_;
+}
+
+vector< shared_ptr<Card> > Player::getDiscardedCards() const {
+    return discardedCards_;
+}
+
 int Player::getScore() const {
     return score_;
 }
