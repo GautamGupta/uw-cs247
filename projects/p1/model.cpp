@@ -51,7 +51,7 @@ bool Model::isGameOver() {
 int Model::lowestScore() {
     int lowestScore = player(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
-        if (player(i)-> calculateScore() < lowestScore) {
+        if (player(i)->calculateScore() < lowestScore) {
             lowestScore = player(i) ->calculateScore();
         }
     }
@@ -63,7 +63,7 @@ Cards Model::getDeck() {
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = 0; j < player(i)->getOriginalCards().size(); j++) {
-            cards.insert(cards.end(), player(i)->getOriginalCards().begin(), player(i)->getPlayedCards().end());
+            cards.push_back(player(i)->getOriginalCards().at(j));
         }
     }
 
