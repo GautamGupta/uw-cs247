@@ -21,6 +21,10 @@ int Player::getScore() const {
     return score_;
 }
 
+void Player::addOriginalCard(shared_ptr<Card> card) {
+    originalCards_.push_back(card);
+}
+
 ostream &operator<<(ostream &out, const Player &p) {
     out << p.getScore();
 

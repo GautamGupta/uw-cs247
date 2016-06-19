@@ -62,14 +62,24 @@ void Controller::inputPlayers() {
 void Controller::assignCards() {
     vector< shared_ptr<Card> > cards;
 
-    for (int suit = CLUB; suit != SPADE; suit++) {
-        for (int rank = ACE; rank != KING; rank++) {
+    for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
+        for (int rank = ACE; rank < RANK_COUNT; rank++) {
             shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
             cards.push_back(card);
         }
     }
 
     shuffleCards(cards);
+
+    int cardsPerPlayer = NUM_CARDS / NUM_PLAYERS;
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        for (int j = cardsPerPlayer * i; j < cardsPerPlayer * (i+1); j++) {
+            model()->addPlayerCard(i, cards.at(j));
+        }
+    }
+
+    model()->debug();
 }
 
 void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {

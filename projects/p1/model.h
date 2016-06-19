@@ -14,6 +14,8 @@ class Model {
 public:
     Model();
     void addPlayer(std::shared_ptr<Player>);
+    void addPlayerCard(int, std::shared_ptr<Card>);
+    void debug();
 
 private:
     std::vector< std::shared_ptr<Player> > players_;

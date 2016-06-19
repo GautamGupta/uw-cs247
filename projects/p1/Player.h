@@ -22,6 +22,8 @@ public:
     virtual void playCard(Card*) = 0;
     virtual void discardCard(Card*) = 0;
 
+    void addOriginalCard(std::shared_ptr<Card>);
+
 private:
     std::vector< std::shared_ptr<Card> > originalCards_;
     std::vector< std::shared_ptr<Card> > currentCards_;
