@@ -7,7 +7,6 @@
 #include "model.h"
 #include "card.h"
 #include "player.h"
-#include <iostream>
 #include <vector>
 #include <map>
 
@@ -116,6 +115,16 @@ void Model::setStartPlayer(int startPlayer) {
  */
 void Model::addPlayer(shared_ptr<Player> player) {
     players_.push_back(player);
+}
+
+
+/**
+ * Replace player to our players array
+ * @param int Index to replace
+ * @param Player* Pointer to player object
+ */
+void Model::replacePlayer(int playerNum, shared_ptr<Player> player) {
+    players_[playerNum] = player;
 }
 
 /**

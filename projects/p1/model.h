@@ -23,12 +23,12 @@ public:
 
     void setStartPlayer(int);
     void addPlayer(std::shared_ptr<Player>);
+    void replacePlayer(int, std::shared_ptr<Player>);
     void addPlayerCard(int, std::shared_ptr<Card>);
     void startRound();
     void endRound();
     bool isGameOver();
     int lowestScore();
-    void debug();
 
 private:
     Players players_;

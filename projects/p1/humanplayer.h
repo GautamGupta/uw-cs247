@@ -9,7 +9,6 @@ public:
     HumanPlayer();
 
     bool isHuman();
-    void playCard(Card);
 };
 
 #endif

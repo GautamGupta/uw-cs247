@@ -7,9 +7,9 @@
 class ComputerPlayer : public Player {
 public:
     ComputerPlayer();
+    ComputerPlayer(const Player&);
 
     bool isHuman();
-    void playCard(Card);
 };
 
 #endif

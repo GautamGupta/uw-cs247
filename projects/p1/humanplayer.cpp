@@ -8,7 +8,3 @@ HumanPlayer::HumanPlayer() : Player() {}
 bool HumanPlayer::isHuman() {
     return true;
 }
-
-void HumanPlayer::playCard(Card card) {
-
-}

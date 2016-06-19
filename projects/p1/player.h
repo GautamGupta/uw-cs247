@@ -33,7 +33,7 @@ public:
 
     class CardNotFoundException{};
 
-private:
+protected:
     Cards originalCards_;
     Cards currentCards_;
     Cards playedCards_;

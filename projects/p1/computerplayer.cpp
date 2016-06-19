@@ -4,10 +4,15 @@ using namespace std;
 
 ComputerPlayer::ComputerPlayer() : Player() {}
 
-bool ComputerPlayer::isHuman() {
-    return false;
+ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
+    previousScore_  = player.getPreviousScore();
+    score_          = player.getScore();
+    originalCards_  = player.getOriginalCards();
+    currentCards_   = player.getCurrentCards();
+    playedCards_    = player.getPlayedCards();
+    discardedCards_ = player.getDiscardedCards();
 }
 
-void ComputerPlayer::playCard(Card card) {
-
+bool ComputerPlayer::isHuman() {
+    return false;
 }

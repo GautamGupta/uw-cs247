@@ -108,7 +108,6 @@ void Controller::startRound() {
 
     for (int i = 0; i < NUM_CARDS; i++) {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;
-        cout << i << " t " << playerNum << endl;
 
         if (model()->player(playerNum)->isHuman()) {
             view()->displayCardsOnTable(model()->getSuitCardsOnTable());
@@ -201,9 +200,13 @@ void Controller::playHuman(int playerNum) {
         case QUIT :
             return exit(EXIT_SUCCESS);
 
-        case RAGEQUIT :
+        case RAGEQUIT : {
+            shared_ptr<Player> computerPlayer(new ComputerPlayer(*model()->player(playerNum)));
+            model()->replacePlayer(playerNum, computerPlayer);
+
             view()->displayRageQuit(playerNum);
             return playComputer(playerNum);
+        }
 
         default :
             return exit(EXIT_FAILURE);
