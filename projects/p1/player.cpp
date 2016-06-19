@@ -89,11 +89,11 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     return legalPlays;
 }
 
-void Player::playCard(Card card) {
+// Checks if a card is in the player's hand. If found it will return the index, if not it will return -1
+int Player::cardInHand(Card card) {
     int index = 0;
     bool cardInHand = false;
 
-    // Need to check if card is actually in current hand
     for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != getCurrentCards().end(); ++it) {
         if (**it == card) {
             cardInHand = true;
@@ -101,29 +101,25 @@ void Player::playCard(Card card) {
         }
         index++;
     }
+    if(!cardInHand){
+      index = -1;
+    }
+    return index;
+}
 
-    if (cardInHand) {
+void Player::playCard(Card card) {
+    int index = cardInHand(card);
+    if(index >= 0){
         playedCards_.push_back(getCurrentCards().at(index));
-        currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
+        currentCards_.erase(getCurrentCards().begin() + index);
     } else {
         throw CardNotFoundException();
     }
 }
 
 void Player::discardCard(Card card) {
-    int index = 0;
-    bool cardInHand = false;
-
-    // Need to check if card is actually in current hand
-    for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != getCurrentCards().end(); ++it) {
-        if (**it == card) {
-            cardInHand = true;
-            break;
-        }
-        index++;
-    }
-
-    if (cardInHand) {
+    int index = cardInHand(card);
+    if (index >= 0) {
         discardedCards_.push_back(getCurrentCards().at(index));
         currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
     } else {
