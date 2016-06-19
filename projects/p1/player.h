@@ -25,7 +25,7 @@ public:
     void addCard(std::shared_ptr<Card>);
     void startRound();
     void endRound();
-    bool checkEndGame();
+    bool checkEndGame() const;
 
     int cardInHand(Card card);
     void playCard(Card);

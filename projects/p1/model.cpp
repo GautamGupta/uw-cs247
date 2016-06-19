@@ -39,14 +39,13 @@ void Model::endRound() {
     }
 }
 
-bool Model::checkVictory() {
-    bool victory = false;
+bool Model::isGameOver() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-      if(player(i)->checkEndGame()){
-        victory = true;
-      }
+        if (player(i)->checkEndGame()) {
+            return true;
+        }
     }
-    return victory;
+    return false;
 }
 
 int Model::lowestScore() {
@@ -124,15 +123,4 @@ void Model::addPlayer(shared_ptr<Player> player) {
  */
 void Model::addPlayerCard(int playerNum, shared_ptr<Card> card) {
     player(playerNum)->addCard(card);
-}
-
-void Model::debug() {
-    for (int i = 0; i < 4; i++) {
-        cout << "Player " << i << "'s hand" << endl;
-        for (int j = 0; j < 13; j++) {
-            cout << i << " " << j << " " << *((player(i)->getOriginalCards()).at(j)) << endl;
-        }
-    }
-
-    cout << startPlayer() << endl;
 }

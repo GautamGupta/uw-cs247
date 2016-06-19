@@ -83,8 +83,6 @@ void Controller::assignCards() {
             }
         }
     }
-
-    model()->debug();
 }
 
 void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
@@ -121,23 +119,26 @@ void Controller::startRound() {
             playComputer(playerNum);
         }
     }
+
+    endRound();
 }
 
 void Controller::endRound() {
     model()->endRound();
+
     for (int i = 0; i < NUM_PLAYERS; i++) {
         view()->endRound(i, *model()->player(i));
     }
-    if(model()->checkVictory()){
+
+    if (model()->isGameOver()) {
         int lowestScore = model()->lowestScore();
         for (int i = 0; i < NUM_PLAYERS; i++) {
-          if(model()->player(i)->calculateScore() == lowestScore){
-            view()->displayVictory(i);
-          }
+            if (model()->player(i)->calculateScore() == lowestScore) {
+                view()->displayVictory(i);
+            }
         }
-    }
-    else {
-      startRound();
+    } else {
+        startRound();
     }
 }
 
@@ -218,11 +219,13 @@ void Controller::playHuman(int playerNum) {
 void Controller::playComputer(int playerNum) {
     Cards legalPlays = model()->getLegalPlays(playerNum);
 
+    // Play first card
     if (legalPlays.size() > 0) {
         model()->player(playerNum)->playCard(*legalPlays.at(0));
         view()->displayPlayCard(playerNum, *legalPlays.at(0));
+
+    // Discard first card
     } else {
-        // Discard first card
         Card card = *(model()->player(playerNum)->getCurrentCards().at(0));
         model()->player(playerNum)->discardCard(card);
         view()->displayDiscardCard(playerNum, card);

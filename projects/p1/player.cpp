@@ -1,3 +1,4 @@
+#include "main.h"
 #include "player.h"
 #include <string>
 #include <cassert>
@@ -7,32 +8,6 @@
 using namespace std;
 
 Player::Player() : score_(0), previousScore_(0) {}
-
-void Player::startRound() {
-    previousScore_ += score_;
-    score_ = 0;
-    originalCards_.clear();
-    currentCards_.clear();
-    playedCards_.clear();
-    discardedCards_.clear();
-}
-
-void Player::endRound() {
-    int score = 0;
-    for (int i = 0; i < getDiscardedCards().size(); i++) {
-      score += getDiscardedCards().at(i)->getRank();
-    }
-    score_ = score;
-}
-
-bool Player::checkEndGame() {
-    if(calculateScore() >= 80){
-      return true;
-    }
-    return false;
-}
-
-/* Get functions */
 
 const Cards& Player::getOriginalCards() const {
     return originalCards_;
@@ -56,10 +31,6 @@ int Player::getPreviousScore() const {
 
 int Player::getScore() const {
     return score_;
-}
-
-int Player::calculateScore() const {
-    return previousScore_ + score_;
 }
 
 // Get legal plays
@@ -134,8 +105,27 @@ void Player::addCard(shared_ptr<Card> card) {
     currentCards_.push_back(card);
 }
 
-ostream &operator<<(ostream &out, const Player &p) {
-    out << p.getScore();
+void Player::startRound() {
+    previousScore_ += score_;
+    score_ = 0;
+    originalCards_.clear();
+    currentCards_.clear();
+    playedCards_.clear();
+    discardedCards_.clear();
+}
 
-    return out;
+void Player::endRound() {
+    int score = 0;
+    for (int i = 0; i < getDiscardedCards().size(); i++) {
+        score += getDiscardedCards().at(i)->getRank() + 1; // index+1
+    }
+    score_ = score;
+}
+
+bool Player::checkEndGame() const {
+    return (calculateScore() >= NUM_POINTS);
+}
+
+int Player::calculateScore() const {
+    return previousScore_ + score_;
 }

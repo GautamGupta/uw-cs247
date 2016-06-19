@@ -32,11 +32,12 @@ void View::startRound(int playerNum) {
 }
 
 void View::endRound(int playerNum, Player player) {
-    cout << "Player " << (playerNum + 1) << "'s discards:";
+    cout << "Player " << (playerNum + 1) << "'s discards: ";
     displayCards(player.getDiscardedCards());
-    cout << endl;
 
-    cout << "Player " << (playerNum + 1) << "'s score: " << player.getPreviousScore() << " + " << player.getScore() << " = " <<  player.getPreviousScore() + player.getScore() << endl;
+    cout << "Player " << (playerNum + 1) << "'s score: "
+        << player.getPreviousScore() << " + " << player.getScore()
+        << " = " << (player.getPreviousScore() + player.getScore()) << endl;
 }
 
 void View::displayDiscards(Cards cards) {

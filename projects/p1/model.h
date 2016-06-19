@@ -26,7 +26,7 @@ public:
     void addPlayerCard(int, std::shared_ptr<Card>);
     void startRound();
     void endRound();
-    bool checkVictory();
+    bool isGameOver();
     int lowestScore();
     void debug();
 
