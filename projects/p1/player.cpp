@@ -67,54 +67,49 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     return legalPlays;
 }
 
-// // Discard card, need to convert a string into a card
-// void Player::discardCard(){
-//
-//   // for computer player
-//   // If a computer player has legal plays, he is not able to discard
-//   if(getLegalPlays().size() > 0){
-//     cout << "You have a legal play. You may not discard." << endl;
-//   }
-//   // If a computer player has no legal plays, he must discard his first card.
-//   else{
-//     discardedCards_.push_back(getCurrentCards().at(0));
-//     currentCards_.erase(0);
-//   }
-// }
-//
-// FOR HUMAN: Discard card, need to convert a string into a card
-// void Player::discardCard(Cards cardsOnTable, shared_ptr <Card> discardedCard){
-//   if(getLegalPlays(cardsOnTable).size() > 0){
-//     cout << "You have a legal play. You may not discard." << endl;
-//   }
-//   else {
-//     discardedCards_.push_back(discardedCard);
-//     int index = 0;
-//     bool cardInHand = false;
-//
-//     // Find index of discardedCard
-//     // Need to check if discardedCard is actually in current hand
-//     for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != currentCards_.end(); ++it) {
-//       if((*it)->getSuit() == discardedCard->getSuit() && (*it)->getRank() == discardedCard->getRank()) {
-//         cardInHand = true;
-//         break;
-//       }
-//       index++;
-//     }
-//
-//     if(cardInHand){
-//       currentCards_.erase(currentCards_.begin() + index); // Removes the card in hand
-//     }
-//     else {
-//       cout << "CANNOT DISCARD A CARD NOT IN YOUR HAND" << endl;
-//     }
-//   }
-// }
+void Player::playCard(Card card) {
+    int index = 0;
+    bool cardInHand = false;
 
+    // Need to check if card is actually in current hand
+    for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != getCurrentCards().end(); ++it) {
+        if (**it == card) {
+            cardInHand = true;
+            break;
+        }
+        index++;
+    }
 
+    if (cardInHand) {
+        playedCards_.push_back(getCurrentCards().at(index));
+        currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
+    } else {
+        throw CardNotFoundException();
+    }
+}
 
+void Player::discardCard(Card card) {
+    int index = 0;
+    bool cardInHand = false;
 
-void Player::addOriginalCard(shared_ptr<Card> card) {
+    // Need to check if card is actually in current hand
+    for(vector<shared_ptr<Card> >::iterator it = getCurrentCards().begin(); it != getCurrentCards().end(); ++it) {
+        if (**it == card) {
+            cardInHand = true;
+            break;
+        }
+        index++;
+    }
+
+    if (cardInHand) {
+        discardedCards_.push_back(getCurrentCards().at(index));
+        currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
+    } else {
+        throw CardNotFoundException();
+    }
+}
+
+void Player::addCard(shared_ptr<Card> card) {
     originalCards_.push_back(card);
     currentCards_.push_back(card);
 }

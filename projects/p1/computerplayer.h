@@ -9,8 +9,7 @@ public:
     ComputerPlayer();
 
     bool isHuman();
-    void playCard(Card*);
-    void discardCard(Cards, std::shared_ptr<Card>);
+    void playCard(Card);
 };
 
 #endif

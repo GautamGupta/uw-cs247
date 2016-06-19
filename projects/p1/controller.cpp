@@ -118,7 +118,7 @@ void Controller::startRound() {
             view()->displayLegalPlays(model()->getLegalPlays(playerNum));
             playHuman(playerNum);
         } else {
-            // playComputer(playerNum);
+            playComputer(playerNum);
         }
     }
 }
@@ -126,7 +126,7 @@ void Controller::startRound() {
 /**
  * Human's turn to play. Get input and perform the play
  *
- * @param player Player index
+ * @param playerNum Player index
  */
 void Controller::playHuman(int playerNum) {
     Cards legalPlays = model()->getLegalPlays(playerNum);
@@ -145,20 +145,28 @@ void Controller::playHuman(int playerNum) {
             }
 
             if (!canPlay) {
-                // view()->errorNotLegalPlay();
+                view()->errorPlayCard();
                 return playHuman(playerNum);
             } else {
                 // player->playCard()
-                // view()->playCard(playerNum + 1, command.card);
+                view()->displayPlayCard(playerNum + 1, command.card);
             }
 
             break;
         }
 
         case DISCARD : {
-            // try {
-            //     model()->discardCard(command.card);
-            // }
+            if (legalPlays.size() > 0) {
+                view()->errorDiscardCard();
+                return playHuman(playerNum);
+            }
+
+            try {
+                model()->player(playerNum)->discardCard(command.card);
+            } catch (Player::CardNotFoundException &e) {
+                exit(EXIT_FAILURE);
+            }
+
             break;
         }
 
@@ -171,11 +179,29 @@ void Controller::playHuman(int playerNum) {
 
         case RAGEQUIT :
             view()->displayRageQuit(playerNum);
-            return;// playComputer(playerNum);
+            return playComputer(playerNum);
 
         default :
-            // TODO exception
-            break;
+            return exit(EXIT_FAILURE);
     }
 
+}
+
+/**
+ * Computer's turn to play. Play if there are legal plays else discard
+ *
+ * @param playerNum Player index
+ */
+void Controller::playComputer(int playerNum) {
+    Cards legalPlays = model()->getLegalPlays(playerNum);
+
+    if (legalPlays.size() > 0) {
+        model()->player(playerNum)->playCard(*legalPlays.at(0));
+        view()->displayPlayCard(playerNum + 1, *legalPlays.at(0));
+    } else {
+        // Discard first card
+        Card card = *(model()->player(playerNum)->getCurrentCards().at(0));
+        model()->player(playerNum)->discardCard(card);
+        view()->displayDiscardCard(playerNum + 1, card);
+    }
 }

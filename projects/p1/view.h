@@ -22,6 +22,10 @@ public:
     void displayCardsOnTable(SuitCards);
     void displayHand(Cards);
     void displayLegalPlays(Cards);
+    void displayPlayCard(int, Card);
+    void errorPlayCard();
+    void displayDiscardCard(int, Card);
+    void errorDiscardCard();
     void displayRageQuit(int);
 
     void displayCards(std::vector<Rank>);
