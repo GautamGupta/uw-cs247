@@ -11,6 +11,7 @@
 #include "computerplayer.h"
 #include "humanplayer.h"
 #include "card.h"
+#include "command.h"
 #include <string>
 #include <cassert>
 #include <iostream>
@@ -106,9 +107,10 @@ void Controller::startRound() {
     int startPlayer = model()->startPlayer();
     view()->startRound(startPlayer + 1); // index + 1
 
-    for (int i = 0; i < NUM_PLAYERS; i++) {
+    for (int i = 0; i < NUM_CARDS; i++) {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;
         shared_ptr<Player> player = model()->player(playerNum);
+        cout << i << " t " << playerNum << endl;
         cout << (playerNum+1) << " " << player->isHuman() << endl;
 
         if (player->isHuman()) {
