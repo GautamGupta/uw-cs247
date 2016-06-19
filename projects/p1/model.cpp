@@ -46,6 +46,7 @@ bool Model::checkVictory() {
         victory = true;
       }
     }
+    return victory;
 }
 
 int Model::lowestScore() {

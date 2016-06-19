@@ -27,7 +27,7 @@ public:
     void endRound();
     bool checkEndGame();
 
-    int Player::cardInHand(Card card) {
+    int cardInHand(Card card);
     void playCard(Card);
     void discardCard(Card);
 
