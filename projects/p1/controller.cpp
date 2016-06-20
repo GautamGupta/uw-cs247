@@ -63,13 +63,15 @@ void Controller::inputPlayers() {
 
 void Controller::assignCards() {
     vector< shared_ptr<Card> > cards;
-
+    cards = model()->getDeck();
+    if(cards.size()==0){
     for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
         for (int rank = ACE; rank < RANK_COUNT; rank++) {
             shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
             cards.push_back(card);
         }
     }
+  }
 
     shuffleCards(cards);
 
