@@ -35,7 +35,7 @@ char View::inputPlayer(int playerNum) {
  * Start a new round
  */
 void View::startRound(int playerNum) {
-    cout << "A new round begins. It’s player " << (playerNum + 1) << "'s turn to play." << endl;
+    cout << "A new round begins. It's player " << (playerNum + 1) << "'s turn to play." << endl;
 }
 
 /**
