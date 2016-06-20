@@ -30,7 +30,7 @@ public:
     void errorDiscardCard();
     void displayRageQuit(int);
 
-    void displayCards(std::vector<Rank>);
+    void displayCards(std::vector<int>);
     void displayCards(Cards);
 
     void displayVictory(int);

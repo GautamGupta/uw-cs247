@@ -19,6 +19,9 @@ public:
 	Suit getSuit() const;
 	Rank getRank() const;
 
+    static std::string getDisplaySuit(int);
+    static std::string getDisplayRank(int);
+
 private:
 	Suit suit_;
 	Rank rank_;

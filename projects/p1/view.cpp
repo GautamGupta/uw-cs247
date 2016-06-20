@@ -50,10 +50,10 @@ void View::displayCardsOnTable(SuitCards suitCards) {
     // Order matters
     for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
         Suit suit = static_cast<Suit>(suitNum);
-        vector<Rank> ranks;
+        vector<int> ranks;
 
         for (int i = 0; i < suitCards[suit].size(); i++) {
-            ranks.push_back(suitCards[suit].at(i)->getRank());
+            ranks.push_back((int) suitCards[suit].at(i)->getRank()); // Ace is 0
         }
         sort(ranks.begin(), ranks.end());
 
@@ -109,9 +109,9 @@ void View::displayRageQuit(int playerNum) {
     cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
 }
 
-void View::displayCards(vector<Rank> ranks) {
+void View::displayCards(vector<int> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
-        cout << ranks.at(i) + 1 << " ";
+        cout << Card::getDisplayRank(ranks.at(i)) << " ";
     }
 
     cout << endl;
