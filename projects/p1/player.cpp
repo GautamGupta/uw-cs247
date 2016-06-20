@@ -37,13 +37,18 @@ int Player::getScore() const {
 // Get legal plays
 vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     Cards legalPlays;
+    Card firstCard = Card(SPADE, SEVEN);
 
     // Outer loop: current cards in hand
     for (int i = 0; i < getCurrentCards().size(); i++) {
         bool isLegalPlay = false;
 
         // If card in hand has same suit and is +/- 1 rank of a played card, then it is legal. It is also legal if card is a 7
-        if (getCurrentCards().at(i)->getRank() == SEVEN) {
+        if (*getCurrentCards().at(i) == firstCard) {
+            legalPlays.clear();
+            legalPlays.push_back(getCurrentCards().at(i));
+            return legalPlays;
+        } else if (getCurrentCards().at(i)->getRank() == SEVEN) {
             isLegalPlay = true;
         } else {
             for (int j = 0; j < cardsOnTable.size(); j++) {
