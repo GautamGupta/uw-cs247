@@ -11,6 +11,7 @@ enum PlayerType { HUMAN, COMPUTER };
 class Player {
 public:
     Player();
+    virtual ~Player();
 
     const Cards& getOriginalCards() const;
     const Cards& getCurrentCards() const;

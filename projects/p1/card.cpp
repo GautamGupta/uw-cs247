@@ -8,6 +8,8 @@ Card::Card(Suit s, Rank r) {
 	rank_ = r;
 }
 
+Card::~Card() {}
+
 Suit Card::getSuit() const {
 	return suit_;
 }

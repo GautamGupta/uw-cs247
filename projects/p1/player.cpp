@@ -10,6 +10,8 @@ using namespace std;
 
 Player::Player() : score_(0), previousScore_(0) {}
 
+Player::~Player() {}
+
 const Cards& Player::getOriginalCards() const {
     return originalCards_;
 }

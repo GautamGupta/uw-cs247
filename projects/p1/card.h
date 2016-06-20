@@ -16,6 +16,8 @@ class Card {
 
 public:
 	Card(Suit, Rank);
+    virtual ~Card();
+
 	Suit getSuit() const;
 	Rank getRank() const;
 

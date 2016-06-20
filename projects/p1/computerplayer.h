@@ -7,6 +7,7 @@
 class ComputerPlayer : public Player {
 public:
     ComputerPlayer();
+    virtual ~ComputerPlayer();
     ComputerPlayer(const Player&);
 
     bool isHuman();

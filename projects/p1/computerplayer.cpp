@@ -4,6 +4,8 @@ using namespace std;
 
 ComputerPlayer::ComputerPlayer() : Player() {}
 
+ComputerPlayer::~ComputerPlayer() {}
+
 ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
     previousScore_  = player.getPreviousScore();
     score_          = player.getScore();
