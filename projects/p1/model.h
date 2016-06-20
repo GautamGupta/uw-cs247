@@ -8,6 +8,7 @@
 
 #include "card.h"
 #include "player.h"
+#include <memory>
 #include <vector>
 
 class Model {

@@ -3,6 +3,7 @@
 
 #include "Card.h"
 #include <ostream>
+#include <memory>
 #include <vector>
 
 enum PlayerType { HUMAN, COMPUTER };
