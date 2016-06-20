@@ -19,7 +19,7 @@ public:
     char inputPlayer(int);
 
     void startRound(int);
-    void endRound(int, Player);
+    void endRound(int, Player &);
     void displayDiscards(Cards);
     void displayCardsOnTable(SuitCards);
     void displayHand(Cards);

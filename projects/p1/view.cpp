@@ -31,7 +31,7 @@ void View::startRound(int playerNum) {
     cout << "A new round begins. It’s player " << (playerNum + 1) << "'s turn to play." << endl;
 }
 
-void View::endRound(int playerNum, Player player) {
+void View::endRound(int playerNum, Player &player) {
     cout << "Player " << (playerNum + 1) << "'s discards: ";
     displayCards(player.getDiscardedCards());
 
