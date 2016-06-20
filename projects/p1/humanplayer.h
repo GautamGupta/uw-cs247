@@ -2,7 +2,7 @@
 #define _HUMANPLAYER_
 
 #include "player.h"
-#include "Card.h"
+#include "card.h"
 
 class HumanPlayer : public Player {
 public:

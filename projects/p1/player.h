@@ -1,7 +1,7 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 
-#include "Card.h"
+#include "card.h"
 #include <ostream>
 #include <memory>
 #include <vector>

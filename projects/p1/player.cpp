@@ -1,9 +1,10 @@
 #include "main.h"
 #include "player.h"
+#include <iostream>
 #include <string>
 #include <cassert>
 #include <vector>
-#include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
