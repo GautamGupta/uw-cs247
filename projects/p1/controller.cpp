@@ -62,22 +62,22 @@ void Controller::inputPlayers() {
 }
 
 void Controller::assignCards() {
-    vector< shared_ptr<Card> > cards;
-    cards = model()->getDeck();
-    if(cards.size()==0){
-    for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
-        for (int rank = ACE; rank < RANK_COUNT; rank++) {
-            shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
-            cards.push_back(card);
+    vector< shared_ptr<Card> > cards = model()->getDeck();
+    if (cards.size() == 0) {
+        for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
+            for (int rank = ACE; rank < RANK_COUNT; rank++) {
+                shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
+                cards.push_back(card);
+            }
         }
     }
-  }
 
     shuffleCards(cards);
 
     Card startingCard(SPADE, SEVEN);
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
+        model()->player(i)->startRound();
         for (int j = CARDS_PER_PLAYER * i; j < CARDS_PER_PLAYER * (i+1); j++) {
             model()->addPlayerCard(i, cards.at(j));
             if (*(cards.at(j)) == startingCard) {
@@ -102,7 +102,7 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
 }
 
 void Controller::startRound() {
-    model()->startRound();
+    // model()->startRound();
     assignCards();
 
     int startPlayer = model()->startPlayer();

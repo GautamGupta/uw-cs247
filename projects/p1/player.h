@@ -27,7 +27,7 @@ public:
     void endRound();
     bool checkEndGame() const;
 
-    int cardInHand(Card card);
+    int cardInHand(Card);
     void playCard(Card);
     void discardCard(Card);
 
