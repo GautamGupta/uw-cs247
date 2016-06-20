@@ -3,6 +3,7 @@
 #include <string>
 #include <cassert>
 #include <vector>
+#include <tr1/memory>
 #include <iostream>
 
 using namespace std;
@@ -34,7 +35,7 @@ int Player::getScore() const {
 }
 
 // Get legal plays
-vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
+vector< tr1::shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     Cards legalPlays;
 
     // Outer loop: current cards in hand
@@ -100,7 +101,7 @@ void Player::discardCard(Card card) {
     }
 }
 
-void Player::addCard(shared_ptr<Card> card) {
+void Player::addCard(tr1::shared_ptr<Card> card) {
     originalCards_.push_back(card);
     currentCards_.push_back(card);
 }

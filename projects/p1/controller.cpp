@@ -46,13 +46,13 @@ void Controller::inputPlayers() {
 
         switch (playerType) {
             case HUMAN: {
-                shared_ptr<Player> humanPlayer(new HumanPlayer());
+                tr1::shared_ptr<Player> humanPlayer(new HumanPlayer());
                 model()->addPlayer(humanPlayer);
                 break;
             }
 
             case COMPUTER: {
-                shared_ptr<Player> computerPlayer(new ComputerPlayer());
+                tr1::shared_ptr<Player> computerPlayer(new ComputerPlayer());
                 model()->addPlayer(computerPlayer);
                 break;
             }
@@ -62,11 +62,11 @@ void Controller::inputPlayers() {
 }
 
 void Controller::assignCards() {
-    vector< shared_ptr<Card> > cards = model()->getDeck();
+    vector< tr1::shared_ptr<Card> > cards = model()->getDeck();
     if (cards.size() == 0) {
         for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
             for (int rank = ACE; rank < RANK_COUNT; rank++) {
-                shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
+                tr1::shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
                 cards.push_back(card);
             }
         }
@@ -87,7 +87,7 @@ void Controller::assignCards() {
     }
 }
 
-void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
+void Controller::shuffleCards(vector< tr1::shared_ptr<Card> > &cards) {
     static mt19937 rng(seed);
 
     int n = cards.size();
@@ -95,7 +95,7 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
     while (n > 1) {
         int k = (int) (rng() % n);
         --n;
-        shared_ptr<Card> card = cards[n];
+        tr1::shared_ptr<Card> card = cards[n];
         cards[n] = cards[k];
         cards[k] = card;
     }
@@ -204,7 +204,7 @@ void Controller::playHuman(int playerNum) {
             return exit(EXIT_SUCCESS);
 
         case RAGEQUIT : {
-            shared_ptr<Player> computerPlayer(new ComputerPlayer(*model()->player(playerNum)));
+            tr1::shared_ptr<Player> computerPlayer(new ComputerPlayer(*model()->player(playerNum)));
             model()->replacePlayer(playerNum, computerPlayer);
 
             view()->displayRageQuit(playerNum);
