@@ -3,7 +3,7 @@
 
 #include <istream>
 #include <ostream>
-#include <memory>
+#include <tr1/memory>
 #include <vector>
 #include <map>
 
@@ -33,7 +33,7 @@ bool operator==(const Card &, const Card &);
 std::ostream &operator<<(std::ostream &, const Card &);
 std::istream &operator>>(std::istream &, Card &);
 
-typedef std::vector< std::shared_ptr< Card > > Cards;
+typedef std::vector< std:tr1::shared_ptr< Card > > Cards;
 typedef std::map< Suit, Cards > SuitCards;
 
 #endif
