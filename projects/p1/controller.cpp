@@ -174,7 +174,7 @@ void Controller::playHuman(int playerNum) {
                     exit(EXIT_FAILURE);
                 }
 
-                view()->displayPlayCard(playerNum + 1, command.card);
+                view()->displayPlayCard(playerNum, command.card);
             }
 
             break;
