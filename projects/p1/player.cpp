@@ -12,31 +12,52 @@ Player::Player() : score_(0), previousScore_(0) {}
 
 Player::~Player() {}
 
+/**
+ * Original card maintains the cards assigned to the player
+ * at the start of the round.
+ */
 const Cards& Player::getOriginalCards() const {
     return originalCards_;
 }
 
+/**
+ * Cards in player's hand
+ */
 const Cards& Player::getCurrentCards() const {
     return currentCards_;
 }
 
+/**
+ * Cards the player has played
+ */
 const Cards& Player::getPlayedCards() const {
     return playedCards_;
 }
 
+/**
+ * Cards the player has discarded
+ */
 const Cards& Player::getDiscardedCards() const {
     return discardedCards_;
 }
 
+/**
+ * Get score from previous rounds (cumulative)
+ */
 int Player::getPreviousScore() const {
     return previousScore_;
 }
 
+/**
+ * Get score of current round (call endRound())
+ */
 int Player::getScore() const {
     return score_;
 }
 
-// Get legal plays
+/**
+ * Get legal plays per straight game play. Needs played cards for the round.
+ */
 vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     Cards legalPlays;
     Card firstCard = Card(SPADE, SEVEN);
@@ -45,13 +66,17 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     for (int i = 0; i < getCurrentCards().size(); i++) {
         bool isLegalPlay = false;
 
-        // If card in hand has same suit and is +/- 1 rank of a played card, then it is legal. It is also legal if card is a 7
+        // Only legal card is 7S if there is a 7S on your hand
         if (*getCurrentCards().at(i) == firstCard) {
             legalPlays.clear();
             legalPlays.push_back(getCurrentCards().at(i));
             return legalPlays;
+
+        // Legal if card is a 7
         } else if (getCurrentCards().at(i)->getRank() == SEVEN) {
             isLegalPlay = true;
+
+        // If card in hand has same suit and is +/- 1 rank of a played card, then it is legal
         } else {
             for (int j = 0; j < cardsOnTable.size(); j++) {
                 if (cardsOnTable.at(j)->getSuit() == getCurrentCards().at(i)->getSuit()
@@ -69,7 +94,9 @@ vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
     return legalPlays;
 }
 
-// Checks if a card is in the player's hand. If found it will return the index, if not it will return -1
+/**
+ * Checks if a card is in the player's hand. If found it will return the index, if not it will return -1
+ */
 int Player::cardInHand(Card card) {
     int index = 0;
     bool cardInHand = false;
@@ -88,6 +115,9 @@ int Player::cardInHand(Card card) {
     return index;
 }
 
+/**
+ * Remove card from current cards and add to played cards
+ */
 void Player::playCard(Card card) {
     int index = cardInHand(card);
     if (index >= 0) {
@@ -98,6 +128,9 @@ void Player::playCard(Card card) {
     }
 }
 
+/**
+ * Remove card from current cards and add to discarded cards
+ */
 void Player::discardCard(Card card) {
     int index = cardInHand(card);
     if (index >= 0) {
@@ -108,11 +141,17 @@ void Player::discardCard(Card card) {
     }
 }
 
+/**
+ * Assign card to player (add to original and current)
+ */
 void Player::addCard(shared_ptr<Card> card) {
     originalCards_.push_back(card);
     currentCards_.push_back(card);
 }
 
+/**
+ * Add score to previous score, clear all arrays, set score to 0
+ */
 void Player::startRound() {
     previousScore_ += score_;
     score_ = 0;
@@ -122,6 +161,9 @@ void Player::startRound() {
     discardedCards_.clear();
 }
 
+/**
+ * Calculate score and store it
+ */
 void Player::endRound() {
     int score = 0;
     for (int i = 0; i < getDiscardedCards().size(); i++) {
@@ -130,10 +172,16 @@ void Player::endRound() {
     score_ = score;
 }
 
+/**
+ * See if the user has > 80 pts
+ */
 bool Player::checkEndGame() const {
     return (calculateScore() >= NUM_POINTS);
 }
 
+/**
+ * Calculate total score
+ */
 int Player::calculateScore() const {
     return previousScore_ + score_;
 }

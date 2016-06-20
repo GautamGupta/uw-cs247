@@ -17,6 +17,9 @@ View::View() {}
 
 View::~View() {}
 
+/**
+ * Take in h/c to define if a player is human or computer
+ */
 char View::inputPlayer(int playerNum) {
     char type;
 
@@ -28,10 +31,16 @@ char View::inputPlayer(int playerNum) {
     return type;
 }
 
+/**
+ * Start a new round
+ */
 void View::startRound(int playerNum) {
     cout << "A new round begins. It’s player " << (playerNum + 1) << "'s turn to play." << endl;
 }
 
+/**
+ * Display all discards and scores for round end
+ */
 void View::endRound(int playerNum, Player &player) {
     cout << "Player " << (playerNum + 1) << "'s discards: ";
     displayCards(player.getDiscardedCards());
@@ -41,10 +50,11 @@ void View::endRound(int playerNum, Player &player) {
         << " = " << (player.getPreviousScore() + player.getScore()) << endl;
 }
 
-void View::displayDiscards(Cards cards) {
-    displayCards(cards);
-}
-
+/**
+ * Show cards on table separated by suits for human play
+ *
+ * @param SuitCards Hashmap of Suit -> vector of cards
+ */
 void View::displayCardsOnTable(SuitCards suitCards) {
     cout << "Cards on the table:" << endl;
 
@@ -54,7 +64,7 @@ void View::displayCardsOnTable(SuitCards suitCards) {
         vector<int> ranks;
 
         for (int i = 0; i < suitCards[suit].size(); i++) {
-            ranks.push_back((int) suitCards[suit].at(i)->getRank()); // Ace is 0
+            ranks.push_back((int) suitCards[suit].at(i)->getRank());
         }
         sort(ranks.begin(), ranks.end());
 
@@ -110,6 +120,9 @@ void View::displayRageQuit(int playerNum) {
     cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
 }
 
+/**
+ * Displays ranks separated by space, followed by a newline
+ */
 void View::displayCards(vector<int> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
         cout << Card::getDisplayRank(ranks.at(i)) << " ";
@@ -118,6 +131,9 @@ void View::displayCards(vector<int> ranks) {
     cout << endl;
 }
 
+/**
+ * Displays cards 13 per line. Will print a newline even if there are no cards
+ */
 void View::displayCards(Cards cards) {
     for (int i = 0; i < cards.size(); i++) {
         cout << *cards.at(i);

@@ -26,18 +26,27 @@ shared_ptr<Player> Model::player(int i) {
     return players().at(i);
 }
 
+/**
+ * Start round for every player
+ */
 void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->startRound();
     }
 }
 
+/**
+ * Calculate scores for every player
+ */
 void Model::endRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->endRound();
     }
 }
 
+/**
+ * Check if player has > 80 pts
+ */
 bool Model::isGameOver() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         if (player(i)->checkEndGame()) {
@@ -47,6 +56,9 @@ bool Model::isGameOver() {
     return false;
 }
 
+/**
+ * See what's the lowest score in the game
+ */
 int Model::lowestScore() {
     int lowestScore = player(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
@@ -57,6 +69,9 @@ int Model::lowestScore() {
     return lowestScore;
 }
 
+/**
+ * Add all cards assigned to players to an array and return (in order)
+ */
 Cards Model::getDeck() {
     Cards cards;
 
@@ -69,6 +84,9 @@ Cards Model::getDeck() {
     return cards;
 }
 
+/**
+ * Get all the played cards for the round
+ */
 Cards Model::getCardsOnTable() {
     Cards cards;
 
@@ -79,6 +97,9 @@ Cards Model::getCardsOnTable() {
     return cards;
 }
 
+/**
+ * Get a hashmap of (Suit -> Vector of cards of suit) played for the round
+ */
 SuitCards Model::getSuitCardsOnTable() {
     SuitCards suitCards;
 
@@ -98,13 +119,16 @@ SuitCards Model::getSuitCardsOnTable() {
 }
 
 /**
- * Get legal plays for a player
+ * Get legal plays for a player. We need to supply cards on table.
  * @param  playerNum Index position of player
  */
 Cards Model::getLegalPlays(int playerNum) {
     return player(playerNum)->getLegalPlays(getCardsOnTable());
 }
 
+/**
+ * Set start to the player who has 7S
+ */
 void Model::setStartPlayer(int startPlayer) {
     startPlayer_ = startPlayer;
 }

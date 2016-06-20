@@ -4,6 +4,8 @@
 #include "player.h"
 #include "card.h"
 
+/** Documentation of methods in .cpp file */
+
 class ComputerPlayer : public Player {
 public:
     ComputerPlayer();

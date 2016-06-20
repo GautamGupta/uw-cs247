@@ -35,6 +35,9 @@ View* Controller::view() {
     return view_;
 }
 
+/**
+ * Ask the user to input all the 4 players (human/computer)
+ */
 void Controller::inputPlayers() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         string types = "hc";
@@ -61,6 +64,12 @@ void Controller::inputPlayers() {
     }
 }
 
+/**
+ * 1. If it's the first round, generate 52 cards. Otherwise use deck from previous round.
+ * 2. Shuffle the deck
+ * 3. Clear players' arrays
+ * 4. Assign cards to players in order (cards 0-12 go to player 1 etc)
+ */
 void Controller::assignCards() {
     vector< shared_ptr<Card> > cards = model()->getDeck();
     if (cards.size() == 0) {
@@ -87,6 +96,9 @@ void Controller::assignCards() {
     }
 }
 
+/**
+ * Shuffle cards based on seed
+ */
 void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
     static mt19937 rng(seed);
 
@@ -101,6 +113,9 @@ void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
     }
 }
 
+/**
+ * Start the round. Assign cards and do 52 plays (for 52 cards).
+ */
 void Controller::startRound() {
     // model()->startRound();
     assignCards();
@@ -124,6 +139,10 @@ void Controller::startRound() {
     endRound();
 }
 
+/**
+ * End the round. Checks if anyone scored > 80 pts and ends the game at that point.
+ * Displays the winner if game is over otherwise starts a new round.
+ */
 void Controller::endRound() {
     model()->endRound();
 

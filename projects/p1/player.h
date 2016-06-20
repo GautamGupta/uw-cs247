@@ -6,6 +6,8 @@
 #include <memory>
 #include <vector>
 
+/** Documentation of methods in .cpp file */
+
 enum PlayerType { HUMAN, COMPUTER };
 
 class Player {

@@ -6,6 +6,9 @@ ComputerPlayer::ComputerPlayer() : Player() {}
 
 ComputerPlayer::~ComputerPlayer() {}
 
+/**
+ * Copy constructor for ragequit
+ */
 ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
     previousScore_  = player.getPreviousScore();
     score_          = player.getScore();
@@ -15,6 +18,9 @@ ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
     discardedCards_ = player.getDiscardedCards();
 }
 
+/**
+ * Return false as this is the computer class
+ */
 bool ComputerPlayer::isHuman() {
     return false;
 }
