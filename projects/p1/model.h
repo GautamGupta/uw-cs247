@@ -16,16 +16,16 @@ public:
     Model();
     Players players();
     int startPlayer();
-    std:tr1::shared_ptr<Player> player(int);
+    std::tr1::shared_ptr<Player> player(int);
     Cards getDeck();
     Cards getCardsOnTable();
     SuitCards getSuitCardsOnTable();
     Cards getLegalPlays(int);
 
     void setStartPlayer(int);
-    void addPlayer(std:tr1::shared_ptr<Player>);
-    void replacePlayer(int, std:tr1::shared_ptr<Player>);
-    void addPlayerCard(int, std:tr1::shared_ptr<Card>);
+    void addPlayer(std::tr1::shared_ptr<Player>);
+    void replacePlayer(int, std::tr1::shared_ptr<Player>);
+    void addPlayerCard(int, std::tr1::shared_ptr<Card>);
     void startRound();
     void endRound();
     bool isGameOver();
