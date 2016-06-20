@@ -2,7 +2,7 @@
 #define _COMPUTERPLAYER_
 
 #include "player.h"
-#include "Card.h"
+#include "card.h"
 
 class ComputerPlayer : public Player {
 public:

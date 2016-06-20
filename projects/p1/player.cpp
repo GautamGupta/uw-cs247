@@ -1,10 +1,12 @@
 #include "main.h"
 #include "player.h"
+
+#include <iostream>
 #include <string>
 #include <cassert>
 #include <vector>
 #include <tr1/memory>
-#include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -85,7 +87,7 @@ void Player::playCard(Card card) {
     int index = cardInHand(card);
     if (index >= 0) {
         playedCards_.push_back(getCurrentCards().at(index));
-        currentCards_.erase(getCurrentCards().begin() + index);
+        currentCards_.erase(currentCards_.begin() + index);
     } else {
         throw CardNotFoundException();
     }
@@ -95,7 +97,7 @@ void Player::discardCard(Card card) {
     int index = cardInHand(card);
     if (index >= 0) {
         discardedCards_.push_back(getCurrentCards().at(index));
-        currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
+        currentCards_.erase(currentCards_.begin() + index); // Removes the card in hand
     } else {
         throw CardNotFoundException();
     }

@@ -5,8 +5,8 @@
 #ifndef ST_VIEW_H
 #define ST_VIEW_H
 
-#include "Card.h"
-#include "Player.h"
+#include "card.h"
+#include "player.h"
 #include <vector>
 
 class Model;
