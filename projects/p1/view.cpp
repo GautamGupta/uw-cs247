@@ -70,16 +70,16 @@ void View::displayCardsOnTable(SuitCards suitCards) {
 
         switch (suit) {
             case CLUB :
-                cout << "Clubs: ";
+                cout << "Clubs:";
                 break;
             case DIAMOND :
-                cout << "Diamonds: ";
+                cout << "Diamonds:";
                 break;
             case HEART :
-                cout << "Hearts: ";
+                cout << "Hearts:";
                 break;
             case SPADE :
-                cout << "Spades: ";
+                cout << "Spades:";
                 break;
 
             default :
@@ -125,7 +125,7 @@ void View::displayRageQuit(int playerNum) {
  */
 void View::displayCards(vector<int> ranks) {
     for (int i = 0; i < ranks.size(); i++) {
-        cout << Card::getDisplayRank(ranks.at(i)) << " ";
+        cout << " " << Card::getDisplayRank(ranks.at(i));
     }
 
     cout << endl;
