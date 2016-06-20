@@ -183,6 +183,9 @@ void Controller::playHuman(int playerNum) {
                 view()->errorDiscardCard();
                 return playHuman(playerNum);
             }
+            else {
+                view()->displayDiscardCard(playerNum, command.card);
+            }
 
             try {
                 model()->player(playerNum)->discardCard(command.card);
