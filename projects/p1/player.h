@@ -1,9 +1,9 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 
-#include "card.h"
+#include "Card.h"
 #include <ostream>
-#include <tr1/memory>
+#include <memory>
 #include <vector>
 
 enum PlayerType { HUMAN, COMPUTER };
@@ -23,7 +23,7 @@ public:
     Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
 
-    void addCard(std:tr1::shared_ptr<Card>);
+    void addCard(std::shared_ptr<Card>);
     void startRound();
     void endRound();
     bool checkEndGame() const;
@@ -45,6 +45,6 @@ protected:
 
 std::ostream &operator<<(std::ostream &, const Player &);
 
-typedef std::vector< std:tr1::shared_ptr<Player> > Players;
+typedef std::vector< std::shared_ptr<Player> > Players;
 
 #endif
