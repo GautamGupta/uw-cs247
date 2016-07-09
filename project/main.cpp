@@ -10,6 +10,7 @@
 #include "view.h"
 #include <iostream>
 #include <cstdlib>
+#include <gtkmm/main.h>
 
 using namespace std;
 
@@ -27,9 +28,11 @@ int main(int argc, char* argv[]) {
 		seed = atoi(argv[1]);
 	}
 
+    Gtk::Main kit(argc, argv);              // Initialize gtkmm with the command line arguments, as appropriate.
 	Model model;                            // Create model
-    View view;                              // Create the view
+    View view(&model);                      // Create the view
     Controller controller(&model, &view);   // Create controller -- is passed handle to view and model
+    Gtk::Main::run(view);                   // Show the window and return when it is closed.
 
 	return 0;
 }

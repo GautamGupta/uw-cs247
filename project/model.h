@@ -10,10 +10,11 @@
 
 #include "card.h"
 #include "player.h"
+#include "subject.h"
 #include <memory>
 #include <vector>
 
-class Model {
+class Model : public Subject {
 public:
     Model();
     Players players();

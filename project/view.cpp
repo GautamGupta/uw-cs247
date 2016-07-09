@@ -7,13 +7,43 @@
 #include "view.h"
 #include "model.h"
 #include "card.h"
+#include "observer.h"
 #include <iostream>
 #include <cassert>
 #include <algorithm>
 
 using namespace std;
 
-View::View() {}
+View::View(Model *m) :
+        model_(m), panels(true, 10), butBox(true, 10),
+        next_button("next"), reset_button("reset"), card(deck.null()) {
+
+    set_title("Straights");
+    set_border_width(10);
+
+    // Add panels to the window
+    add(panels);
+
+    // Add button box and card image to the panels
+    panels.add(butBox);
+    panels.add(card);
+    card.set(deck.null());
+
+    // Add buttons to the box (a container). Buttons initially invisible
+    butBox.add(next_button);
+    butBox.add(reset_button);
+
+    // Associate button "clicked" events with local onButtonClicked() method defined below.
+    next_button.signal_clicked().connect(sigc::mem_fun(*this, &View::nextButtonClicked));
+    reset_button.signal_clicked().connect(sigc::mem_fun(*this, &View::resetButtonClicked));
+
+    // The final step is to display the buttons (they display themselves)
+    show_all();
+
+    // Register view as observer of model
+    model_->subscribe(this);
+
+}
 
 View::~View() {}
 
@@ -154,4 +184,16 @@ void View::displayCards(Cards cards) {
 
 void View::displayVictory(int playerNum) {
     cout << "Player " << (playerNum + 1) << " wins!" << endl;
+}
+
+void View::update() {
+    card.set( deck.null() );
+}
+
+void View::nextButtonClicked() {
+    // controller_->nextButtonClicked();
+}
+
+void View::resetButtonClicked() {
+    // controller_->resetButtonClicked();
 }
