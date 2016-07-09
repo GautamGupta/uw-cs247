@@ -22,7 +22,7 @@ int Model::startPlayer() {
     return startPlayer_;
 }
 
-tr1::shared_ptr<Player> Model::player(int i) {
+shared_ptr<Player> Model::player(int i) {
     return players().at(i);
 }
 
@@ -84,12 +84,12 @@ SuitCards Model::getSuitCardsOnTable() {
 
     for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
         Suit suit = static_cast<Suit>(suitNum);
-        suitCards[suit] = vector< tr1::shared_ptr<Card> >();
+        suitCards[suit] = vector< shared_ptr<Card> >();
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = 0; j < player(i)->getPlayedCards().size(); j++) {
-            tr1::shared_ptr<Card> card = player(i)->getPlayedCards().at(j);
+            shared_ptr<Card> card = player(i)->getPlayedCards().at(j);
             suitCards[card->getSuit()].push_back(card);
         }
     }
@@ -113,7 +113,7 @@ void Model::setStartPlayer(int startPlayer) {
  * Add player to our players array
  * @param Player* Pointer to player object
  */
-void Model::addPlayer(tr1::shared_ptr<Player> player) {
+void Model::addPlayer(shared_ptr<Player> player) {
     players_.push_back(player);
 }
 
@@ -123,13 +123,13 @@ void Model::addPlayer(tr1::shared_ptr<Player> player) {
  * @param int Index to replace
  * @param Player* Pointer to player object
  */
-void Model::replacePlayer(int playerNum, tr1::shared_ptr<Player> player) {
+void Model::replacePlayer(int playerNum, shared_ptr<Player> player) {
     players_[playerNum] = player;
 }
 
 /**
  * Add card to player
  */
-void Model::addPlayerCard(int playerNum, tr1::shared_ptr<Card> card) {
+void Model::addPlayerCard(int playerNum, shared_ptr<Card> card) {
     player(playerNum)->addCard(card);
 }
