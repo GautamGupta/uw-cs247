@@ -1,7 +1,7 @@
 #ifndef ST_CONTROLLER_H
 #define ST_CONTROLLER_H
 
-#include "card.h"
+#include "Card.h"
 #include <vector>
 
 class Model;
