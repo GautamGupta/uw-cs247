@@ -6,6 +6,8 @@
 #ifndef ST_MODEL_H
 #define ST_MODEL_H
 
+/** Documentation of methods in .cpp file */
+
 #include "card.h"
 #include "player.h"
 #include <memory>

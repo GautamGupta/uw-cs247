@@ -1,16 +1,19 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 
-#include "Card.h"
+#include "card.h"
 #include <ostream>
 #include <memory>
 #include <vector>
+
+/** Documentation of methods in .cpp file */
 
 enum PlayerType { HUMAN, COMPUTER };
 
 class Player {
 public:
     Player();
+    virtual ~Player();
 
     const Cards& getOriginalCards() const;
     const Cards& getCurrentCards() const;

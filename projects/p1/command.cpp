@@ -4,9 +4,13 @@
 
 using namespace std;
 
+/**
+ * Input a human play command like play 7S or ragequit
+ */
 istream &operator>>(istream &in, Command &c) {
 	c.type = BAD_COMMAND;
 
+	cout << ">";
 	string cmd;
 	cin >> cmd;
 

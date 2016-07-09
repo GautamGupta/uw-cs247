@@ -2,11 +2,14 @@
 #define _COMPUTERPLAYER_
 
 #include "player.h"
-#include "Card.h"
+#include "card.h"
+
+/** Documentation of methods in .cpp file */
 
 class ComputerPlayer : public Player {
 public:
     ComputerPlayer();
+    virtual ~ComputerPlayer();
     ComputerPlayer(const Player&);
 
     bool isHuman();

@@ -13,9 +13,16 @@
 
 using namespace std;
 
+/**
+ * For shuffling
+ */
 int seed = 0;
 
+/**
+ * First called method
+ */
 int main(int argc, char* argv[]) {
+    // Set seed if it was supplied
 	if (argc > 1) {
 		seed = atoi(argv[1]);
 	}

@@ -1,8 +1,10 @@
 #ifndef ST_CONTROLLER_H
 #define ST_CONTROLLER_H
 
-#include "Card.h"
+#include "card.h"
 #include <vector>
+
+/** Documentation of methods in .cpp file */
 
 class Model;
 class View;

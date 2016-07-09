@@ -5,8 +5,10 @@
 #ifndef ST_VIEW_H
 #define ST_VIEW_H
 
-#include "Card.h"
-#include "Player.h"
+/** Documentation of methods in .cpp file */
+
+#include "card.h"
+#include "player.h"
 #include <vector>
 
 class Model;
@@ -19,8 +21,7 @@ public:
     char inputPlayer(int);
 
     void startRound(int);
-    void endRound(int, Player);
-    void displayDiscards(Cards);
+    void endRound(int, Player &);
     void displayCardsOnTable(SuitCards);
     void displayHand(Cards);
     void displayLegalPlays(Cards);

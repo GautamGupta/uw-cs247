@@ -2,11 +2,14 @@
 #define _HUMANPLAYER_
 
 #include "player.h"
-#include "Card.h"
+#include "card.h"
+
+/** Documentation of methods in .cpp file */
 
 class HumanPlayer : public Player {
 public:
     HumanPlayer();
+    virtual ~HumanPlayer();
 
     bool isHuman();
 };

@@ -7,6 +7,8 @@
 #include <vector>
 #include <map>
 
+/** Documentation of methods in .cpp file */
+
 enum Suit { CLUB, DIAMOND, HEART, SPADE, SUIT_COUNT };
 enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
 			EIGHT, NINE, TEN, JACK, QUEEN, KING, RANK_COUNT };
@@ -16,6 +18,8 @@ class Card {
 
 public:
 	Card(Suit, Rank);
+    virtual ~Card();
+
 	Suit getSuit() const;
 	Rank getRank() const;
 
@@ -29,7 +33,6 @@ private:
 
 bool operator==(const Card &, const Card &);
 
-//output/input Card in the format <rank><suit>
 std::ostream &operator<<(std::ostream &, const Card &);
 std::istream &operator>>(std::istream &, Card &);
 

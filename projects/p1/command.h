@@ -4,6 +4,8 @@
 #include "card.h"
 #include <istream>
 
+/** Documentation of methods in .cpp file */
+
 enum Type { PLAY, DISCARD, DECK, QUIT, RAGEQUIT, BAD_COMMAND };
 
 struct Command {
