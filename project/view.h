@@ -39,7 +39,6 @@ public:
     void errorPlayCard();
     void displayDiscardCard(int, Card);
     void errorDiscardCard();
-    void displayRageQuit(int);
 
     void displayCards(std::vector<int>);
     void displayCards(Cards);

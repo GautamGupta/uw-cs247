@@ -25,6 +25,7 @@ private:
     static const std::string TXT_POINTS;
     static const std::string TXT_DISCARDS;
     static const std::string TXT_PLAYER;
+    static const std::string TXT_RAGE_MSG;
 
     Model* model_;
     Controller* controller_;
