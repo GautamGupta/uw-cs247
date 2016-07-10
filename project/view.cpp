@@ -27,8 +27,6 @@ View::View(Model *model, Controller *controller) :
   add(masterContainer);
 
 	card.set( deck.null() );
-  nullCardPixbuf = deck.getNullCardImage();
-
 
   // Set up containers
   masterContainer.pack_start(gameBox);
