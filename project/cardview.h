@@ -11,7 +11,7 @@ class Card;
 class CardView : public Gtk::Button {
 public:
 	CardView(Model*, Controller*, View*);
-    // virtual ~CardView();
+    virtual ~CardView();
 	void setCard(Card*, bool);		// sets the card represented by this view
 
 private:
@@ -19,6 +19,8 @@ private:
 	View* view_;
 	Controller* controller_;
     Gtk::Image* cardImage;
+    void cardButtonClicked();
+
 };
 
 #endif
