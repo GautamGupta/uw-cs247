@@ -9,6 +9,7 @@
 #include "controller.h"
 #include "card.h"
 #include "observer.h"
+#include "playerview.h"
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -27,7 +28,7 @@ View::View(Model *model, Controller *controller) :
 	// Add panels to the window
     add(masterContainer);
 
-	card.set( deck.null() );
+	card.set(deck.null());
 
     // Set up containers
     masterContainer.pack_start(gameBox);
@@ -69,11 +70,10 @@ View::View(Model *model, Controller *controller) :
     // }
 
     // UI for playerBox
-    // for (int i = 0; i < 4; i++) {
-    //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
-    //   playersContainer.pack_start(*playerViews[i]);
-    // }
-
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        playerViews[i] = new PlayerView(model_, controller_, this, i);
+        playerBox.pack_start(*playerViews[i]);
+    }
 
 	// The final step is to display the buttons (they display themselves)
 	show_all();
