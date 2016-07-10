@@ -5,23 +5,31 @@
 #include <gtkmm.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <string>
 
 using namespace std;
+
+namespace {
+    string _sprintf(string text, int num) {
+        char cText[text.length()];
+        sprintf(cText, text.c_str(), num);
+        return string(cText);
+    }
+}
 
 const string PlayerView::TXT_HUMAN = "Human";
 const string PlayerView::TXT_COMPUTER = "Computer";
 const string PlayerView::TXT_RAGE = "Rage!";
 const string PlayerView::TXT_POINTS = "%d points";
-const string PlayerView::TXT_DISCARDS = "%d points";
+const string PlayerView::TXT_DISCARDS = "%d discards";
 const string PlayerView::TXT_PLAYER = "Player %d";
+const string PlayerView::TXT_RAGE_MSG = "Player %d ragequits. A computer will now take over.";
 
 PlayerView::PlayerView(Model* model, Controller* controller, View* view, int playerNum) :
         model_(model), controller_(controller), view_(view), playerNum_(playerNum) {
 
-    char playerText[TXT_PLAYER.length()];
-    sprintf(playerText, TXT_PLAYER.c_str(), playerNum_+1);
-    set_label(playerText);
+    set_label(_sprintf(TXT_PLAYER, playerNum_+1));
     setLabels();
 
     container.pack_start(toggleBtn);
@@ -29,7 +37,6 @@ PlayerView::PlayerView(Model* model, Controller* controller, View* view, int pla
     container.pack_end(discardsTxt);
     add(container);
 
-    // sets button label based on player type in model
     if (model_->player(playerNum_)->isHuman()) {
         setToggleButton(TXT_HUMAN, true);
     } else {
@@ -58,12 +65,8 @@ View* PlayerView::view() {
  * Update label text, defaults to 0's
  */
 void PlayerView::setLabels(int score /* = 0 */, int discards /* = 0 */) {
-    char pointsText[TXT_POINTS.length()], discardsText[TXT_DISCARDS.length()];
-    sprintf(pointsText, TXT_POINTS.c_str(), score);
-    sprintf(discardsText, TXT_DISCARDS.c_str(), discards);
-
-    pointsTxt.set_label(pointsText);
-    discardsTxt.set_label(discardsText);
+    pointsTxt.set_label(_sprintf(TXT_POINTS, score));
+    discardsTxt.set_label(_sprintf(TXT_DISCARDS, discards));
 }
 
 /**
@@ -84,6 +87,7 @@ void PlayerView::onBtnClick() {
     if (toggleBtn.get_label() == TXT_RAGE) {
         setToggleButton(TXT_RAGE, false);
         controller()->playerRageQuit(playerNum_);
+        cout << _sprintf(TXT_RAGE_MSG, playerNum_+1) << endl;
 
     // Toggle Human <-> Computer
     } else {

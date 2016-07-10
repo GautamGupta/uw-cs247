@@ -194,10 +194,6 @@ void View::errorDiscardCard() {
     cout << "You have a legal play. You may not discard." << endl;
 }
 
-void View::displayRageQuit(int playerNum) {
-    cout << "Player " << (playerNum + 1) << " ragequits. A computer will now take over." << endl;
-}
-
 /**
  * Displays ranks separated by space, followed by a newline
  */
