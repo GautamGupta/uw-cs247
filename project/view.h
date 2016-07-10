@@ -53,15 +53,24 @@ private:
 
     // Member widgets:
     Gtk::HBox panels;      // Main window divided into two horizontal panels
-    Gtk::VBox butBox;      // Vertical boxes for stacking buttons vertically
-    Gtk::Button start_button;
-    Gtk::Button end_button;
+
+    // Boxes, frames, and tables
+    Gtk::VBox masterContainer;
+    Gtk::HBox gameBox; // Contains start game, seed,  and end game buttons
+    Gtk::Frame tableFrame; // Contains cards on table
+    Gtk::Table cardsOnTable;
+
+    Gtk::Button startButton_;;
+    Gtk::Button endButton_;
+
     Gtk::Image card;
+    Gtk::Entry seedInput_;
 
     // Signal handlers:
     void startButtonClicked();
     void endButtonClicked();
+    void seedInputted();
 
-}; // View
+};
 
 #endif
