@@ -9,7 +9,6 @@
 #include "controller.h"
 #include "view.h"
 #include <iostream>
-#include <cstdlib>
 #include <gtkmm/main.h>
 
 using namespace std;

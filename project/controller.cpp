@@ -18,44 +18,13 @@
 
 using namespace std;
 
-Controller::Controller(Model *m) : model_(m), rng(0) {
-    inputPlayers();
-    startRound();
-}
-
-/* Get functions */
-
-Model* Controller::model() {
-    return model_;
-}
+Controller::Controller(Model *m) : model_(m), rng(DEFAULT_SEED) {}
 
 /**
- * Ask the user to input all the 4 players (human/computer)
+ * Get model
  */
-void Controller::inputPlayers() {
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        string types = "hc";
-
-        // Read in the type, make sure it's valid
-        char type = 'c'; // view()->inputPlayer(i); // TODO: Fix
-        PlayerType playerType = (PlayerType) types.find(type);
-        assert(playerType != string::npos);
-
-        switch (playerType) {
-            case HUMAN: {
-                shared_ptr<Player> humanPlayer(new HumanPlayer());
-                model()->addPlayer(humanPlayer);
-                break;
-            }
-
-            case COMPUTER: {
-                shared_ptr<Player> computerPlayer(new ComputerPlayer());
-                model()->addPlayer(computerPlayer);
-                break;
-            }
-
-        }
-    }
+Model* Controller::model() {
+    return model_;
 }
 
 /**
@@ -252,9 +221,10 @@ void Controller::playComputer(int playerNum) {
 /**
  * Start a new game with seed
  */
-void Controller::startButtonClicked(int seed /* = 0 */) {
+void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
+    cout << "Start " << seed << endl;
     rng.seed(seed);
-    // shuffleCards();
+    assignCards();
 }
 
 /**
@@ -263,5 +233,5 @@ void Controller::startButtonClicked(int seed /* = 0 */) {
  * Player types are retained.
  */
 void Controller::endButtonClicked() {
-
+    cout << "End" << endl;
 }

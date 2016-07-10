@@ -7,12 +7,19 @@
 #include "model.h"
 #include "card.h"
 #include "player.h"
+#include "humanplayer.h"
 #include <vector>
 #include <map>
 
 using namespace std;
 
-Model::Model() : startPlayer_(-1) {}
+Model::Model() : startPlayer_(-1) {
+    // Initialize 4 humans
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        shared_ptr<Player> humanPlayer(new HumanPlayer());
+        addPlayer(humanPlayer);
+    }
+}
 
 Players Model::players() {
     return players_;

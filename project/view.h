@@ -67,9 +67,6 @@ private:
     Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
     // PlayerView *playerViews[4];
 
-
-
-
     Gtk::Button startButton_;
     Gtk::Button endButton_;
 
@@ -79,8 +76,6 @@ private:
     // Signal handlers:
     void startButtonClicked();
     void endButtonClicked();
-    void seedInputted();
-
 
 };
 
