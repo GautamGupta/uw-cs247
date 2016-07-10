@@ -10,6 +10,7 @@
 #include "card.h"
 #include "observer.h"
 #include "playerview.h"
+#include "cardview.h"
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -18,7 +19,7 @@
 using namespace std;
 
 View::View(Model *model, Controller *controller) :
-        model_(model), controller_(controller), panels(true, 10), butBox(true, 10),
+        model_(model), controller_(controller),
         startButton_("Start new game with seed:"), endButton_("End current game") {
 
     const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
@@ -28,7 +29,6 @@ View::View(Model *model, Controller *controller) :
     set_title("Straights");
 	set_border_width(10);
 
-	// Add panels to the window
     add(masterContainer);
 
     // Set up containers
@@ -60,7 +60,6 @@ View::View(Model *model, Controller *controller) :
         }
     }
 
-
     // UI for playerBox
     for (int i = 0; i < NUM_PLAYERS; i++) {
         playerViews[i] = new PlayerView(model_, controller_, this, i);
@@ -71,9 +70,9 @@ View::View(Model *model, Controller *controller) :
     playerHandFrame.add(playerHandBox);
 
     // UI for Player's Hand
-    playerHandFrame.set_label("Your hand:");
-    for (int i = 0; i < 13; i++) {
-        cardsInHand[i] = new Gtk::Image(nullCardPixbuf);
+    playerHandFrame.set_label("Your hand");
+    for (int i = 0; i < CARDS_PER_PLAYER; i++) {
+        cardsInHand[i] = new CardView(model_, controller_, this);
         playerHandBox.add(*cardsInHand[i]);
     }
 
@@ -252,6 +251,9 @@ void View::endButtonClicked() {
     controller()->endButtonClicked();
 }
 
+/*
+ ** This function updates the played cards displayed on the view
+ */
 void View::updatePlayedCards(bool reset){
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
@@ -267,4 +269,8 @@ void View::updatePlayedCards(bool reset){
             }
         }
     }
+}
+
+Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
+	return deck.getNullCardImage();
 }

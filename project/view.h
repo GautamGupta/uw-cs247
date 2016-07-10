@@ -18,6 +18,7 @@
 class Model;
 class Controller;
 class PlayerView;
+class CardView;
 
 class View : public Gtk::Window, public Observer {
 public:
@@ -44,6 +45,7 @@ public:
     void displayCards(Cards);
 
     void displayVictory(int);
+    Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
@@ -52,10 +54,6 @@ private:
 
     // Card Images
     DeckGUI deck;
-
-    // Member widgets:
-    Gtk::HBox panels;      // Main window divided into two horizontal panels
-    Gtk::VBox butBox;      // Vertical boxes for stacking buttons vertically
 
     // Boxes, frames, and tables
     Gtk::VBox masterContainer;
@@ -70,8 +68,9 @@ private:
     PlayerView *playerViews[NUM_PLAYERS];
 
     Gtk::Frame playerHandFrame; // Contains player's hand
+
     Gtk::HBox playerHandBox;
-    Gtk::Image *cardsInHand[CARDS_PER_PLAYER];
+    CardView *cardsInHand[CARDS_PER_PLAYER];
 
     Gtk::Button startButton_;
     Gtk::Button endButton_;
@@ -84,6 +83,7 @@ private:
 
     // Update view functions
     void updatePlayedCards(bool);
+
 
 };
 
