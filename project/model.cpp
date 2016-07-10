@@ -105,6 +105,19 @@ Cards Model::getCardsOnTable() {
 }
 
 /**
+ * Check if a card was played already
+ */
+bool Model::cardWasPlayed(shared_ptr<Card> card) {
+    Cards cards = getCardsOnTable();
+    for (int i = 0; i < cards.size(); i++ ) {
+        if (cards.at(i) == card) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Get a hashmap of (Suit -> Vector of cards of suit) played for the round
  */
 SuitCards Model::getSuitCardsOnTable() {

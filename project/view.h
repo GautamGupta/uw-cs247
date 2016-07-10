@@ -63,7 +63,7 @@ private:
 
     Gtk::Frame tableFrame; // Contains cards on table
     Gtk::Table cardsOnTable;
-    Gtk::Image * cardsPlayed[4][13];
+    Gtk::Image *cardsPlayed[SUIT_COUNT][RANK_COUNT];
     Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
 
     Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
@@ -71,7 +71,7 @@ private:
 
     Gtk::Frame playerHandFrame; // Contains player's hand
     Gtk::HBox playerHandBox;
-    Gtk::Image * cardsInHand[13];
+    Gtk::Image *cardsInHand[CARDS_PER_PLAYER];
 
     Gtk::Button startButton_;
     Gtk::Button endButton_;
@@ -83,7 +83,7 @@ private:
     void endButtonClicked();
 
     // Update view functions
-    void updatePlayedCards();
+    void updatePlayedCards(bool);
 
 };
 
