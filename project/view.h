@@ -7,6 +7,7 @@
 
 /** Documentation of methods in .cpp file */
 
+#include "main.h"
 #include "card.h"
 #include "player.h"
 #include "observer.h"
@@ -16,6 +17,7 @@
 
 class Model;
 class Controller;
+class PlayerView;
 
 class View : public Gtk::Window, public Observer {
 public:
@@ -57,7 +59,7 @@ private:
 
     // Boxes, frames, and tables
     Gtk::VBox masterContainer;
-    Gtk::HBox gameBox; // Contains start game, seed,  and end game buttons
+    Gtk::HBox gameBox; // Contains start game, seed, and end game buttons
 
     Gtk::Frame tableFrame; // Contains cards on table
     Gtk::Table cardsOnTable;
@@ -65,7 +67,7 @@ private:
     Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
 
     Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
-    // PlayerView *playerViews[4];
+    PlayerView *playerViews[NUM_PLAYERS];
 
     Gtk::Frame playerHandFrame; // Contains player's hand
     Gtk::HBox playerHandBox;

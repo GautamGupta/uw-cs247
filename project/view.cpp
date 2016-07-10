@@ -9,6 +9,7 @@
 #include "controller.h"
 #include "card.h"
 #include "observer.h"
+#include "playerview.h"
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -60,17 +61,17 @@ View::View(Model *model, Controller *controller) :
     }
 
 
-  // UI for playerBox
-  // for (int i = 0; i < 4; i++) {
-  //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
-  //   playersContainer.pack_start(*playerViews[i]);
-  // }
+    // UI for playerBox
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        playerViews[i] = new PlayerView(model_, controller_, this, i);
+        playerBox.pack_start(*playerViews[i]);
+    }
 
     // Set up playerHandFrame
     playerHandFrame.add(playerHandBox);
 
     // UI for Player's Hand
-    playerHandFrame.set_label( "Your hand:" );
+    playerHandFrame.set_label("Your hand:");
     for (int i = 0; i < 13; i++) {
         cardsInHand[i] = new Gtk::Image(nullCardPixbuf);
         playerHandBox.add(*cardsInHand[i]);

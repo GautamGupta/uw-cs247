@@ -21,6 +21,7 @@ public:
    void assignCards();
    void startRound();
    void endRound();
+   void playerRageQuit(int);
    void playHuman(int);
    void playComputer(int);
 
