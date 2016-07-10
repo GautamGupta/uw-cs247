@@ -18,7 +18,6 @@ public:
    void startButtonClicked(int = DEFAULT_SEED);
    void endButtonClicked();
 
-   void inputPlayers();
    void assignCards();
    void startRound();
    void endRound();
