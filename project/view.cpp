@@ -24,10 +24,14 @@ View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new gam
   add(masterContainer);
 
 	card.set( deck.null() );
+  nullCardPixbuf = deck.getNullCardImage();
+
 
   // Set up containers
   masterContainer.pack_start(gameBox);
   masterContainer.pack_start(tableFrame);
+  masterContainer.pack_start(playerBox);
+
 
 	gameBox.pack_start( startButton_ );
   gameBox.pack_start( seedInput_ );
@@ -47,11 +51,17 @@ View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new gam
   tableFrame.add(cardsOnTable);
   cardsOnTable.set_row_spacings(5);
   // Coming soon
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 13; j++) {
+      // cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+      // cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+    }
+  }
+
+  // UI for playerBox
   // for (int i = 0; i < 4; i++) {
-  //   for (int j = 0; j < 13; j++) {
-  //     cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
-  //     cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
-  //   }
+  //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
+  //   playersContainer.pack_start(*playerViews[i]);
   // }
 
 
