@@ -1,6 +1,7 @@
 #ifndef ST_CONTROLLER_H
 #define ST_CONTROLLER_H
 
+#include "main.h"
 #include "card.h"
 #include <vector>
 #include <random>
@@ -14,7 +15,7 @@ public:
    Controller(Model*);
    Model* model();
 
-   void startButtonClicked(int = 0);
+   void startButtonClicked(int = DEFAULT_SEED);
    void endButtonClicked();
 
    void inputPlayers();

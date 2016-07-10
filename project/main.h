@@ -10,4 +10,9 @@ const int CARDS_PER_PLAYER = NUM_CARDS / NUM_PLAYERS;
  */
 const int NUM_POINTS = 80;
 
+/**
+ * Default seed value
+ */
+const int DEFAULT_SEED = 0;
+
 #endif

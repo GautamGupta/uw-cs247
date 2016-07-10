@@ -252,8 +252,9 @@ void Controller::playComputer(int playerNum) {
 /**
  * Start a new game with seed
  */
-void Controller::startButtonClicked(int seed /* = 0 */) {
+void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
     rng.seed(seed);
+    cout << "Start " << seed << endl;
     // shuffleCards();
 }
 
@@ -263,5 +264,5 @@ void Controller::startButtonClicked(int seed /* = 0 */) {
  * Player types are retained.
  */
 void Controller::endButtonClicked() {
-
+    cout << "End" << endl;
 }

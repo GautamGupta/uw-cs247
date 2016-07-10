@@ -10,6 +10,7 @@
 #include "card.h"
 #include "observer.h"
 #include <iostream>
+#include <cstdlib>
 #include <cassert>
 #include <algorithm>
 
@@ -33,17 +34,15 @@ View::View(Model *model, Controller *controller) :
     masterContainer.pack_start(tableFrame);
     masterContainer.pack_start(playerBox);
 
-    gameBox.pack_start( startButton_ );
-    gameBox.pack_start( seedInput_ );
-    gameBox.pack_end( endButton_ );
+    gameBox.pack_start(startButton_);
+    gameBox.pack_start(seedInput_);
+    gameBox.pack_end(endButton_);
 
-    // Uncomment later
-    // seedInput_.set_text(intToString(_model->getSeed()));
+    seedInput_.set_text(to_string(DEFAULT_SEED));
 
     // UI for gameBox
-    startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
-    endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
-    seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
+    startButton_.signal_clicked().connect(sigc::mem_fun(*this, &View::startButtonClicked));
+    endButton_.signal_clicked().connect(sigc::mem_fun(*this, &View::endButtonClicked));
 
     // UI for cards on table
     tableFrame.set_label("Cards on the table");
@@ -238,15 +237,14 @@ void View::update() {
 }
 
 void View::startButtonClicked() {
-    controller()->startButtonClicked();
-    cout << " AY LMAO " << endl;
+    int seed = atoi(seedInput_.get_text().c_str());
+    if (!seed) {
+        seed = DEFAULT_SEED;
+    }
+
+    controller()->startButtonClicked(seed);
 }
 
 void View::endButtonClicked() {
     controller()->endButtonClicked();
-    cout << " Reach Chen's " << endl;
-}
-
-void View::seedInputted(){
-    cout << " I Just entered a seed" << endl;
 }
