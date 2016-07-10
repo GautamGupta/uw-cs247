@@ -53,6 +53,7 @@ private:
 
     // Member widgets:
     Gtk::HBox panels;      // Main window divided into two horizontal panels
+    Gtk::VBox butBox;      // Vertical boxes for stacking buttons vertically
 
     // Boxes, frames, and tables
     Gtk::VBox masterContainer;
@@ -60,7 +61,7 @@ private:
     Gtk::Frame tableFrame; // Contains cards on table
     Gtk::Table cardsOnTable;
 
-    Gtk::Button startButton_;;
+    Gtk::Button startButton_;
     Gtk::Button endButton_;
 
     Gtk::Image card;
