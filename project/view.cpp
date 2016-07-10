@@ -33,10 +33,11 @@ View::View(Model *model, Controller *controller) :
   masterContainer.pack_start(tableFrame);
   masterContainer.pack_start(playerBox);
 
-    gameBox.pack_start( startButton_ );
-    gameBox.pack_start( seedInput_ );
-    gameBox.pack_end( endButton_ );
-
+  // Set up gameBox
+  gameBox.pack_start( startButton_ );
+  gameBox.pack_start( seedInput_ );
+  gameBox.pack_end( endButton_ );
+            
     // Uncomment later
     // seedInput_.set_text(intToString(_model->getSeed()));
 
@@ -49,6 +50,7 @@ View::View(Model *model, Controller *controller) :
   tableFrame.set_label("Cards on the table");
   tableFrame.add(cardsOnTable);
   cardsOnTable.set_row_spacings(5);
+
   // Coming soon
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 13; j++) {
@@ -57,23 +59,11 @@ View::View(Model *model, Controller *controller) :
     }
   }
 
-    // UI for cards on table
-    tableFrame.set_label("Cards on the table");
-    tableFrame.add(cardsOnTable);
-    cardsOnTable.set_row_spacings(5);
-    // Coming soon
-    // for (int i = 0; i < 4; i++) {
-    //   for (int j = 0; j < 13; j++) {
-    //     cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
-    //     cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
-    //   }
-    // }
-
-    // UI for playerBox
-    // for (int i = 0; i < 4; i++) {
-    //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
-    //   playersContainer.pack_start(*playerViews[i]);
-    // }
+  // UI for playerBox
+  // for (int i = 0; i < 4; i++) {
+  //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
+  //   playersContainer.pack_start(*playerViews[i]);
+  // }
 
 
 	// The final step is to display the buttons (they display themselves)
