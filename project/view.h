@@ -79,6 +79,10 @@ private:
     // Signal handlers:
     void startButtonClicked();
     void endButtonClicked();
+
+    // Update view functions
+    void updatePlayedCards();
+
 };
 
 #endif

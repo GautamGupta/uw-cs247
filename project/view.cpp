@@ -250,3 +250,13 @@ void View::startButtonClicked() {
 void View::endButtonClicked() {
     controller()->endButtonClicked();
 }
+
+void View::updatePlayedCards(){
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+            // const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(static_cast<Rank>(j), static_cast<Suit>(i));
+
+
+        }
+    }
+}
