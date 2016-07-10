@@ -61,7 +61,7 @@ private:
 
     Gtk::Frame tableFrame; // Contains cards on table
     Gtk::Table cardsOnTable;
-    // Gtk::Image *cardsPlayed[4][13];
+    Gtk::Image *cardsPlayed[4][13];
     Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
 
     Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
@@ -80,6 +80,7 @@ private:
     void startButtonClicked();
     void endButtonClicked();
     void seedInputted();
+
 
 };
 

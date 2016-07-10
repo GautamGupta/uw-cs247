@@ -17,7 +17,10 @@ using namespace std;
 
 View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller), panels(true, 10), butBox(true, 10),
-        startButton_("Start new game with seed:"), endButton_("End current game"), card(deck.null()) {
+        startButton_("Start new game with seed:"), endButton_("End current game"), card(deck.getNullCardImage()) {
+
+    const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+
 
 	// Sets some properties of the window.
     set_title("Straights");
@@ -26,7 +29,7 @@ View::View(Model *model, Controller *controller) :
 	// Add panels to the window
     add(masterContainer);
 
-	card.set( deck.null() );
+	card.set( deck.getNullCardImage() );
 
     // Set up containers
     masterContainer.pack_start(gameBox);
@@ -53,7 +56,8 @@ View::View(Model *model, Controller *controller) :
     // Coming soon
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 13; j++) {
-            // cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+            cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+            cardsOnTable.add(*cardsPlayed[i][j]);
             // cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
         }
     }
@@ -223,7 +227,7 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-    card.set(deck.null());
+    card.set(deck.getNullCardImage());
 }
 
 void View::startButtonClicked() {

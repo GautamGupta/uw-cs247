@@ -59,7 +59,7 @@ Glib::RefPtr<Gdk::Pixbuf> DeckGUI::image(Rank r, Suit s) {
 /**
  * Returns the image to use for the placeholder.
  */
-Glib::RefPtr<Gdk::Pixbuf> DeckGUI::null() {
+Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getNullCardImage() {
 	int size = deck.size();
 	return deck[ size-1 ];
 }
