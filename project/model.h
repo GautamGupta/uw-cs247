@@ -22,6 +22,7 @@ public:
     std::shared_ptr<Player> player(int);
     Cards getDeck();
     Cards getCardsOnTable();
+    bool cardWasPlayed(std::shared_ptr<Card>);
     SuitCards getSuitCardsOnTable();
     Cards getLegalPlays(int);
 

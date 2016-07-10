@@ -15,7 +15,7 @@ class DeckGUI {
 public:
 	DeckGUI();
 	virtual ~DeckGUI();
-	Glib::RefPtr<Gdk::Pixbuf> image(Rank, Suit);       // Returns the image for the specified card.
+	Glib::RefPtr<Gdk::Pixbuf> getCardImage(Rank, Suit);       // Returns the image for the specified card.
 	Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();                 // Returns the image to use for the placeholder.
 
 

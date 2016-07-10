@@ -53,8 +53,8 @@ View::View(Model *model, Controller *controller) :
     tableFrame.add(cardsOnTable);
     cardsOnTable.set_row_spacings(5);
     cardsOnTable.set_col_spacings(5);
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 13; j++) {
+    for (int i = 0; i < SUIT_COUNT; i++) {
+        for (int j = 0; j < RANK_COUNT; j++) {
             cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
             cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
         }
@@ -246,4 +246,21 @@ void View::startButtonClicked() {
 
 void View::endButtonClicked() {
     controller()->endButtonClicked();
+}
+
+void View::updatePlayedCards(bool reset){
+    for (int i = 0; i < SUIT_COUNT; i++) {
+        for (int j = 0; j < RANK_COUNT; j++) {
+            const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(static_cast<Rank>(j), static_cast<Suit>(i));
+
+            shared_ptr<Card> card (new Card(static_cast<Suit>(i), static_cast<Rank>(j)));
+
+            if(model_->cardWasPlayed(card) && !reset){
+                cardsPlayed[i][j]->set(cardPixbuf);
+            }
+            else {
+                cardsPlayed[i][j]->set(nullCardPixbuf);
+            }
+        }
+    }
 }
