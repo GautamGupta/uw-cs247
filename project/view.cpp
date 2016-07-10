@@ -20,44 +20,43 @@ View::View(Model *model, Controller *controller) :
         startButton_("Start new game with seed:"), endButton_("End current game"), card(deck.null()) {
 
 	// Sets some properties of the window.
-  set_title("Straights");
+    set_title("Straights");
 	set_border_width(10);
 
 	// Add panels to the window
-  add(masterContainer);
+    add(masterContainer);
 
 	card.set( deck.null() );
 
-  // Set up containers
-  masterContainer.pack_start(gameBox);
-  masterContainer.pack_start(tableFrame);
-  masterContainer.pack_start(playerBox);
+    // Set up containers
+    masterContainer.pack_start(gameBox);
+    masterContainer.pack_start(tableFrame);
+    masterContainer.pack_start(playerBox);
 
   // Set up gameBox
   gameBox.pack_start( startButton_ );
   gameBox.pack_start( seedInput_ );
   gameBox.pack_end( endButton_ );
-            
+
     // Uncomment later
     // seedInput_.set_text(intToString(_model->getSeed()));
 
-  // UI for gameBox
-  startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
-  endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
-  seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
+    // UI for gameBox
+    startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
+    endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
+    seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
 
-  // UI for cards on table
-  tableFrame.set_label("Cards on the table");
-  tableFrame.add(cardsOnTable);
-  cardsOnTable.set_row_spacings(5);
-
-  // Coming soon
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 13; j++) {
-      // cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
-      // cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+    // UI for cards on table
+    tableFrame.set_label("Cards on the table");
+    tableFrame.add(cardsOnTable);
+    cardsOnTable.set_row_spacings(5);
+    // Coming soon
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+            // cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+            // cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+        }
     }
-  }
 
   // UI for playerBox
   // for (int i = 0; i < 4; i++) {
