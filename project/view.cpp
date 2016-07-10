@@ -6,6 +6,7 @@
 #include "main.h"
 #include "view.h"
 #include "model.h"
+#include "controller.h"
 #include "card.h"
 #include "observer.h"
 #include <iostream>
@@ -14,14 +15,16 @@
 
 using namespace std;
 
-View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new game with seed:"), endButton_("End current game") {
+View::View(Model *model, Controller *controller) :
+        model_(model), controller_(controller), panels(true, 10), butBox(true, 10),
+        startButton_("Start new game with seed:"), endButton_("End current game"), card(deck.null()) {
 
 	// Sets some properties of the window.
-  set_title( "Straights UI" );
-	set_border_width( 10 );
+    set_title("Straights");
+	set_border_width(10);
 
 	// Add panels to the window
-  add(masterContainer);
+    add(masterContainer);
 
 	card.set( deck.null() );
   nullCardPixbuf = deck.getNullCardImage();
@@ -32,14 +35,17 @@ View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new gam
   masterContainer.pack_start(tableFrame);
   masterContainer.pack_start(playerBox);
 
+    gameBox.pack_start( startButton_ );
+    gameBox.pack_start( seedInput_ );
+    gameBox.pack_end( endButton_ );
 
-	gameBox.pack_start( startButton_ );
-  gameBox.pack_start( seedInput_ );
-  gameBox.pack_end( endButton_ );
+    // Uncomment later
+    // seedInput_.set_text(intToString(_model->getSeed()));
 
-
-  // Uncomment later
-  // seedInput_.set_text(intToString(_model->getSeed()));
+    // UI for gameBox
+    startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
+    endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
+    seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
 
   // UI for gameBox
   startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
@@ -63,6 +69,17 @@ View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new gam
   //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
   //   playersContainer.pack_start(*playerViews[i]);
   // }
+    // UI for cards on table
+    tableFrame.set_label("Cards on the table");
+    tableFrame.add(cardsOnTable);
+    cardsOnTable.set_row_spacings(5);
+    // Coming soon
+    // for (int i = 0; i < 4; i++) {
+    //   for (int j = 0; j < 13; j++) {
+    //     cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+    //     cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+    //   }
+    // }
 
 
 	// The final step is to display the buttons (they display themselves)
@@ -71,10 +88,17 @@ View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new gam
 	// Register view as observer of model
 	model_->subscribe(this);
 
-} // View::View
-
+}
 
 View::~View() {}
+
+Model* View::model() {
+    return model_;
+}
+
+Controller* View::controller() {
+    return controller_;
+}
 
 /**
  * Take in h/c to define if a player is human or computer
@@ -216,23 +240,19 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-  // Suits suit = model_->suit();
-  // Faces face = model_->face();
-  // if ( suit == NOSUIT )
-  //   card.set( deck.null() );
-  // else
-  //   card.set( deck.image(face, suit) );
-
+    card.set(deck.null());
 }
 
-void View::startButtonClicked(){
-  cout << " AY LMAO " << endl;
+void View::startButtonClicked() {
+    controller()->startButtonClicked();
+    cout << " AY LMAO " << endl;
 }
 
-void View::endButtonClicked(){
-  cout << " Reach Chen's " << endl;
+void View::endButtonClicked() {
+    controller()->endButtonClicked();
+    cout << " Reach Chen's " << endl;
 }
 
 void View::seedInputted(){
-  cout << " I Just entered a seed" << endl;
+    cout << " I Just entered a seed" << endl;
 }
