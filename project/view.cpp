@@ -14,36 +14,55 @@
 
 using namespace std;
 
-View::View(Model *m) :
-        model_(m), panels(true, 10), butBox(true, 10),
-        next_button("next"), reset_button("reset"), card(deck.null()) {
+View::View(Controller *c, Model *m) : model_(m), controller_(c), card(deck.null()), startButton_("Start new game with seed:"), endButton_("End current game") {
 
-    set_title("Straights");
-    set_border_width(10);
+	// Sets some properties of the window.
+  set_title( "Straights UI" );
+	set_border_width( 10 );
 
-    // Add panels to the window
-    add(panels);
+	// Add panels to the window
+  add(masterContainer);
 
-    // Add button box and card image to the panels
-    panels.add(butBox);
-    panels.add(card);
-    card.set(deck.null());
+	card.set( deck.null() );
 
-    // Add buttons to the box (a container). Buttons initially invisible
-    butBox.add(next_button);
-    butBox.add(reset_button);
+  // Set up containers
+  masterContainer.pack_start(gameBox);
+  masterContainer.pack_start(tableFrame);
 
-    // Associate button "clicked" events with local onButtonClicked() method defined below.
-    next_button.signal_clicked().connect(sigc::mem_fun(*this, &View::nextButtonClicked));
-    reset_button.signal_clicked().connect(sigc::mem_fun(*this, &View::resetButtonClicked));
+	gameBox.pack_start( startButton_ );
+  gameBox.pack_start( seedInput_ );
+  gameBox.pack_end( endButton_ );
 
-    // The final step is to display the buttons (they display themselves)
-    show_all();
 
-    // Register view as observer of model
-    model_->subscribe(this);
+  // Uncomment later
+  // seedInput_.set_text(intToString(_model->getSeed()));
 
-}
+  // UI for gameBox
+  startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
+  endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
+  seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
+
+  // UI for cards on table
+  tableFrame.set_label("Cards on the table");
+  tableFrame.add(cardsOnTable);
+  cardsOnTable.set_row_spacings(5);
+  // Coming soon
+  // for (int i = 0; i < 4; i++) {
+  //   for (int j = 0; j < 13; j++) {
+  //     cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+  //     cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+  //   }
+  // }
+
+
+	// The final step is to display the buttons (they display themselves)
+	show_all();
+
+	// Register view as observer of model
+	model_->subscribe(this);
+
+} // View::View
+
 
 View::~View() {}
 
@@ -187,13 +206,31 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
+  Suits suit = model_->suit();
+  Faces face = model_->face();
+  if ( suit == NOSUIT )
     card.set( deck.null() );
+  else
+    card.set( deck.image(face, suit) );
+
 }
 
 void View::nextButtonClicked() {
-    // controller_->nextButtonClicked();
-}
+  controller_->nextButtonClicked();
+} // View::nextButtonClicked
 
 void View::resetButtonClicked() {
-    // controller_->resetButtonClicked();
+  controller_->resetButtonClicked();
+} // View::resetButtonClicked
+
+void View::startButtonClicked(){
+  cout << " AY LMAO " << endl;
+}
+
+void View::endButtonClicked(){
+  cout << " Reach Chen's " << endl;
+}
+
+void View::seedInputted(){
+  cout << " I Just entered a seed" << endl;
 }

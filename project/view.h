@@ -44,19 +44,28 @@ private:
     // Observer Pattern: to access Model accessors without having to downcast subject
     Model *model_;
 
-    // Card Images
+        // Card Images
     DeckGUI deck;
 
     // Member widgets:
     Gtk::HBox panels;      // Main window divided into two horizontal panels
-    Gtk::VBox butBox;      // Vertical boxes for stacking buttons vertically
-    Gtk::Button next_button;
-    Gtk::Button reset_button;
+
+    // Boxes, frames, and tables
+    Gtk::VBox masterContainer;
+    Gtk::HBox gameBox; // Contains start game, seed,  and end game buttons
+    Gtk::Frame tableFrame; // Contains cards on table
+    Gtk::Table cardsOnTable;
+
+    Gtk::Button startButton_;;
+    Gtk::Button endButton_;
+
     Gtk::Image card;
+    Gtk::Entry seedInput_;
 
     // Signal handlers:
-    void nextButtonClicked();
-    void resetButtonClicked();
+    void startButtonClicked();
+    void endButtonClicked();
+    void seedInputted();
 
 }; // View
 
