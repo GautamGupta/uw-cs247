@@ -14,7 +14,7 @@
 
 using namespace std;
 
-View::View(Controller *c, Model *m) : model_(m), controller_(c), card(deck.null()), startButton_("Start new game with seed:"), endButton_("End current game") {
+View::View(Model *m) : model_(m), card(deck.null()), startButton_("Start new game with seed:"), endButton_("End current game") {
 
 	// Sets some properties of the window.
   set_title( "Straights UI" );
@@ -206,22 +206,14 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-  Suits suit = model_->suit();
-  Faces face = model_->face();
-  if ( suit == NOSUIT )
-    card.set( deck.null() );
-  else
-    card.set( deck.image(face, suit) );
+  // Suits suit = model_->suit();
+  // Faces face = model_->face();
+  // if ( suit == NOSUIT )
+  //   card.set( deck.null() );
+  // else
+  //   card.set( deck.image(face, suit) );
 
 }
-
-void View::nextButtonClicked() {
-  controller_->nextButtonClicked();
-} // View::nextButtonClicked
-
-void View::resetButtonClicked() {
-  controller_->resetButtonClicked();
-} // View::resetButtonClicked
 
 void View::startButtonClicked(){
   cout << " AY LMAO " << endl;
