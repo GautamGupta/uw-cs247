@@ -15,12 +15,15 @@
 #include <vector>
 
 class Model;
+class Controller;
 
 class View : public Gtk::Window, public Observer {
 public:
-    View(Model*);
+    View(Model*, Controller*);
 	~View();
     virtual void update();  // Observer Pattern: concrete update() method
+    Model* model();
+    Controller* controller();
 
     char inputPlayer(int);
 
@@ -43,6 +46,7 @@ public:
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
     Model *model_;
+    Controller *controller_;
 
     // Card Images
     DeckGUI deck;
@@ -50,13 +54,13 @@ private:
     // Member widgets:
     Gtk::HBox panels;      // Main window divided into two horizontal panels
     Gtk::VBox butBox;      // Vertical boxes for stacking buttons vertically
-    Gtk::Button next_button;
-    Gtk::Button reset_button;
+    Gtk::Button start_button;
+    Gtk::Button end_button;
     Gtk::Image card;
 
     // Signal handlers:
-    void nextButtonClicked();
-    void resetButtonClicked();
+    void startButtonClicked();
+    void endButtonClicked();
 
 }; // View
 

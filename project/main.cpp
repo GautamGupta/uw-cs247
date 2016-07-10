@@ -15,23 +15,13 @@
 using namespace std;
 
 /**
- * For shuffling
- */
-int seed = 0;
-
-/**
  * First called method
  */
 int main(int argc, char* argv[]) {
-    // Set seed if it was supplied
-	if (argc > 1) {
-		seed = atoi(argv[1]);
-	}
-
     Gtk::Main kit(argc, argv);              // Initialize gtkmm with the command line arguments, as appropriate.
 	Model model;                            // Create model
-    View view(&model);                      // Create the view
-    Controller controller(&model, &view);   // Create controller -- is passed handle to view and model
+    Controller controller(&model);          // Create controller
+    View view(&model, &controller);         // Create the view
     Gtk::Main::run(view);                   // Show the window and return when it is closed.
 
 	return 0;

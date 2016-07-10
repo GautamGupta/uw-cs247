@@ -6,6 +6,7 @@
 #include "main.h"
 #include "view.h"
 #include "model.h"
+#include "controller.h"
 #include "card.h"
 #include "observer.h"
 #include <iostream>
@@ -14,9 +15,9 @@
 
 using namespace std;
 
-View::View(Model *m) :
-        model_(m), panels(true, 10), butBox(true, 10),
-        next_button("next"), reset_button("reset"), card(deck.null()) {
+View::View(Model *model, Controller *controller) :
+        model_(model), controller_(controller), panels(true, 10), butBox(true, 10),
+        start_button("next"), end_button("reset"), card(deck.null()) {
 
     set_title("Straights");
     set_border_width(10);
@@ -30,22 +31,29 @@ View::View(Model *m) :
     card.set(deck.null());
 
     // Add buttons to the box (a container). Buttons initially invisible
-    butBox.add(next_button);
-    butBox.add(reset_button);
+    butBox.add(start_button);
+    butBox.add(end_button);
 
     // Associate button "clicked" events with local onButtonClicked() method defined below.
-    next_button.signal_clicked().connect(sigc::mem_fun(*this, &View::nextButtonClicked));
-    reset_button.signal_clicked().connect(sigc::mem_fun(*this, &View::resetButtonClicked));
+    start_button.signal_clicked().connect(sigc::mem_fun(*this, &View::startButtonClicked));
+    end_button.signal_clicked().connect(sigc::mem_fun(*this, &View::endButtonClicked));
 
     // The final step is to display the buttons (they display themselves)
     show_all();
 
     // Register view as observer of model
     model_->subscribe(this);
-
 }
 
 View::~View() {}
+
+Model* View::model() {
+    return model_;
+}
+
+Controller* View::controller() {
+    return controller_;
+}
 
 /**
  * Take in h/c to define if a player is human or computer
@@ -187,13 +195,13 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-    card.set( deck.null() );
+    card.set(deck.null());
 }
 
-void View::nextButtonClicked() {
-    // controller_->nextButtonClicked();
+void View::startButtonClicked() {
+    controller()->startButtonClicked();
 }
 
-void View::resetButtonClicked() {
-    // controller_->resetButtonClicked();
+void View::endButtonClicked() {
+    controller()->endButtonClicked();
 }
