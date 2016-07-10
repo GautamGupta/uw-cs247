@@ -20,11 +20,11 @@ View::View(Model *model, Controller *controller) :
         startButton_("Start new game with seed:"), endButton_("End current game"), card(deck.null()) {
 
 	// Sets some properties of the window.
-    set_title("Straights");
+  set_title("Straights");
 	set_border_width(10);
 
 	// Add panels to the window
-    add(masterContainer);
+  add(masterContainer);
 
 	card.set( deck.null() );
   nullCardPixbuf = deck.getNullCardImage();
@@ -41,11 +41,6 @@ View::View(Model *model, Controller *controller) :
 
     // Uncomment later
     // seedInput_.set_text(intToString(_model->getSeed()));
-
-    // UI for gameBox
-    startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
-    endButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::endButtonClicked ) );
-    seedInput_.signal_changed().connect( sigc::mem_fun( *this, &View::seedInputted ) );
 
   // UI for gameBox
   startButton_.signal_clicked().connect( sigc::mem_fun( *this, &View::startButtonClicked ) );
@@ -64,11 +59,6 @@ View::View(Model *model, Controller *controller) :
     }
   }
 
-  // UI for playerBox
-  // for (int i = 0; i < 4; i++) {
-  //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
-  //   playersContainer.pack_start(*playerViews[i]);
-  // }
     // UI for cards on table
     tableFrame.set_label("Cards on the table");
     tableFrame.add(cardsOnTable);
@@ -79,6 +69,12 @@ View::View(Model *model, Controller *controller) :
     //     cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
     //     cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
     //   }
+    // }
+
+    // UI for playerBox
+    // for (int i = 0; i < 4; i++) {
+    //   playerViews[i] = new PlayerView(i+1, _model, this, _controller);
+    //   playersContainer.pack_start(*playerViews[i]);
     // }
 
 
