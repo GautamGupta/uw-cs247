@@ -6,11 +6,11 @@
 #include "subject.h"
 #include "observer.h"
 
-void Subject::subscribe (Observer *newView) {
+void Subject::subscribe(Observer *newView) {
     observers_.insert(newView);
 }
 
-void Subject::unsubscribe (Observer *formerView) {
+void Subject::unsubscribe(Observer *formerView) {
     observers_.erase(formerView);
 }
 

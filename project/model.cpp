@@ -13,7 +13,7 @@
 
 using namespace std;
 
-Model::Model() : startPlayer_(-1) {
+Model::Model() : currentPlayer_(-1), numPlays_(0) {
     // Initialize 4 humans
     for (int i = 0; i < NUM_PLAYERS; i++) {
         shared_ptr<Player> humanPlayer(new HumanPlayer());
@@ -25,8 +25,8 @@ Players Model::players() {
     return players_;
 }
 
-int Model::startPlayer() {
-    return startPlayer_;
+int Model::currentPlayer() {
+    return currentPlayer_;
 }
 
 shared_ptr<Player> Model::player(int i) {
@@ -50,6 +50,14 @@ void Model::endRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->endRound();
     }
+}
+
+/**
+ * Check if 52 cards have been played / discarded in the round
+ * ie. if round is over
+ */
+bool Model::isRoundOver() {
+    return numPlays_ == NUM_CARDS;
 }
 
 /**
@@ -148,10 +156,11 @@ Cards Model::getLegalPlays(int playerNum) {
 }
 
 /**
+ * Set current player to index
  * Set start to the player who has 7S
  */
-void Model::setStartPlayer(int startPlayer) {
-    startPlayer_ = startPlayer;
+void Model::setCurrentPlayer(int currentPlayer) {
+    currentPlayer_ = currentPlayer;
 }
 
 /**
@@ -170,5 +179,32 @@ void Model::addPlayerCards(int playerNum, Cards &cards) {
     for (int i = 0; i < cards.size(); i++) {
         player(playerNum)->addCard(cards.at(i));
     }
+    notify();
+}
+
+/**
+ * Play a card
+ */
+void Model::playCard(int playerNum, Card card) {
+    player(playerNum)->playCard(card);
+    donePlay();
+}
+
+/**
+ * Discard a card
+ */
+void Model::discardCard(int playerNum, Card card) {
+    player(playerNum)->discardCard(card);
+    donePlay();
+}
+
+/**
+ * 1. Set next player
+ * 2. Increment # plays
+ * 3. Notify
+ */
+void Model::donePlay() {
+    currentPlayer_ = (currentPlayer_ + 1) % NUM_PLAYERS;
+    numPlays_++;
     notify();
 }
