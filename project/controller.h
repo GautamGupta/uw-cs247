@@ -21,8 +21,10 @@ public:
    void assignCards();
    void startRound();
    void endRound();
-   void playerRageQuit(int);
-   void playHuman(int);
+   void rageQuit(int);
+   void togglePlayer(int);
+   bool playCard(int, Card);
+   bool discardCard(int, Card);
    void playComputer(int);
 
    void shuffleCards(Cards &);

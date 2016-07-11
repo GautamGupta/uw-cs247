@@ -86,13 +86,13 @@ void PlayerView::onBtnClick() {
     // Ragequit
     if (toggleBtn.get_label() == TXT_RAGE) {
         setToggleButton(TXT_RAGE, false);
-        controller()->playerRageQuit(playerNum_);
+        controller()->rageQuit(playerNum_);
         cout << _sprintf(TXT_RAGE_MSG, playerNum_+1) << endl;
 
     // Toggle Human <-> Computer
     } else {
         toggleBtn.set_label((toggleBtn.get_label() == TXT_HUMAN) ? TXT_COMPUTER : TXT_HUMAN);
-        // controller()->toggleBtn(playerNum_);
+        controller()->togglePlayer(playerNum_);
     }
 }
 

@@ -17,7 +17,7 @@ Model::Model() : startPlayer_(-1) {
     // Initialize 4 humans
     for (int i = 0; i < NUM_PLAYERS; i++) {
         shared_ptr<Player> humanPlayer(new HumanPlayer());
-        addPlayer(humanPlayer);
+        players_.push_back(humanPlayer);
     }
 }
 
@@ -40,6 +40,7 @@ void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->startRound();
     }
+    notify();
 }
 
 /**
@@ -154,15 +155,6 @@ void Model::setStartPlayer(int startPlayer) {
 }
 
 /**
- * Add player to our players array
- * @param Player* Pointer to player object
- */
-void Model::addPlayer(shared_ptr<Player> player) {
-    players_.push_back(player);
-}
-
-
-/**
  * Replace player to our players array
  * @param int Index to replace
  * @param Player* Pointer to player object
@@ -174,6 +166,9 @@ void Model::replacePlayer(int playerNum, shared_ptr<Player> player) {
 /**
  * Add card to player
  */
-void Model::addPlayerCard(int playerNum, shared_ptr<Card> card) {
-    player(playerNum)->addCard(card);
+void Model::addPlayerCards(int playerNum, Cards &cards) {
+    for (int i = 0; i < cards.size(); i++) {
+        player(playerNum)->addCard(cards.at(i));
+    }
+    notify();
 }

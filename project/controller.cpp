@@ -39,23 +39,23 @@ void Controller::startRound() {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;
 
         if (model()->player(playerNum)->isHuman()) {
-            playHuman(playerNum);
+            // playHuman(playerNum);
         } else {
             playComputer(playerNum);
         }
     }
-
-    endRound();
 }
 
 /**
  * 1. If it's the first round, generate 52 cards. Otherwise use deck from previous round.
  * 2. Shuffle the deck
- * 3. Clear players' arrays
+ * 3. Clear players' card arrays
  * 4. Assign cards to players in order (cards 0-12 go to player 1 etc)
  */
 void Controller::assignCards() {
     vector< shared_ptr<Card> > cards = model()->getDeck();
+    Card startingCard(SPADE, SEVEN);
+
     if (cards.size() == 0) {
         for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
             for (int rank = ACE; rank < RANK_COUNT; rank++) {
@@ -67,13 +67,14 @@ void Controller::assignCards() {
 
     shuffleCards(cards);
 
-    Card startingCard(SPADE, SEVEN);
+    // We must call this after getDeck()
+    model()->startRound();
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        model()->player(i)->startRound();
-        for (int j = CARDS_PER_PLAYER * i; j < CARDS_PER_PLAYER * (i+1); j++) {
-            model()->addPlayerCard(i, cards.at(j));
-            if (*(cards.at(j)) == startingCard) {
+        vector< shared_ptr<Card> > playerCards(cards.begin() + CARDS_PER_PLAYER * i, cards.begin() + CARDS_PER_PLAYER * (i+1));
+        model()->addPlayerCards(i, playerCards);
+        for (int j = 0; j < playerCards.size(); j++) {
+            if (*(playerCards.at(j)) == startingCard) {
                 model()->setStartPlayer(i);
             }
         }
@@ -83,7 +84,7 @@ void Controller::assignCards() {
 /**
  * Shuffle cards based on seed
  */
-void Controller::shuffleCards(vector< shared_ptr<Card> > &cards) {
+void Controller::shuffleCards(Cards &cards) {
     int n = cards.size();
 
     while (n > 1) {
@@ -119,79 +120,24 @@ void Controller::endRound() {
 }
 
 /**
- * Human's turn to play. Get input and perform the play
- *
- * @param playerNum Player index
+ * Convert Human to Computer and play for computer
  */
-void Controller::playHuman(int playerNum) {
-    Cards legalPlays = model()->getLegalPlays(playerNum);
-
-    Command command;
-    cin >> command;
-
-    switch (command.type) {
-        case PLAY : {
-            bool canPlay = false;
-            for (int i = 0; i < legalPlays.size(); i++) {
-                if (*legalPlays.at(i) == command.card) {
-                    canPlay = true;
-                    break;
-                }
-            }
-
-            if (!canPlay) {
-                // view()->errorPlayCard();
-                return playHuman(playerNum);
-            } else {
-                try {
-                    model()->player(playerNum)->playCard(command.card);
-                } catch (Player::CardNotFoundException &e) {
-                    exit(EXIT_FAILURE);
-                }
-
-                // view()->displayPlayCard(playerNum, command.card);
-            }
-
-            break;
-        }
-
-        case DISCARD : {
-            if (legalPlays.size() > 0) {
-                // view()->errorDiscardCard();
-                return playHuman(playerNum);
-            }
-
-            try {
-                model()->player(playerNum)->discardCard(command.card);
-                // view()->displayDiscardCard(playerNum, command.card);
-            } catch (Player::CardNotFoundException &e) {
-                exit(EXIT_FAILURE);
-            }
-
-            break;
-        }
-
-        case DECK :
-            // view()->displayCards(model()->getDeck());
-            return playHuman(playerNum);
-
-        case QUIT :
-            return exit(EXIT_SUCCESS);
-
-        case RAGEQUIT : {
-
-        }
-
-        default :
-            return exit(EXIT_FAILURE);
-    }
-
+void Controller::rageQuit(int playerNum) {
+    togglePlayer(playerNum);
+    playComputer(playerNum);
 }
 
-void Controller::playerRageQuit(int playerNum) {
-    shared_ptr<Player> computerPlayer(new ComputerPlayer(*model()->player(playerNum)));
-    model()->replacePlayer(playerNum, computerPlayer);
-    return playComputer(playerNum);
+/**
+ * Switch player type
+ */
+void Controller::togglePlayer(int playerNum) {
+    if (model()->player(playerNum)->isHuman()) {
+        shared_ptr<Player> newPlayer(new ComputerPlayer(*model()->player(playerNum)));
+        model()->replacePlayer(playerNum, newPlayer);
+    } else {
+        shared_ptr<Player> newPlayer(new HumanPlayer(*model()->player(playerNum)));
+        model()->replacePlayer(playerNum, newPlayer);
+    }
 }
 
 /**
@@ -213,6 +159,41 @@ void Controller::playComputer(int playerNum) {
         model()->player(playerNum)->discardCard(card);
         // view()->displayDiscardCard(playerNum, card);
     }
+}
+
+bool Controller::playCard(int playerNum, Card card) {
+    Cards legalPlays = model()->getLegalPlays(playerNum);
+
+    for (int i = 0; i < legalPlays.size(); i++) {
+        if (*legalPlays.at(i) == card) {
+            try {
+                model()->player(playerNum)->playCard(card);
+                return true;
+            } catch (Player::CardNotFoundException &e) {
+                exit(EXIT_FAILURE);
+            }
+
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool Controller::discardCard(int playerNum, Card card) {
+    Cards legalPlays = model()->getLegalPlays(playerNum);
+
+    if (legalPlays.size() == 0) {
+        try {
+            model()->player(playerNum)->discardCard(card);
+            // view()->displayDiscardCard(playerNum, command.card);
+            return true;
+        } catch (Player::CardNotFoundException &e) {
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return false;
 }
 
 /**

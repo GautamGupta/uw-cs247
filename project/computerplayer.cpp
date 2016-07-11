@@ -7,7 +7,7 @@ ComputerPlayer::ComputerPlayer() : Player() {}
 ComputerPlayer::~ComputerPlayer() {}
 
 /**
- * Copy constructor for ragequit
+ * Copy constructor for toggle
  */
 ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
     previousScore_  = player.getPreviousScore();

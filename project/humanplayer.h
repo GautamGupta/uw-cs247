@@ -9,6 +9,7 @@
 class HumanPlayer : public Player {
 public:
     HumanPlayer();
+    HumanPlayer(const Player&);
     virtual ~HumanPlayer();
 
     bool isHuman();

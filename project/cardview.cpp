@@ -15,7 +15,7 @@ CardView::CardView(Model* model, Controller* controller, View* view) : model_(mo
     cardImage = new Gtk::Image(nullCardPixbuf);
     set_image(*cardImage);
 
-    signal_clicked().connect( sigc::mem_fun( *this, &CardView::cardButtonClicked));
+    signal_clicked().connect(sigc::mem_fun(*this, &CardView::cardButtonClicked));
 }
 
 CardView::~CardView() {
