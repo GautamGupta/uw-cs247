@@ -18,7 +18,7 @@ class Model : public Subject {
 public:
     Model();
     Players players();
-    int startPlayer();
+    int currentPlayer();
     std::shared_ptr<Player> player(int);
     Cards getDeck();
     Cards getCardsOnTable();
@@ -26,17 +26,22 @@ public:
     SuitCards getSuitCardsOnTable();
     Cards getLegalPlays(int);
 
-    void setStartPlayer(int);
+    void setCurrentPlayer(int);
     void replacePlayer(int, std::shared_ptr<Player>);
     void addPlayerCards(int, Cards &);
+    void playCard(int, Card);
+    void discardCard(int, Card);
     void startRound();
+    void donePlay();
+    bool isRoundOver();
     void endRound();
     bool isGameOver();
     int lowestScore();
 
 private:
     Players players_;
-    int startPlayer_; // Index of player that starts the round (has 7S)
+    int currentPlayer_;   // Index of player that has the next turn
+    int numPlays_;        // Number of plays that have happened in the round (# plays + # discards)
 }; // Model
 
 #endif

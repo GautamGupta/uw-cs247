@@ -13,18 +13,17 @@ class Model;
 class Controller {
 public:
    Controller(Model*);
-   Model* model();
 
    void startButtonClicked(int = DEFAULT_SEED);
    void endButtonClicked();
 
-   void assignCards();
    void startRound();
    void endRound();
+   void autoPlay();
    void rageQuit(int);
    void togglePlayer(int);
-   bool playCard(int, Card);
-   bool discardCard(int, Card);
+   bool playHumanCard(int, Card);
+   bool discardHumanCard(int, Card);
    void playComputer(int);
 
    void shuffleCards(Cards &);

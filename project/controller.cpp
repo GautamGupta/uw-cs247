@@ -10,7 +10,6 @@
 #include "computerplayer.h"
 #include "humanplayer.h"
 #include "card.h"
-#include "command.h"
 #include <stdlib.h>
 #include <string>
 #include <cassert>
@@ -21,54 +20,14 @@ using namespace std;
 Controller::Controller(Model *m) : model_(m), rng(DEFAULT_SEED) {}
 
 /**
- * Get model
- */
-Model* Controller::model() {
-    return model_;
-}
-
-/**
- * Start the round. Assign cards and do 52 plays (for 52 cards).
- */
-void Controller::startRound() {
-    assignCards();
-
-    // // TEST: DOES START ROUND WITH SEED WORK?
-    // vector< shared_ptr<Card> > cards = model()->getDeck();
-    // for (int i = 0; i< cards.size(); i++){
-    //     cout << *cards[i] << endl;
-    // }
-    int startPlayer = model()->startPlayer();
-
-    // // TEST: CHECK PLAYERS' CARDS
-    // for (int i = 0; i < NUM_PLAYERS; i++) {
-    //     vector< shared_ptr<Card> > cards = model_->players()[i]->getCurrentCards();
-    //     cout << "Player " << i+1 << endl;
-    //     for (int j = 0; j < cards.size(); j++){
-    //         cout << *cards[j] << endl;
-    //     }
-    //     cout << endl;
-    // }
-
-    for (int i = 0; i < NUM_CARDS; i++) {
-        int playerNum = (i + startPlayer) % NUM_PLAYERS;
-
-        if (model()->player(playerNum)->isHuman()) {
-            // playHuman(playerNum);
-        } else {
-            playComputer(playerNum);
-        }
-    }
-}
-
-/**
+ * Start the round
  * 1. If it's the first round, generate 52 cards. Otherwise use deck from previous round.
  * 2. Shuffle the deck
  * 3. Clear players' card arrays
  * 4. Assign cards to players in order (cards 0-12 go to player 1 etc)
  */
-void Controller::assignCards() {
-    vector< shared_ptr<Card> > cards = model()->getDeck();
+void Controller::startRound() {
+    vector< shared_ptr<Card> > cards = model_->getDeck();
     Card startingCard(SPADE, SEVEN);
 
     if (cards.size() == 0) {
@@ -83,17 +42,35 @@ void Controller::assignCards() {
     shuffleCards(cards);
 
     // We must call this after getDeck()
-    model()->startRound();
+    model_->startRound();
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
         vector< shared_ptr<Card> > playerCards(cards.begin() + CARDS_PER_PLAYER * i, cards.begin() + CARDS_PER_PLAYER * (i+1));
-        model()->addPlayerCards(i, playerCards);
+        model_->addPlayerCards(i, playerCards);
         for (int j = 0; j < playerCards.size(); j++) {
             if (*(playerCards.at(j)) == startingCard) {
-                model()->setStartPlayer(i);
+                model_->setCurrentPlayer(i);
             }
         }
     }
+
+    // // TEST: DOES START ROUND WITH SEED WORK?
+    // vector< shared_ptr<Card> > cards = model()->getDeck();
+    // for (int i = 0; i< cards.size(); i++){
+    //     cout << *cards[i] << endl;
+    // }
+
+    // // TEST: CHECK PLAYERS' CARDS
+    // for (int i = 0; i < NUM_PLAYERS; i++) {
+    //     vector< shared_ptr<Card> > cards = model_->players()[i]->getCurrentCards();
+    //     cout << "Player " << i+1 << endl;
+    //     for (int j = 0; j < cards.size(); j++){
+    //         cout << *cards[j] << endl;
+    //     }
+    //     cout << endl;
+    // }
+
+    autoPlay();
 }
 
 /**
@@ -112,20 +89,30 @@ void Controller::shuffleCards(Cards &cards) {
 }
 
 /**
+ * Play all computer plays until it's a human's turn to play
+ */
+void Controller::autoPlay() {
+    int currentPlayer = model_->currentPlayer();
+    while (!model_->isRoundOver() && !model_->player(currentPlayer)->isHuman()) {
+        playComputer(currentPlayer);
+    }
+}
+
+/**
  * End the round. Checks if anyone scored > 80 pts and ends the game at that point.
  * Displays the winner if game is over otherwise starts a new round.
  */
 void Controller::endRound() {
-    model()->endRound();
+    model_->endRound();
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        // view()->endRound(i, *model()->player(i));
+        // view()->endRound(i, *model_->player(i));
     }
 
-    if (model()->isGameOver()) {
-        int lowestScore = model()->lowestScore();
+    if (model_->isGameOver()) {
+        int lowestScore = model_->lowestScore();
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            if (model()->player(i)->calculateScore() == lowestScore) {
+            if (model_->player(i)->calculateScore() == lowestScore) {
                 // view()->displayVictory(i);
             }
         }
@@ -146,12 +133,12 @@ void Controller::rageQuit(int playerNum) {
  * Switch player type
  */
 void Controller::togglePlayer(int playerNum) {
-    if (model()->player(playerNum)->isHuman()) {
-        shared_ptr<Player> newPlayer(new ComputerPlayer(*model()->player(playerNum)));
-        model()->replacePlayer(playerNum, newPlayer);
+    if (model_->player(playerNum)->isHuman()) {
+        shared_ptr<Player> newPlayer(new ComputerPlayer(*model_->player(playerNum)));
+        model_->replacePlayer(playerNum, newPlayer);
     } else {
-        shared_ptr<Player> newPlayer(new HumanPlayer(*model()->player(playerNum)));
-        model()->replacePlayer(playerNum, newPlayer);
+        shared_ptr<Player> newPlayer(new HumanPlayer(*model_->player(playerNum)));
+        model_->replacePlayer(playerNum, newPlayer);
     }
 }
 
@@ -161,28 +148,29 @@ void Controller::togglePlayer(int playerNum) {
  * @param playerNum Player index
  */
 void Controller::playComputer(int playerNum) {
-    Cards legalPlays = model()->getLegalPlays(playerNum);
+    Cards legalPlays = model_->getLegalPlays(playerNum);
 
     // Play first card
     if (legalPlays.size() > 0) {
-        model()->player(playerNum)->playCard(*legalPlays.at(0));
+        model_->playCard(playerNum, *legalPlays.at(0));
         // view()->displayPlayCard(playerNum, *legalPlays.at(0));
 
     // Discard first card
     } else {
-        Card card = *(model()->player(playerNum)->getCurrentCards().at(0));
-        model()->player(playerNum)->discardCard(card);
+        Card card = *(model_->player(playerNum)->getCurrentCards().at(0));
+        model_->discardCard(playerNum, card);
         // view()->displayDiscardCard(playerNum, card);
     }
 }
 
-bool Controller::playCard(int playerNum, Card card) {
-    Cards legalPlays = model()->getLegalPlays(playerNum);
+bool Controller::playHumanCard(int playerNum, Card card) {
+    Cards legalPlays = model_->getLegalPlays(playerNum);
 
     for (int i = 0; i < legalPlays.size(); i++) {
         if (*legalPlays.at(i) == card) {
             try {
-                model()->player(playerNum)->playCard(card);
+                model_->playCard(playerNum, card);
+                autoPlay();
                 return true;
             } catch (Player::CardNotFoundException &e) {
                 exit(EXIT_FAILURE);
@@ -195,13 +183,13 @@ bool Controller::playCard(int playerNum, Card card) {
     return false;
 }
 
-bool Controller::discardCard(int playerNum, Card card) {
-    Cards legalPlays = model()->getLegalPlays(playerNum);
+bool Controller::discardHumanCard(int playerNum, Card card) {
+    Cards legalPlays = model_->getLegalPlays(playerNum);
 
     if (legalPlays.size() == 0) {
         try {
-            model()->player(playerNum)->discardCard(card);
-            // view()->displayDiscardCard(playerNum, command.card);
+            model_->discardCard(playerNum, card);
+            autoPlay();
             return true;
         } catch (Player::CardNotFoundException &e) {
             exit(EXIT_FAILURE);
