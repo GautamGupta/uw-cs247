@@ -250,7 +250,7 @@ void View::endButtonClicked() {
 /*
  ** This function updates the played cards displayed on the view
  */
-void View::updatePlayedCards(bool reset){
+void View::updatePlayedCards(bool reset) {
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
             const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(static_cast<Rank>(j), static_cast<Suit>(i));
@@ -269,4 +269,13 @@ void View::updatePlayedCards(bool reset){
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
 	return deck.getNullCardImage();
+}
+
+/*
+ ** Displays a pop up dialogue with a title and message
+ */
+void View::displayMessage(string title, string message) {
+    Gtk::MessageDialog dialogue(*this, title);
+  	dialogue.set_secondary_text(message);
+  	dialogue.run();
 }
