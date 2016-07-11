@@ -1,4 +1,4 @@
-/*
+/**
  * View class. Responsible for input/output.
  */
 

@@ -247,8 +247,8 @@ void View::endButtonClicked() {
     controller()->endButtonClicked();
 }
 
-/*
- ** This function updates the played cards displayed on the view
+/**
+ * This function updates the played cards displayed on the view
  */
 void View::updatePlayedCards(bool reset) {
     for (int i = 0; i < SUIT_COUNT; i++) {
@@ -271,8 +271,8 @@ Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
 	return deck.getNullCardImage();
 }
 
-/*
- ** Displays a pop up dialogue with a title and message
+/**
+ * Displays a pop up dialogue with a title and message
  */
 void View::displayMessage(string title, string message) {
     Gtk::MessageDialog dialogue(*this, title);
