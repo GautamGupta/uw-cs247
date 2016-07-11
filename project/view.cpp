@@ -22,6 +22,7 @@ View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller),
         startButton_("Start new game with seed:"), endButton_("End current game") {
 
+    // Null card image
     const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
 
 
@@ -265,6 +266,13 @@ void View::updatePlayedCards(bool reset) {
             }
         }
     }
+}
+
+/**
+ * This function updates the current hand displayed for human player's view
+ */
+void View::updateCurrentHand() {
+
 }
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {

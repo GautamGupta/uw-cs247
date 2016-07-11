@@ -33,7 +33,22 @@ Model* Controller::model() {
 void Controller::startRound() {
     assignCards();
 
+    // // TEST: DOES START ROUND WITH SEED WORK?
+    // vector< shared_ptr<Card> > cards = model()->getDeck();
+    // for (int i = 0; i< cards.size(); i++){
+    //     cout << *cards[i] << endl;
+    // }
     int startPlayer = model()->startPlayer();
+
+    // // TEST: CHECK PLAYERS' CARDS
+    // for (int i = 0; i < NUM_PLAYERS; i++) {
+    //     vector< shared_ptr<Card> > cards = model_->players()[i]->getCurrentCards();
+    //     cout << "Player " << i+1 << endl;
+    //     for (int j = 0; j < cards.size(); j++){
+    //         cout << *cards[j] << endl;
+    //     }
+    //     cout << endl;
+    // }
 
     for (int i = 0; i < NUM_CARDS; i++) {
         int playerNum = (i + startPlayer) % NUM_PLAYERS;

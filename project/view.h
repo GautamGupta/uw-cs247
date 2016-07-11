@@ -84,6 +84,8 @@ private:
 
     // Update view functions
     void updatePlayedCards(bool);
+    void updateCurrentHand();
+
 };
 
 #endif
