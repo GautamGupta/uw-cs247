@@ -1,4 +1,4 @@
-/*
+/**
  * View class. Responsible for input/output.
  */
 
@@ -45,6 +45,8 @@ public:
 
     void displayVictory(int);
     Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
+    void displayMessage(std::string title, std::string message);
+
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
@@ -82,8 +84,6 @@ private:
 
     // Update view functions
     void updatePlayedCards(bool);
-
-
 };
 
 #endif

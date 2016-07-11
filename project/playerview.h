@@ -37,10 +37,6 @@ private:
     Gtk::Label pointsTxt;
     Gtk::Label discardsTxt;
 
-    Model* model();
-    Controller* controller();
-    View* view();
-
     void onBtnClick();
 };
 

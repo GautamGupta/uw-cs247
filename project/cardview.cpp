@@ -23,5 +23,5 @@ CardView::~CardView() {
 }
 
 void CardView::cardButtonClicked() {
-    cout << "AY LMAO" <<endl;
+    view_->displayMessage("Gautam", "Bo Peng says hi");
 }

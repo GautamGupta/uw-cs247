@@ -49,18 +49,6 @@ PlayerView::PlayerView(Model* model, Controller* controller, View* view, int pla
 
 PlayerView::~PlayerView() {}
 
-Model* PlayerView::model() {
-    return model_;
-}
-
-Controller* PlayerView::controller() {
-    return controller_;
-}
-
-View* PlayerView::view() {
-    return view_;
-}
-
 /**
  * Update label text, defaults to 0's
  */
@@ -86,13 +74,13 @@ void PlayerView::onBtnClick() {
     // Ragequit
     if (toggleBtn.get_label() == TXT_RAGE) {
         setToggleButton(TXT_RAGE, false);
-        controller()->rageQuit(playerNum_);
+        controller_->rageQuit(playerNum_);
         cout << _sprintf(TXT_RAGE_MSG, playerNum_+1) << endl;
 
     // Toggle Human <-> Computer
     } else {
         toggleBtn.set_label((toggleBtn.get_label() == TXT_HUMAN) ? TXT_COMPUTER : TXT_HUMAN);
-        controller()->togglePlayer(playerNum_);
+        controller_->togglePlayer(playerNum_);
     }
 }
 
