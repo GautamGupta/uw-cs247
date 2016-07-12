@@ -17,7 +17,7 @@ public:
    void startButtonClicked(int = DEFAULT_SEED);
    void endButtonClicked();
 
-   void startRound();
+   void startRound(Cards &);
    void endRound();
    void autoPlay();
    void rageQuit(int);

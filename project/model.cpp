@@ -25,7 +25,7 @@ Players Model::players() {
     return players_;
 }
 
-int Model::currentPlayer() {
+int Model::currentPlayer() const {
     return currentPlayer_;
 }
 
@@ -88,13 +88,11 @@ int Model::lowestScore() {
 /**
  * Add all cards assigned to players to an array and return (in order)
  */
-Cards Model::getDeck() {
+Cards Model::getDeck() const {
     Cards cards;
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < player(i)->getOriginalCards().size(); j++) {
-            cards.push_back(player(i)->getOriginalCards().at(j));
-        }
+        cards.insert(cards.end(), players_.at(i)->getOriginalCards().begin(), players_.at(i)->getOriginalCards().end());
     }
 
     return cards;
@@ -103,11 +101,11 @@ Cards Model::getDeck() {
 /**
  * Get all the played cards for the round
  */
-Cards Model::getCardsOnTable() {
+Cards Model::getCardsOnTable() const {
     Cards cards;
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        cards.insert(cards.end(), player(i)->getPlayedCards().begin(), player(i)->getPlayedCards().end());
+        cards.insert(cards.end(), players_.at(i)->getPlayedCards().begin(), players_.at(i)->getPlayedCards().end());
     }
 
     return cards;

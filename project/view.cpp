@@ -96,20 +96,6 @@ Controller* View::controller() {
 }
 
 /**
- * Take in h/c to define if a player is human or computer
- */
-char View::inputPlayer(int playerNum) {
-    char type;
-
-    cout << "Is player " << (playerNum + 1) << " a human(h) or a computer(c)?" << endl;
-    cout << ">";
-    cin >> type;
-    assert ( !cin.fail() );
-
-    return type;
-}
-
-/**
  * Start a new round
  */
 void View::startRound(int playerNum) {

@@ -26,18 +26,8 @@ Controller::Controller(Model *m) : model_(m), rng(DEFAULT_SEED) {}
  * 3. Clear players' card arrays
  * 4. Assign cards to players in order (cards 0-12 go to player 1 etc)
  */
-void Controller::startRound() {
-    vector< shared_ptr<Card> > cards = model_->getDeck();
+void Controller::startRound(Cards &cards) {
     Card startingCard(SPADE, SEVEN);
-
-    if (cards.size() == 0) {
-        for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
-            for (int rank = ACE; rank < RANK_COUNT; rank++) {
-                shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
-                cards.push_back(card);
-            }
-        }
-    }
 
     shuffleCards(cards);
 
@@ -45,7 +35,7 @@ void Controller::startRound() {
     model_->startRound();
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        vector< shared_ptr<Card> > playerCards(cards.begin() + CARDS_PER_PLAYER * i, cards.begin() + CARDS_PER_PLAYER * (i+1));
+        Cards playerCards(cards.begin() + CARDS_PER_PLAYER * i, cards.begin() + CARDS_PER_PLAYER * (i+1));
         model_->addPlayerCards(i, playerCards);
         for (int j = 0; j < playerCards.size(); j++) {
             if (*(playerCards.at(j)) == startingCard) {
@@ -55,17 +45,17 @@ void Controller::startRound() {
     }
 
     // // TEST: DOES START ROUND WITH SEED WORK?
-    // vector< shared_ptr<Card> > cards = model()->getDeck();
-    // for (int i = 0; i< cards.size(); i++){
-    //     cout << *cards[i] << endl;
+    // Cards deck = model_->getDeck();
+    // for (int i = 0; i< deck.size(); i++){
+    //     cout << *deck[i] << endl;
     // }
 
     // // TEST: CHECK PLAYERS' CARDS
     // for (int i = 0; i < NUM_PLAYERS; i++) {
-    //     vector< shared_ptr<Card> > cards = model_->players()[i]->getCurrentCards();
+    //     Cards currentCards = model_->player(i)->getCurrentCards();
     //     cout << "Player " << i+1 << endl;
-    //     for (int j = 0; j < cards.size(); j++){
-    //         cout << *cards[j] << endl;
+    //     for (int j = 0; j < currentCards.size(); j++){
+    //         cout << *currentCards[j] << endl;
     //     }
     //     cout << endl;
     // }
@@ -94,6 +84,7 @@ void Controller::shuffleCards(Cards &cards) {
 void Controller::autoPlay() {
     int currentPlayer = model_->currentPlayer();
     while (!model_->isRoundOver() && !model_->player(currentPlayer)->isHuman()) {
+        cout << "Playing computer." << endl;
         playComputer(currentPlayer);
     }
 }
@@ -117,7 +108,8 @@ void Controller::endRound() {
             }
         }
     } else {
-        startRound();
+        Cards cards = model_->getDeck();
+        startRound(cards);
     }
 }
 
@@ -153,13 +145,11 @@ void Controller::playComputer(int playerNum) {
     // Play first card
     if (legalPlays.size() > 0) {
         model_->playCard(playerNum, *legalPlays.at(0));
-        // view()->displayPlayCard(playerNum, *legalPlays.at(0));
 
     // Discard first card
     } else {
         Card card = *(model_->player(playerNum)->getCurrentCards().at(0));
         model_->discardCard(playerNum, card);
-        // view()->displayDiscardCard(playerNum, card);
     }
 }
 
@@ -201,11 +191,23 @@ bool Controller::discardHumanCard(int playerNum, Card card) {
 
 /**
  * Start a new game with seed
+ *
+ * (Re-)generate the cards, shuffle in starRound()
  */
 void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
-    cout << "Start " << seed << endl;
+    cerr << "Start " << seed << endl;
     rng.seed(seed);
-    startRound();
+
+    Cards cards;
+
+    for (int suit = CLUB; suit < SUIT_COUNT; suit++) {
+        for (int rank = ACE; rank < RANK_COUNT; rank++) {
+            shared_ptr<Card> card(new Card(static_cast<Suit>(suit), static_cast<Rank>(rank)));
+            cards.push_back(card);
+        }
+    }
+
+    startRound(cards);
 }
 
 /**
