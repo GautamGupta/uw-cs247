@@ -221,8 +221,7 @@ void View::displayVictory(int playerNum) {
 void View::update() {
     cout << "VIEWS TEST" <<endl;
     const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(ACE, SPADE);
-
-    cardsPlayed[0][0] = new Gtk::Image(cardPixbuf);
+    cardsPlayed[0][0]->set(cardPixbuf);
     cardsOnTable.attach(*cardsPlayed[0][0], 0, 1, 0,1);
 }
 
