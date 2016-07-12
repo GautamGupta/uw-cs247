@@ -24,6 +24,8 @@ View::View(Model *model, Controller *controller) :
 
     // Null card image
     const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+    const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(ACE, SPADE);
+
 
 
 	// Sets some properties of the window.
@@ -217,8 +219,9 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-    // card.set(deck.getNullCardImage());
-    // Do real update later
+    cout << "VIEWS TEST" <<endl;
+    cardsPlayed[0][0] = new Gtk::Image(cardPixbuf);
+    cardsOnTable.attach(*cardsPlayed[0][0], 0, 1, 0,1);
 }
 
 void View::startButtonClicked() {
@@ -257,9 +260,8 @@ void View::updatePlayedCards(bool reset) {
 /**
  * This function updates the current hand displayed for human player's view
  */
-void View::updateCurrentHand() {
-
-}
+// void View::updateCurrentHand(vector< shared_ptr<Card> > currentCards) {
+// }
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
 	return deck.getNullCardImage();
