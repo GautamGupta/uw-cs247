@@ -107,6 +107,7 @@ void Controller::endRound() {
                 // view()->displayVictory(i);
             }
         }
+        model_->reset();
     } else {
         Cards cards = model_->getDeck();
         startRound(cards);
@@ -216,5 +217,6 @@ void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
  * Player types are retained.
  */
 void Controller::endButtonClicked() {
-    cout << "End" << endl;
+    cerr << "End" << endl;
+    model_->reset();
 }

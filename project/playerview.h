@@ -22,7 +22,7 @@ private:
     static const std::string TXT_HUMAN;
     static const std::string TXT_COMPUTER;
     static const std::string TXT_RAGE;
-    static const std::string TXT_POINTS;
+    static const std::string TXT_SCORE;
     static const std::string TXT_DISCARDS;
     static const std::string TXT_PLAYER;
     static const std::string TXT_RAGE_MSG;
@@ -34,7 +34,7 @@ private:
 
     Gtk::VBox container;
     Gtk::Button toggleBtn;
-    Gtk::Label pointsTxt;
+    Gtk::Label scoreTxt;
     Gtk::Label discardsTxt;
 
     void onBtnClick();

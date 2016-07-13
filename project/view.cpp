@@ -211,6 +211,10 @@ void View::update() {
     cerr << "View update" <<endl;
     updateCardsOnTable();
     updateCurrentHand();
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        playerViews[i]->update();
+    }
 }
 
 void View::startButtonClicked() {
@@ -236,7 +240,7 @@ void View::updateCardsOnTable() {
         }
     }
 
-    Cards cards = model_->getDeck();
+    Cards cards = model_->getCardsOnTable();
     for (int i = 0; i < cards.size(); i++) {
         // const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(cards.at(i));
         Card card = *cards.at(i);
@@ -250,7 +254,7 @@ void View::updateCardsOnTable() {
 void View::updateCurrentHand() {
     Cards cards;
 
-    if (model_->currentPlayer() >= 0) {
+    if (model_->isGameInProgress()) {
         cards = model_->getPlayerCurrentCards(model_->currentPlayer());
     } else {
         cards = Cards();

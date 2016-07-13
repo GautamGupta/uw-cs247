@@ -84,6 +84,13 @@ bool Model::isRoundOver() {
 }
 
 /**
+ * Simple state check to see if game is in progress
+ */
+bool Model::isGameInProgress() {
+    return currentPlayer() != -1;
+}
+
+/**
  * Check if player has > 80 pts
  */
 bool Model::isGameOver() {
@@ -102,7 +109,7 @@ int Model::lowestScore() {
     int lowestScore = players_.at(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
         if (players_.at(i)->calculateScore() < lowestScore) {
-            lowestScore = players_.at(i) ->calculateScore();
+            lowestScore = players_.at(i)->calculateScore();
         }
     }
     return lowestScore;
@@ -142,7 +149,7 @@ SuitCards Model::getSuitCardsOnTable() {
 
     for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
         Suit suit = static_cast<Suit>(suitNum);
-        suitCards[suit] = vector< shared_ptr<Card> >();
+        suitCards[suit] = Cards();
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -204,11 +211,14 @@ void Model::discardCard(int playerNum, Card card) {
  * 3. Notify
  */
 void Model::donePlay() {
-    currentPlayer_ = (currentPlayer_ + 1) % NUM_PLAYERS;
     numPlays_++;
-    notify();
+    setCurrentPlayer((currentPlayer() + 1) % NUM_PLAYERS);
 }
 
 const Cards& Model::getPlayerCurrentCards(int playerNum) {
     return players_.at(playerNum)->getCurrentCards();
+}
+
+const Cards& Model::getPlayerDiscardedCards(int playerNum) {
+    return players_.at(playerNum)->getDiscardedCards();
 }

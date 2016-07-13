@@ -34,11 +34,13 @@ public:
     void donePlay();
     bool isRoundOver();
     void endRound();
+    bool isGameInProgress();
     bool isGameOver();
     int lowestScore();
     void reset();
 
     const Cards& getPlayerCurrentCards(int);
+    const Cards& getPlayerDiscardedCards(int);
 
 private:
     Players players_;
