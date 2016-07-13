@@ -45,7 +45,6 @@ public:
 
     void displayVictory(int);
     Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
-    Glib::RefPtr<Gdk::Pixbuf> getCardImage(Rank, Suit);
     void displayMessage(std::string title, std::string message);
 
 

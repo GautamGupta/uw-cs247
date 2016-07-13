@@ -223,7 +223,6 @@ void View::update() {
     const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(ACE, SPADE);
     cardsPlayed[0][0]->set(cardPixbuf);
     cardsOnTable.attach(*cardsPlayed[0][0], 0, 1, 0,1);
-    cardsInHand[0]->updateCard();
 }
 
 void View::startButtonClicked() {
@@ -267,10 +266,6 @@ void View::updatePlayedCards(bool reset) {
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
 	return deck.getNullCardImage();
-}
-
-Glib::RefPtr<Gdk::Pixbuf> View::getCardImage(Rank r, Suit s) {
-	return deck.getCardImage(r, s);
 }
 
 /**
