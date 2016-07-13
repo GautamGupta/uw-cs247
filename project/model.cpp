@@ -25,12 +25,12 @@ Players Model::players() {
     return players_;
 }
 
-int Model::currentPlayer() const {
-    return currentPlayer_;
-}
-
 shared_ptr<Player> Model::player(int i) {
     return players().at(i);
+}
+
+int Model::currentPlayer() const {
+    return currentPlayer_;
 }
 
 /**
@@ -50,6 +50,19 @@ void Model::endRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         player(i)->endRound();
     }
+}
+
+/**
+ * Resets the game
+ */
+void Model::reset() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        player(i)->reset();
+    }
+    currentPlayer_ = -1;
+    numPlays_ = 0;
+
+    notify();
 }
 
 /**

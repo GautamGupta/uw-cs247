@@ -30,6 +30,7 @@ public:
     void startRound();
     void endRound();
     bool checkEndGame() const;
+    void reset();
 
     int cardInHand(Card);
     void playCard(Card);

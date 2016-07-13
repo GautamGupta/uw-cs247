@@ -56,6 +56,18 @@ int Player::getScore() const {
 }
 
 /**
+ * Reset a player
+ */
+void Player::reset() {
+    previousScore_ = 0;
+    score_ = 0;
+    originalCards_.clear();
+    currentCards_.clear();
+    playedCards_.clear();
+    discardedCards_.clear();
+}
+
+/**
  * Get legal plays per straight game play. Needs played cards for the round.
  */
 vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
@@ -153,12 +165,9 @@ void Player::addCard(shared_ptr<Card> card) {
  * Add score to previous score, clear all arrays, set score to 0
  */
 void Player::startRound() {
-    previousScore_ += score_;
-    score_ = 0;
-    originalCards_.clear();
-    currentCards_.clear();
-    playedCards_.clear();
-    discardedCards_.clear();
+    int scoreTemp = previousScore_ + score_;
+    reset();
+    previousScore_ = scoreTemp;
 }
 
 /**

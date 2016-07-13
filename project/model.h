@@ -37,6 +37,7 @@ public:
     void endRound();
     bool isGameOver();
     int lowestScore();
+    void reset();
 
 private:
     Players players_;
