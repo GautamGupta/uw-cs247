@@ -90,7 +90,7 @@ void PlayerView::update() {
         bool enabled = (model_->currentPlayer() == playerNum_);
         setToggleButton(TXT_RAGE, enabled);
     } else {
-        if (model_->player(playerNum_)->isHuman()) {
+        if (model_->isHuman(playerNum_)) {
             setToggleButton(TXT_HUMAN, true);
         } else {
             setToggleButton(TXT_COMPUTER, true);

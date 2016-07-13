@@ -84,7 +84,24 @@ View::View(Model *model, Controller *controller) :
 
 }
 
-View::~View() {}
+/**
+ * Destructor
+ */
+View::~View() {
+    for (int i = 0; i < SUIT_COUNT; i++) {
+        for (int j = 0; j < RANK_COUNT; j++) {
+            delete cardsPlayed[i][j];
+        }
+    }
+
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        delete playerViews[i];
+    }
+
+    for (int i = 0; i < CARDS_PER_PLAYER; i++) {
+        delete cardsInHand[i];
+    }
+}
 
 /**
  * Start a new round
