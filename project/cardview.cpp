@@ -25,3 +25,10 @@ CardView::~CardView() {
 void CardView::cardButtonClicked() {
     view_->displayMessage("Gautam", "Bo Peng says hi");
 }
+
+void CardView::updateCard(){
+    // This will be changed from a STATIC QHeart to something legit later
+    const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = view_->getCardImage(QUEEN, HEART);
+    cardImage = new Gtk::Image(cardPixbuf);
+    set_image(*cardImage);
+}
