@@ -235,3 +235,7 @@ const Cards& Model::getPlayerCurrentCards(int playerNum) {
 const Cards& Model::getPlayerDiscardedCards(int playerNum) {
     return players_.at(playerNum)->getDiscardedCards();
 }
+
+int Model::getPlayerScore(int playerNum) const {
+    return getPlayer(playerNum)->getScore();
+}

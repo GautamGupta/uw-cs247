@@ -110,6 +110,8 @@ void Controller::endRound() {
         model_->reset();
     } else {
         Cards cards = model_->getDeck();
+        //TEST
+        // cout << "New Round has started" << endl;
         startRound(cards);
     }
 }
@@ -141,6 +143,7 @@ void Controller::togglePlayer(int playerNum) {
  * @param playerNum Player index
  */
 void Controller::playComputer(int playerNum) {
+
     Cards legalPlays = model_->getLegalPlays(playerNum);
 
     // Play first card
@@ -152,6 +155,13 @@ void Controller::playComputer(int playerNum) {
         Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
         model_->discardCard(playerNum, card);
     }
+
+    //Test
+    // if(model_->isRoundOver()) {
+    //     cout << "Round has ended" << endl;
+    //     endRound();
+    // }
+
 }
 
 bool Controller::playHumanCard(int playerNum, Card card) {
