@@ -54,7 +54,7 @@ bool Model::isHuman(int i) {
  */
 void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->startRound();
+        getPlayer(i)->startRound();
     }
     notify();
 }
@@ -64,7 +64,7 @@ void Model::startRound() {
  */
 void Model::endRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->endRound();
+        getPlayer(i)->endRound();
     }
 }
 
@@ -73,7 +73,7 @@ void Model::endRound() {
  */
 void Model::reset() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->reset();
+        getPlayer(i)->reset();
     }
     currentPlayer_ = -1;
     numPlays_ = 0;
@@ -94,7 +94,7 @@ bool Model::isRoundOver() {
  */
 bool Model::isGameOver() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        if (players_.at(i)->checkEndGame()) {
+        if (getPlayer(i)->checkEndGame()) {
             return true;
         }
     }
@@ -105,10 +105,10 @@ bool Model::isGameOver() {
  * See what's the lowest score in the game
  */
 int Model::lowestScore() {
-    int lowestScore = players_.at(0)->calculateScore();
+    int lowestScore = getPlayer(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
-        if (players_.at(i)->calculateScore() < lowestScore) {
-            lowestScore = players_.at(i) ->calculateScore();
+        if (getPlayer(i)->calculateScore() < lowestScore) {
+            lowestScore = getPlayer(i)->calculateScore();
         }
     }
     return lowestScore;
@@ -128,7 +128,7 @@ Cards Model::getDeck() const {
     Cards cards;
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        cards.insert(cards.end(), players_.at(i)->getOriginalCards().begin(), players_.at(i)->getOriginalCards().end());
+        cards.insert(cards.end(), getPlayer(i)->getOriginalCards().begin(), getPlayer(i)->getOriginalCards().end());
     }
 
     return cards;
@@ -141,7 +141,7 @@ Cards Model::getCardsOnTable() const {
     Cards cards;
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        cards.insert(cards.end(), players_.at(i)->getPlayedCards().begin(), players_.at(i)->getPlayedCards().end());
+        cards.insert(cards.end(), getPlayer(i)->getPlayedCards().begin(), getPlayer(i)->getPlayedCards().end());
     }
 
     return cards;
@@ -159,8 +159,8 @@ SuitCards Model::getSuitCardsOnTable() {
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < players_.at(i)->getPlayedCards().size(); j++) {
-            shared_ptr<Card> card = players_.at(i)->getPlayedCards().at(j);
+        for (int j = 0; j < getPlayer(i)->getPlayedCards().size(); j++) {
+            shared_ptr<Card> card = getPlayer(i)->getPlayedCards().at(j);
             suitCards[card->getSuit()].push_back(card);
         }
     }
@@ -197,7 +197,7 @@ void Model::replacePlayer(int playerNum, shared_ptr<Player> player) {
  */
 void Model::addPlayerCards(int playerNum, Cards &cards) {
     for (int i = 0; i < cards.size(); i++) {
-        players_.at(playerNum)->addCard(cards.at(i));
+        getPlayer(playerNum)->addCard(cards.at(i));
     }
     notify();
 }
@@ -206,7 +206,7 @@ void Model::addPlayerCards(int playerNum, Cards &cards) {
  * Play a card
  */
 void Model::playCard(int playerNum, Card card) {
-    players_.at(playerNum)->playCard(card);
+    getPlayer(playerNum)->playCard(card);
     donePlay();
 }
 
@@ -214,7 +214,7 @@ void Model::playCard(int playerNum, Card card) {
  * Discard a card
  */
 void Model::discardCard(int playerNum, Card card) {
-    players_.at(playerNum)->discardCard(card);
+    getPlayer(playerNum)->discardCard(card);
     donePlay();
 }
 
