@@ -25,8 +25,6 @@ public:
     View(Model*, Controller*);
 	~View();
     virtual void update();  // Observer Pattern: concrete update() method
-    Model* model();
-    Controller* controller();
 
     char inputPlayer(int);
 
@@ -45,6 +43,7 @@ public:
 
     void displayVictory(int);
     Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
+    Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
     void displayMessage(std::string title, std::string message);
 
 
@@ -83,7 +82,7 @@ private:
     void endButtonClicked();
 
     // Update view functions
-    void updatePlayedCards(bool);
+    void updateCardsOnTable();
     void updateCurrentHand();
 
 };

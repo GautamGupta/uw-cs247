@@ -10,6 +10,7 @@
 #include "humanplayer.h"
 #include <vector>
 #include <map>
+#include <iostream>
 
 using namespace std;
 
@@ -34,11 +35,20 @@ int Model::currentPlayer() const {
 }
 
 /**
+ * Set current player to index
+ * Set start to the player who has 7S
+ */
+void Model::setCurrentPlayer(int currentPlayer) {
+    currentPlayer_ = currentPlayer;
+    notify();
+}
+
+/**
  * Start round for every player
  */
 void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        player(i)->startRound();
+        players_.at(i)->startRound();
     }
     notify();
 }
@@ -48,7 +58,7 @@ void Model::startRound() {
  */
 void Model::endRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        player(i)->endRound();
+        players_.at(i)->endRound();
     }
 }
 
@@ -57,7 +67,7 @@ void Model::endRound() {
  */
 void Model::reset() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        player(i)->reset();
+        players_.at(i)->reset();
     }
     currentPlayer_ = -1;
     numPlays_ = 0;
@@ -78,7 +88,7 @@ bool Model::isRoundOver() {
  */
 bool Model::isGameOver() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        if (player(i)->checkEndGame()) {
+        if (players_.at(i)->checkEndGame()) {
             return true;
         }
     }
@@ -89,10 +99,10 @@ bool Model::isGameOver() {
  * See what's the lowest score in the game
  */
 int Model::lowestScore() {
-    int lowestScore = player(0)->calculateScore();
+    int lowestScore = players_.at(0)->calculateScore();
     for (int i = 1; i < NUM_PLAYERS; i++) {
-        if (player(i)->calculateScore() < lowestScore) {
-            lowestScore = player(i) ->calculateScore();
+        if (players_.at(i)->calculateScore() < lowestScore) {
+            lowestScore = players_.at(i) ->calculateScore();
         }
     }
     return lowestScore;
@@ -125,19 +135,6 @@ Cards Model::getCardsOnTable() const {
 }
 
 /**
- * Check if a card was played already
- */
-bool Model::cardWasPlayed(shared_ptr<Card> card) {
-    Cards cards = getCardsOnTable();
-    for (int i = 0; i < cards.size(); i++ ) {
-        if (cards.at(i) == card) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
  * Get a hashmap of (Suit -> Vector of cards of suit) played for the round
  */
 SuitCards Model::getSuitCardsOnTable() {
@@ -149,8 +146,8 @@ SuitCards Model::getSuitCardsOnTable() {
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < player(i)->getPlayedCards().size(); j++) {
-            shared_ptr<Card> card = player(i)->getPlayedCards().at(j);
+        for (int j = 0; j < players_.at(i)->getPlayedCards().size(); j++) {
+            shared_ptr<Card> card = players_.at(i)->getPlayedCards().at(j);
             suitCards[card->getSuit()].push_back(card);
         }
     }
@@ -163,15 +160,7 @@ SuitCards Model::getSuitCardsOnTable() {
  * @param  playerNum Index position of player
  */
 Cards Model::getLegalPlays(int playerNum) {
-    return player(playerNum)->getLegalPlays(getCardsOnTable());
-}
-
-/**
- * Set current player to index
- * Set start to the player who has 7S
- */
-void Model::setCurrentPlayer(int currentPlayer) {
-    currentPlayer_ = currentPlayer;
+    return players_.at(playerNum)->getLegalPlays(getCardsOnTable());
 }
 
 /**
@@ -188,7 +177,7 @@ void Model::replacePlayer(int playerNum, shared_ptr<Player> player) {
  */
 void Model::addPlayerCards(int playerNum, Cards &cards) {
     for (int i = 0; i < cards.size(); i++) {
-        player(playerNum)->addCard(cards.at(i));
+        players_.at(playerNum)->addCard(cards.at(i));
     }
     notify();
 }
@@ -197,7 +186,7 @@ void Model::addPlayerCards(int playerNum, Cards &cards) {
  * Play a card
  */
 void Model::playCard(int playerNum, Card card) {
-    player(playerNum)->playCard(card);
+    players_.at(playerNum)->playCard(card);
     donePlay();
 }
 
@@ -205,7 +194,7 @@ void Model::playCard(int playerNum, Card card) {
  * Discard a card
  */
 void Model::discardCard(int playerNum, Card card) {
-    player(playerNum)->discardCard(card);
+    players_.at(playerNum)->discardCard(card);
     donePlay();
 }
 
@@ -218,4 +207,8 @@ void Model::donePlay() {
     currentPlayer_ = (currentPlayer_ + 1) % NUM_PLAYERS;
     numPlays_++;
     notify();
+}
+
+const Cards& Model::getPlayerCurrentCards(int playerNum) {
+    return players_.at(playerNum)->getCurrentCards();
 }

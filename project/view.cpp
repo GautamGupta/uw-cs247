@@ -24,9 +24,6 @@ View::View(Model *model, Controller *controller) :
 
     // Null card image
     const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-    const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(ACE, SPADE);
-
-
 
 	// Sets some properties of the window.
     set_title("Straights");
@@ -88,14 +85,6 @@ View::View(Model *model, Controller *controller) :
 }
 
 View::~View() {}
-
-Model* View::model() {
-    return model_;
-}
-
-Controller* View::controller() {
-    return controller_;
-}
 
 /**
  * Start a new round
@@ -219,10 +208,9 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-    cout << "VIEWS TEST" <<endl;
-    const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(ACE, SPADE);
-    cardsPlayed[0][0]->set(cardPixbuf);
-    cardsOnTable.attach(*cardsPlayed[0][0], 0, 1, 0,1);
+    cerr << "View update" <<endl;
+    updateCardsOnTable();
+    updateCurrentHand();
 }
 
 void View::startButtonClicked() {
@@ -231,41 +219,59 @@ void View::startButtonClicked() {
         seed = DEFAULT_SEED;
     }
 
-    controller()->startButtonClicked(seed);
+    controller_->startButtonClicked(seed);
 }
 
 void View::endButtonClicked() {
-    controller()->endButtonClicked();
+    controller_->endButtonClicked();
 }
 
 /**
- * This function updates the played cards displayed on the view
+ * Update the view with cards played
  */
-void View::updatePlayedCards(bool reset) {
+void View::updateCardsOnTable() {
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(static_cast<Rank>(j), static_cast<Suit>(i));
-
-            shared_ptr<Card> card (new Card(static_cast<Suit>(i), static_cast<Rank>(j)));
-
-            if(model_->cardWasPlayed(card) && !reset){
-                cardsPlayed[i][j]->set(cardPixbuf);
-            }
-            else {
-                cardsPlayed[i][j]->set(nullCardPixbuf);
-            }
+            cardsPlayed[i][j]->set(nullCardPixbuf);
         }
+    }
+
+    Cards cards = model_->getDeck();
+    for (int i = 0; i < cards.size(); i++) {
+        // const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(cards.at(i));
+        Card card = *cards.at(i);
+        cardsPlayed[card.getSuit()][card.getRank()]->set(getCardImage(card));
     }
 }
 
 /**
  * This function updates the current hand displayed for human player's view
  */
-// void View::updateCurrentHand(vector< shared_ptr<Card> > currentCards) {
-// }
+void View::updateCurrentHand() {
+    Cards cards;
+
+    if (model_->currentPlayer() >= 0) {
+        cards = model_->getPlayerCurrentCards(model_->currentPlayer());
+    } else {
+        cards = Cards();
+    }
+
+    cerr << cards.size() << endl;
+    for (int i = 0; i < CARDS_PER_PLAYER; i++) {
+        if (i >= cards.size()) {
+            cardsInHand[i]->setCard(NULL, false);
+        } else {
+            cardsInHand[i]->setCard(cards.at(i));
+        }
+    }
+}
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
-	return deck.getNullCardImage();
+    return deck.getNullCardImage();
+}
+
+Glib::RefPtr<Gdk::Pixbuf> View::getCardImage(Card card) {
+    return deck.getCardImage(card);
 }
 
 /**

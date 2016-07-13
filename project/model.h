@@ -22,7 +22,6 @@ public:
     int currentPlayer() const;
     Cards getDeck() const;
     Cards getCardsOnTable() const;
-    bool cardWasPlayed(std::shared_ptr<Card>);
     SuitCards getSuitCardsOnTable();
     Cards getLegalPlays(int);
 
@@ -38,6 +37,8 @@ public:
     bool isGameOver();
     int lowestScore();
     void reset();
+
+    const Cards& getPlayerCurrentCards(int);
 
 private:
     Players players_;

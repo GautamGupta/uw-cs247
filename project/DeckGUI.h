@@ -6,21 +6,22 @@
 
 #ifndef __DECK_GUI_H
 #define __DECK_GUI_H
-#include <gdkmm/pixbuf.h>
+#include <gtkmm.h>
 #include <vector>
-
 #include "card.h"
+
+/** Documentation of methods in .cpp file */
 
 class DeckGUI {
 public:
 	DeckGUI();
 	virtual ~DeckGUI();
-	Glib::RefPtr<Gdk::Pixbuf> getCardImage(Rank, Suit);       // Returns the image for the specified card.
-	Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();                 // Returns the image to use for the placeholder.
-
+    Glib::RefPtr<Gdk::Pixbuf> getCardImage(Suit, Rank);
+	Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
+	Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
 
 private:
-	std::vector< Glib::RefPtr< Gdk::Pixbuf > > deck;   // Contains the pixel buffer images.
+	std::vector< Glib::RefPtr< Gdk::Pixbuf > > deck;
 };
 
 #endif

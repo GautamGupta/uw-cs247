@@ -1,6 +1,7 @@
 /**
  * Deck GUI
  */
+
 #include "DeckGUI.h"
 #include <algorithm>
 #include <iterator>
@@ -12,7 +13,7 @@ using namespace std;
  * Sets up an array of the Portable Network Graphics (PNG) file names that contain the necessary card images.
  * The deck will load the contents into pixel buffers for later use.
  */
-const char * image_names[] = {
+const char *imageNames[] = {
 	// Set up CLUB
 	"img/0_0.png", "img/0_1.png", "img/0_2.png", "img/0_3.png", "img/0_4.png", "img/0_5.png", "img/0_6.png",
 	"img/0_7.png", "img/0_8.png", "img/0_9.png", "img/0_j.png", "img/0_q.png", "img/0_k.png",
@@ -33,33 +34,38 @@ const char * image_names[] = {
  * Loads the image from the specified file name into a pixel buffer.
  */
 Glib::RefPtr<Gdk::Pixbuf> createPixbuf(const string & name) {
-	return Gdk::Pixbuf::create_from_file( name );
+	return Gdk::Pixbuf::create_from_file(name);
 }
 
-DeckGUI::DeckGUI()  {
+DeckGUI::DeckGUI() {
 	// Images can only be loaded once the main window has been initialized, so cannot be done as a static
 	// constant array. Instead, use the STL transform algorithm to apply the method createPixbuf to every
 	// element in the array of image names, starting with first and ending with the last. New elements are
 	// added to the back of deck.
-	transform( &image_names[0], &image_names[G_N_ELEMENTS(image_names)],
-			   std::back_inserter(deck), &createPixbuf );
+	transform(&imageNames[0], &imageNames[G_N_ELEMENTS(imageNames)],
+			   back_inserter(deck), &createPixbuf);
 }
 
-DeckGUI::~DeckGUI() {
+DeckGUI::~DeckGUI() {}
+
+/**
+ * Returns the image for the specified card.
+ */
+Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getCardImage(Suit s, Rank r) {
+	int index = ((int) r) + ((int) s) * RANK_COUNT;
+	return deck[index];
 }
 
 /**
  * Returns the image for the specified card.
  */
-Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getCardImage(Rank r, Suit s) {
-	int index = ((int) r) + ((int) s)*RANK_COUNT;
-	return deck[ index ];
+Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getCardImage(Card card) {
+	return getCardImage(card.getSuit(), card.getRank());
 }
 
 /**
  * Returns the image to use for the placeholder.
  */
 Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getNullCardImage() {
-	int size = deck.size();
-	return deck[ size-1 ];
+	return deck[deck.size() - 1];
 }
