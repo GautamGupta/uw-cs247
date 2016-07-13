@@ -70,7 +70,7 @@ void Player::reset() {
 /**
  * Get legal plays per straight game play. Needs played cards for the round.
  */
-vector< shared_ptr<Card> > Player::getLegalPlays(Cards cardsOnTable) {
+Cards Player::getLegalPlays(Cards cardsOnTable) {
     Cards legalPlays;
     Card firstCard = Card(SPADE, SEVEN);
 

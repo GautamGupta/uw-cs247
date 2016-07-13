@@ -21,30 +21,24 @@ namespace {
 const string PlayerView::TXT_HUMAN = "Human";
 const string PlayerView::TXT_COMPUTER = "Computer";
 const string PlayerView::TXT_RAGE = "Rage!";
-const string PlayerView::TXT_POINTS = "%d points";
+const string PlayerView::TXT_SCORE = "Score: %d";
 const string PlayerView::TXT_DISCARDS = "%d discards";
 const string PlayerView::TXT_PLAYER = "Player %d";
 const string PlayerView::TXT_RAGE_MSG = "Player %d ragequits. A computer will now take over.";
 
 PlayerView::PlayerView(Model* model, Controller* controller, View* view, int playerNum) :
         model_(model), controller_(controller), view_(view), playerNum_(playerNum) {
-
     set_label(_sprintf(TXT_PLAYER, playerNum_+1));
-    setLabels();
 
     container.pack_start(toggleBtn);
-    container.pack_start(pointsTxt);
+    container.pack_start(scoreTxt);
     container.pack_end(discardsTxt);
     add(container);
 
-    if (model_->isHuman(playerNum_)) {
-        setToggleButton(TXT_HUMAN, true);
-    } else {
-        setToggleButton(TXT_COMPUTER, true);
-    }
-
     // connect click event to event handler
     toggleBtn.signal_clicked().connect(sigc::mem_fun(*this, &PlayerView::onBtnClick));
+
+    update();
 }
 
 PlayerView::~PlayerView() {}
@@ -53,7 +47,7 @@ PlayerView::~PlayerView() {}
  * Update label text, defaults to 0's
  */
 void PlayerView::setLabels(int score /* = 0 */, int discards /* = 0 */) {
-    pointsTxt.set_label(_sprintf(TXT_POINTS, score));
+    scoreTxt.set_label(_sprintf(TXT_SCORE, score));
     discardsTxt.set_label(_sprintf(TXT_DISCARDS, discards));
 }
 
@@ -85,12 +79,21 @@ void PlayerView::onBtnClick() {
 }
 
 /**
- * Update with new points and discard counts
+ * Update with new score and discard counts
  */
 void PlayerView::update() {
-    // TODO: Add logic
-    int points = 0;
-    int discards = 0;
+    int score = 0;
+    int discards = model_->getPlayerDiscardedCards(playerNum_).size();
+    setLabels(score, discards);
 
-    setLabels(points, discards);
+    if (model_->isGameInProgress()) {
+        bool enabled = (model_->currentPlayer() == playerNum_);
+        setToggleButton(TXT_RAGE, enabled);
+    } else {
+        if (model_->isHuman(playerNum_)) {
+            setToggleButton(TXT_HUMAN, true);
+        } else {
+            setToggleButton(TXT_COMPUTER, true);
+        }
+    }
 }

@@ -23,7 +23,6 @@ public:
     Cards getCardsOnTable() const;
     SuitCards getSuitCardsOnTable();
     Cards getLegalPlays(int);
-    const Cards& getCurrentCards(int);
 
     void setCurrentPlayer(int);
     bool isHuman(int i);
@@ -35,10 +34,14 @@ public:
     void donePlay();
     bool isRoundOver();
     void endRound();
+    bool isGameInProgress();
     bool isGameOver();
     int lowestScore();
     int calculatePlayerScore(int) const;
     void reset();
+
+    const Cards& getPlayerCurrentCards(int);
+    const Cards& getPlayerDiscardedCards(int);
 
 private:
     Players players_;

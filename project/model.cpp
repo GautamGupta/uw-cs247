@@ -90,6 +90,13 @@ bool Model::isRoundOver() {
 }
 
 /**
+ * Simple state check to see if game is in progress
+ */
+bool Model::isGameInProgress() {
+    return currentPlayer() != -1;
+}
+
+/**
  * Check if player has > 80 pts
  */
 bool Model::isGameOver() {
@@ -155,7 +162,7 @@ SuitCards Model::getSuitCardsOnTable() {
 
     for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
         Suit suit = static_cast<Suit>(suitNum);
-        suitCards[suit] = vector< shared_ptr<Card> >();
+        suitCards[suit] = Cards();
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -174,13 +181,6 @@ SuitCards Model::getSuitCardsOnTable() {
  */
 Cards Model::getLegalPlays(int playerNum) {
     return getPlayer(playerNum)->getLegalPlays(getCardsOnTable());
-}
-
-/**
- * Get current cards for a player.
- */
-const Cards& Model::getCurrentCards(int playerNum) {
-    return getPlayer(playerNum)->getCurrentCards();
 }
 
 /**
@@ -224,7 +224,14 @@ void Model::discardCard(int playerNum, Card card) {
  * 3. Notify
  */
 void Model::donePlay() {
-    currentPlayer_ = (currentPlayer_ + 1) % NUM_PLAYERS;
     numPlays_++;
-    notify();
+    setCurrentPlayer((currentPlayer() + 1) % NUM_PLAYERS);
+}
+
+const Cards& Model::getPlayerCurrentCards(int playerNum) {
+    return players_.at(playerNum)->getCurrentCards();
+}
+
+const Cards& Model::getPlayerDiscardedCards(int playerNum) {
+    return players_.at(playerNum)->getDiscardedCards();
 }

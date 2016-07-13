@@ -52,7 +52,7 @@ void Controller::startRound(Cards &cards) {
 
     // // TEST: CHECK PLAYERS' CARDS
     // for (int i = 0; i < NUM_PLAYERS; i++) {
-    //     Cards currentCards = model_->getCurrentCards(i);
+    //     Cards currentCards = model_->getPlayerCurrentCards(i);
     //     cout << "Player " << i+1 << endl;
     //     for (int j = 0; j < currentCards.size(); j++){
     //         cout << *currentCards[j] << endl;
@@ -107,6 +107,7 @@ void Controller::endRound() {
                 // view()->displayVictory(i);
             }
         }
+        model_->reset();
     } else {
         Cards cards = model_->getDeck();
         startRound(cards);
@@ -148,7 +149,7 @@ void Controller::playComputer(int playerNum) {
 
     // Discard first card
     } else {
-        Card card = *(model_->getCurrentCards(playerNum).at(0));
+        Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
         model_->discardCard(playerNum, card);
     }
 }
@@ -216,5 +217,6 @@ void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
  * Player types are retained.
  */
 void Controller::endButtonClicked() {
-    cout << "End" << endl;
+    cerr << "End" << endl;
+    model_->reset();
 }
