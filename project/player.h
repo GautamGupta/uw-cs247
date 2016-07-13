@@ -49,6 +49,6 @@ protected:
 
 std::ostream &operator<<(std::ostream &, const Player &);
 
-typedef std::vector< std::shared_ptr<Player> > Players;
+typedef std::vector< std::unique_ptr<Player> > Players;
 
 #endif

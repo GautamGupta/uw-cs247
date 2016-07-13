@@ -126,13 +126,7 @@ void Controller::rageQuit(int playerNum) {
  * Switch player type
  */
 void Controller::togglePlayer(int playerNum) {
-    if (model_->isHuman(playerNum)) {
-        shared_ptr<Player> newPlayer(new ComputerPlayer(*model_->getPlayer(playerNum)));
-        model_->replacePlayer(playerNum, newPlayer);
-    } else {
-        shared_ptr<Player> newPlayer(new HumanPlayer(*model_->getPlayer(playerNum)));
-        model_->replacePlayer(playerNum, newPlayer);
-    }
+    model_->togglePlayer(playerNum);
 }
 
 /**
@@ -154,40 +148,28 @@ void Controller::playComputer(int playerNum) {
     }
 }
 
-bool Controller::playHumanCard(int playerNum, Card card) {
+void Controller::playHuman(int playerNum, Card card) {
     Cards legalPlays = model_->getLegalPlays(playerNum);
 
-    for (int i = 0; i < legalPlays.size(); i++) {
-        if (*legalPlays.at(i) == card) {
-            try {
-                model_->playCard(playerNum, card);
-                autoPlay();
-                return true;
-            } catch (Player::CardNotFoundException &e) {
-                exit(EXIT_FAILURE);
-            }
-
-            break;
-        }
+    for (int j = 0; j < legalPlays.size(); j++){
+        cout << *legalPlays[j] << endl;
     }
-
-    return false;
-}
-
-bool Controller::discardHumanCard(int playerNum, Card card) {
-    Cards legalPlays = model_->getLegalPlays(playerNum);
+    cout << endl;
 
     if (legalPlays.size() == 0) {
-        try {
-            model_->discardCard(playerNum, card);
-            autoPlay();
-            return true;
-        } catch (Player::CardNotFoundException &e) {
-            exit(EXIT_FAILURE);
+        model_->discardCard(playerNum, card);
+        autoPlay();
+    } else {
+        for (int i = 0; i < legalPlays.size(); i++) {
+            if (*legalPlays.at(i) == card) {
+                model_->playCard(playerNum, card);
+                autoPlay();
+                return;
+            }
         }
     }
 
-    return false;
+    throw Controller::InvalidPlayException();
 }
 
 /**

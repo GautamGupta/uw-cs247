@@ -22,11 +22,12 @@ public:
    void autoPlay();
    void rageQuit(int);
    void togglePlayer(int);
-   bool playHumanCard(int, Card);
-   bool discardHumanCard(int, Card);
+   void playHuman(int, Card);
    void playComputer(int);
 
    void shuffleCards(Cards &);
+
+   class InvalidPlayException{};
 
 private:
    Model *model_;

@@ -17,7 +17,6 @@
 class Model : public Subject {
 public:
     Model();
-    std::shared_ptr<Player> getPlayer(int) const;
     int currentPlayer() const;
     Cards getDeck() const;
     Cards getCardsOnTable() const;
@@ -26,7 +25,7 @@ public:
 
     void setCurrentPlayer(int);
     bool isHuman(int i);
-    void replacePlayer(int, std::shared_ptr<Player>);
+    void togglePlayer(int);
     void addPlayerCards(int, Cards &);
     void playCard(int, Card);
     void discardCard(int, Card);

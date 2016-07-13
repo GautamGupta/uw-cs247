@@ -18,7 +18,13 @@ CardView::~CardView() {
 }
 
 void CardView::cardButtonClicked() {
-    view_->displayMessage("Gautam", "Bo Peng says hi");
+    try {
+        controller_->playHuman(model_->currentPlayer(), *card_);
+    } catch (Player::CardNotFoundException &e) {
+        view_->displayMessage("Error", "That card was not found.");
+    } catch (Controller::InvalidPlayException &e) {
+        view_->displayMessage("Error", "You can not play that card.");
+    }
 }
 
 void CardView::setCard(shared_ptr<Card> card, bool sensitivity /* = true */) {
