@@ -41,6 +41,8 @@ public:
 
     const Cards& getPlayerCurrentCards(int);
     const Cards& getPlayerDiscardedCards(int);
+    int getPlayerScore(int) const;
+
 
 private:
     Players players_;

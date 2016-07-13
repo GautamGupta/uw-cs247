@@ -82,8 +82,11 @@ void PlayerView::onBtnClick() {
  * Update with new score and discard counts
  */
 void PlayerView::update() {
-    int score = 0;
+    int score = model_->getPlayerScore(playerNum_);
     int discards = model_->getPlayerDiscardedCards(playerNum_).size();
+    for (int i = 0; i < discards; i++) {
+        score += model_->getPlayerDiscardedCards(playerNum_).at(i)->getRank() + 1;
+    }
     setLabels(score, discards);
 
     if (model_->isGameInProgress()) {
