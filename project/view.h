@@ -85,6 +85,8 @@ private:
     void updateCardsOnTable();
     void updateCurrentHand();
 
+    // Beep function
+    void playBeep();
 };
 
 #endif

@@ -282,3 +282,7 @@ void View::displayMessage(string title, string message) {
   	dialogue.set_secondary_text(message);
   	dialogue.run();
 }
+
+void View::playBeep() {
+    cout << '\a' << endl;
+}
