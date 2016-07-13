@@ -37,7 +37,7 @@ PlayerView::PlayerView(Model* model, Controller* controller, View* view, int pla
     container.pack_end(discardsTxt);
     add(container);
 
-    if (model_->player(playerNum_)->isHuman()) {
+    if (model_->isHuman(playerNum_)) {
         setToggleButton(TXT_HUMAN, true);
     } else {
         setToggleButton(TXT_COMPUTER, true);

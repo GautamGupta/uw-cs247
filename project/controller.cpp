@@ -52,7 +52,7 @@ void Controller::startRound(Cards &cards) {
 
     // // TEST: CHECK PLAYERS' CARDS
     // for (int i = 0; i < NUM_PLAYERS; i++) {
-    //     Cards currentCards = model_->player(i)->getCurrentCards();
+    //     Cards currentCards = model_->getCurrentCards(i);
     //     cout << "Player " << i+1 << endl;
     //     for (int j = 0; j < currentCards.size(); j++){
     //         cout << *currentCards[j] << endl;
@@ -83,7 +83,7 @@ void Controller::shuffleCards(Cards &cards) {
  */
 void Controller::autoPlay() {
     int currentPlayer = model_->currentPlayer();
-    while (!model_->isRoundOver() && !model_->player(currentPlayer)->isHuman()) {
+    while (!model_->isRoundOver() && !model_->isHuman(currentPlayer)) {
         cout << "Playing computer." << endl;
         playComputer(currentPlayer);
     }
@@ -103,7 +103,7 @@ void Controller::endRound() {
     if (model_->isGameOver()) {
         int lowestScore = model_->lowestScore();
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            if (model_->player(i)->calculateScore() == lowestScore) {
+            if (model_->calculatePlayerScore(i) == lowestScore) {
                 // view()->displayVictory(i);
             }
         }
@@ -125,11 +125,11 @@ void Controller::rageQuit(int playerNum) {
  * Switch player type
  */
 void Controller::togglePlayer(int playerNum) {
-    if (model_->player(playerNum)->isHuman()) {
-        shared_ptr<Player> newPlayer(new ComputerPlayer(*model_->player(playerNum)));
+    if (model_->isHuman(playerNum)) {
+        shared_ptr<Player> newPlayer(new ComputerPlayer(*model_->getPlayer(playerNum)));
         model_->replacePlayer(playerNum, newPlayer);
     } else {
-        shared_ptr<Player> newPlayer(new HumanPlayer(*model_->player(playerNum)));
+        shared_ptr<Player> newPlayer(new HumanPlayer(*model_->getPlayer(playerNum)));
         model_->replacePlayer(playerNum, newPlayer);
     }
 }
@@ -148,7 +148,7 @@ void Controller::playComputer(int playerNum) {
 
     // Discard first card
     } else {
-        Card card = *(model_->player(playerNum)->getCurrentCards().at(0));
+        Card card = *(model_->getCurrentCards(playerNum).at(0));
         model_->discardCard(playerNum, card);
     }
 }

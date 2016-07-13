@@ -22,12 +22,11 @@ Model::Model() : currentPlayer_(-1), numPlays_(0) {
     }
 }
 
-Players Model::players() {
-    return players_;
-}
-
-shared_ptr<Player> Model::player(int i) {
-    return players().at(i);
+/**
+ * Returns the player at index i
+ */
+shared_ptr<Player> Model::getPlayer(int i) const {
+    return players_.at(i);
 }
 
 int Model::currentPlayer() const {
@@ -41,6 +40,13 @@ int Model::currentPlayer() const {
 void Model::setCurrentPlayer(int currentPlayer) {
     currentPlayer_ = currentPlayer;
     notify();
+}
+
+/**
+ * Checks if player at index i is human
+ */
+bool Model::isHuman(int i) {
+    return getPlayer(i)->isHuman();
 }
 
 /**
@@ -109,6 +115,13 @@ int Model::lowestScore() {
 }
 
 /**
+ * Calculates score of player at index i
+ */
+int Model::calculatePlayerScore(int i) const {
+    return getPlayer(i)->calculateScore();
+}
+
+/**
  * Add all cards assigned to players to an array and return (in order)
  */
 Cards Model::getDeck() const {
@@ -160,7 +173,14 @@ SuitCards Model::getSuitCardsOnTable() {
  * @param  playerNum Index position of player
  */
 Cards Model::getLegalPlays(int playerNum) {
-    return players_.at(playerNum)->getLegalPlays(getCardsOnTable());
+    return getPlayer(playerNum)->getLegalPlays(getCardsOnTable());
+}
+
+/**
+ * Get current cards for a player.
+ */
+const Cards& Model::getCurrentCards(int playerNum) {
+    return getPlayer(playerNum)->getCurrentCards();
 }
 
 /**
@@ -207,8 +227,4 @@ void Model::donePlay() {
     currentPlayer_ = (currentPlayer_ + 1) % NUM_PLAYERS;
     numPlays_++;
     notify();
-}
-
-const Cards& Model::getPlayerCurrentCards(int playerNum) {
-    return players_.at(playerNum)->getCurrentCards();
 }
