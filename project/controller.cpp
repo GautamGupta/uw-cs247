@@ -82,10 +82,8 @@ void Controller::shuffleCards(Cards &cards) {
  * Play all computer plays until it's a human's turn to play
  */
 void Controller::autoPlay() {
-    int currentPlayer = model_->currentPlayer();
-    while (!model_->isRoundOver() && !model_->isHuman(currentPlayer)) {
-        cout << "Playing computer." << endl;
-        playComputer(currentPlayer);
+    while (!model_->isRoundOver() && !model_->isHuman(model_->currentPlayer())) {
+        playComputer(model_->currentPlayer());
     }
 }
 
