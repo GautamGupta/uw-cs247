@@ -85,14 +85,14 @@ void PlayerView::update() {
     setLabels(score, discards);
 
     if (model_->isGameInProgress()) {
-        if (model_->isHuman(playerNum_)) {
-            bool enabled = (model_->currentPlayer() == playerNum_);
+        if (model_->isPlayerHuman(playerNum_)) {
+            bool enabled = (model_->getCurrentPlayer() == playerNum_);
             setToggleButton(TXT_RAGE, enabled);
         } else {
             setToggleButton(TXT_COMPUTER, false);
         }
     } else {
-        if (model_->isHuman(playerNum_)) {
+        if (model_->isPlayerHuman(playerNum_)) {
             setToggleButton(TXT_HUMAN, true);
         } else {
             setToggleButton(TXT_COMPUTER, true);

@@ -279,7 +279,7 @@ void View::updateCurrentHand() {
     Cards cards;
 
     if (model_->isGameInProgress()) {
-        cards = model_->getPlayerCurrentCards(model_->currentPlayer());
+        cards = model_->getPlayerCurrentCards(model_->getCurrentPlayer());
     } else {
         cards = Cards();
     }

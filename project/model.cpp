@@ -18,99 +18,39 @@ using namespace std;
 Model::Model() : currentPlayer_(-1), numPlays_(0) {
     // Initialize 4 humans
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        unique_ptr<Player> humanPlayer(new HumanPlayer());
-        players_.push_back(move(humanPlayer));
+        players_.push_back(unique_ptr<Player>(new HumanPlayer()));
     }
 }
 
-int Model::currentPlayer() const {
+int Model::getCurrentPlayer() const {
     return currentPlayer_;
-}
-
-/**
- * Set current player to index
- * Set start to the player who has 7S
- */
-void Model::setCurrentPlayer(int currentPlayer) {
-    currentPlayer_ = currentPlayer;
-    notify();
-}
-
-/**
- * Checks if player at index i is human
- */
-bool Model::isHuman(int i) {
-    return players_.at(i)->isHuman();
-}
-
-/**
- * Start round for every player
- */
-void Model::startRound() {
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->startRound();
-    }
-    notify();
-}
-
-/**
- * Resets the game
- */
-void Model::reset() {
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->reset();
-    }
-    currentPlayer_ = -1;
-    numPlays_ = 0;
-
-    notify();
 }
 
 /**
  * Check if 52 cards have been played / discarded in the round
  * ie. if round is over
  */
-bool Model::isRoundOver() {
+bool Model::isRoundOver() const {
     return numPlays_ == NUM_CARDS;
 }
 
 /**
  * Simple state check to see if game is in progress
  */
-bool Model::isGameInProgress() {
-    return currentPlayer() != -1;
+bool Model::isGameInProgress() const {
+    return getCurrentPlayer() != -1;
 }
 
 /**
  * Check if player has > 80 pts
  */
-bool Model::isGameOver() {
+bool Model::isGameOver() const {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         if (players_.at(i)->checkEndGame()) {
             return true;
         }
     }
     return false;
-}
-
-/**
- * See what's the lowest score in the game
- */
-int Model::lowestScore() {
-    int lowestScore = getPlayerTotalScore(0);
-    for (int i = 1; i < NUM_PLAYERS; i++) {
-        if (getPlayerTotalScore(i) < lowestScore) {
-            lowestScore = getPlayerTotalScore(i);
-        }
-    }
-    return lowestScore;
-}
-
-/**
- * Calculates score of player at index i
- */
-int Model::getPlayerTotalScore(int i) const {
-    return players_.at(i)->getTotalScore();
 }
 
 /**
@@ -140,32 +80,59 @@ Cards Model::getCardsOnTable() const {
 }
 
 /**
- * Get a hashmap of (Suit -> Vector of cards of suit) played for the round
- */
-SuitCards Model::getSuitCardsOnTable() {
-    SuitCards suitCards;
-
-    for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
-        Suit suit = static_cast<Suit>(suitNum);
-        suitCards[suit] = Cards();
-    }
-
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        for (int j = 0; j < players_.at(i)->getPlayedCards().size(); j++) {
-            shared_ptr<Card> card = players_.at(i)->getPlayedCards().at(j);
-            suitCards[card->getSuit()].push_back(card);
-        }
-    }
-
-    return suitCards;
-}
-
-/**
  * Get legal plays for a player. We need to supply cards on table.
  * @param  playerNum Index position of player
  */
-Cards Model::getLegalPlays(int playerNum) {
+Cards Model::getPlayerLegalPlays(int playerNum) const {
     return players_.at(playerNum)->getLegalPlays(getCardsOnTable());
+}
+
+const Cards& Model::getPlayerCurrentCards(int playerNum) const {
+    return players_.at(playerNum)->getCurrentCards();
+}
+
+const Cards& Model::getPlayerDiscardedCards(int playerNum) const {
+    return players_.at(playerNum)->getDiscardedCards();
+}
+
+/**
+ * Checks if player at index i is human
+ */
+bool Model::isPlayerHuman(int playerNum) const {
+    return players_.at(playerNum)->isHuman();
+}
+
+int Model::getPlayerScore(int playerNum) const {
+    return players_.at(playerNum)->getScore();
+}
+
+/**
+ * Calculates score of player at index i
+ */
+int Model::getPlayerTotalScore(int playerNum) const {
+    return players_.at(playerNum)->getTotalScore();
+}
+
+/**
+ * See what's the lowest score in the game
+ */
+int Model::getLowestPlayerScore() const {
+    int getLowestPlayerScore = getPlayerTotalScore(0);
+    for (int i = 1; i < NUM_PLAYERS; i++) {
+        if (getPlayerTotalScore(i) < getLowestPlayerScore) {
+            getLowestPlayerScore = getPlayerTotalScore(i);
+        }
+    }
+    return getLowestPlayerScore;
+}
+
+/**
+ * Set current player to index
+ * Set start to the player who has 7S
+ */
+void Model::setCurrentPlayer(int currentPlayer) {
+    currentPlayer_ = currentPlayer;
+    notify();
 }
 
 /**
@@ -173,7 +140,8 @@ Cards Model::getLegalPlays(int playerNum) {
  * @param int Index to toggle
  */
 void Model::togglePlayer(int playerNum) {
-    if (isHuman(playerNum)) {
+    // Can't really refactor duplicate code due to use of unique_ptr
+    if (isPlayerHuman(playerNum)) {
         unique_ptr<Player> newPlayer(new ComputerPlayer(*players_.at(playerNum)));
         players_[playerNum].release();
         players_.erase(players_.begin() + playerNum);
@@ -199,7 +167,7 @@ void Model::addPlayerCards(int playerNum, Cards &cards) {
 }
 
 /**
- * Play a card
+ * Play a card (and notify)
  */
 void Model::playCard(int playerNum, Card card) {
     players_.at(playerNum)->playCard(card);
@@ -207,7 +175,7 @@ void Model::playCard(int playerNum, Card card) {
 }
 
 /**
- * Discard a card
+ * Discard a card (and notify)
  */
 void Model::discardCard(int playerNum, Card card) {
     players_.at(playerNum)->discardCard(card);
@@ -215,23 +183,33 @@ void Model::discardCard(int playerNum, Card card) {
 }
 
 /**
- * 1. Set next player
- * 2. Increment # plays
- * 3. Notify
+ * 1. Increment # plays
+ * 2. Set next player (and notify)
  */
 void Model::donePlay() {
     numPlays_++;
-    setCurrentPlayer((currentPlayer() + 1) % NUM_PLAYERS);
+    setCurrentPlayer((getCurrentPlayer() + 1) % NUM_PLAYERS);
 }
 
-const Cards& Model::getPlayerCurrentCards(int playerNum) {
-    return players_.at(playerNum)->getCurrentCards();
+/**
+ * Start round for every player
+ */
+void Model::startRound() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        players_.at(i)->startRound();
+    }
+    notify();
 }
 
-const Cards& Model::getPlayerDiscardedCards(int playerNum) {
-    return players_.at(playerNum)->getDiscardedCards();
-}
+/**
+ * Resets the game
+ */
+void Model::reset() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        players_.at(i)->reset();
+    }
+    currentPlayer_ = -1;
+    numPlays_ = 0;
 
-int Model::getPlayerScore(int playerNum) const {
-    return players_.at(playerNum)->getScore();
+    notify();
 }

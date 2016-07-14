@@ -20,7 +20,7 @@ CardView::~CardView() {
 
 void CardView::cardButtonClicked() {
     try {
-        controller_->playHuman(model_->currentPlayer(), *card_);
+        controller_->playHuman(model_->getCurrentPlayer(), *card_);
     } catch (Player::CardNotFoundException &e) {
         view_->displayMessage("Error", "That card was not found.");
     } catch (Controller::InvalidPlayException &e) {

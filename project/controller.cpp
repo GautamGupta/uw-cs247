@@ -66,8 +66,8 @@ void Controller::shuffleCards(Cards &cards) {
  * Play all computer plays until it's a human's turn to play
  */
 void Controller::autoPlay() {
-    while (!model_->isRoundOver() && !model_->isHuman(model_->currentPlayer())) {
-        playComputer(model_->currentPlayer());
+    while (!model_->isRoundOver() && !model_->isPlayerHuman(model_->getCurrentPlayer())) {
+        playComputer(model_->getCurrentPlayer());
     }
 }
 
@@ -81,9 +81,9 @@ void Controller::endRound() {
     }
 
     if (model_->isGameOver()) {
-        int lowestScore = model_->lowestScore();
+        int getLowestPlayerScore = model_->getLowestPlayerScore();
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            if (model_->getPlayerTotalScore(i) == lowestScore) {
+            if (model_->getPlayerTotalScore(i) == getLowestPlayerScore) {
                 // view()->displayVictory(i);
             }
         }
@@ -115,7 +115,7 @@ void Controller::togglePlayer(int playerNum) {
  * @param playerNum Player index
  */
 void Controller::playComputer(int playerNum) {
-    Cards legalPlays = model_->getLegalPlays(playerNum);
+    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
 
     // Play first card
     if (legalPlays.size() > 0) {
@@ -129,7 +129,7 @@ void Controller::playComputer(int playerNum) {
 }
 
 void Controller::playHuman(int playerNum, Card card) {
-    Cards legalPlays = model_->getLegalPlays(playerNum);
+    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
 
     if (legalPlays.size() == 0) {
         model_->discardCard(playerNum, card);
