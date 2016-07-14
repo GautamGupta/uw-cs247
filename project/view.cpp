@@ -22,9 +22,6 @@ View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller),
         startButton_("Start new game with seed:"), endButton_("End current game") {
 
-    // Null card image
-    const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-
 	// Sets some properties of the window.
     set_title("Straights");
 	set_border_width(10);
@@ -55,7 +52,7 @@ View::View(Model *model, Controller *controller) :
     cardsOnTable.set_col_spacings(5);
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            cardsPlayed[i][j] = new Gtk::Image(nullCardPixbuf);
+            cardsPlayed[i][j] = new Gtk::Image(getNullCardImage());
             cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
         }
     }
@@ -82,6 +79,7 @@ View::View(Model *model, Controller *controller) :
 	// Register view as observer of model
 	model_->subscribe(this);
 
+    update();
 }
 
 /**
@@ -232,6 +230,16 @@ void View::update() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         playerViews[i]->update();
     }
+
+    if (model_->isGameInProgress()) {
+        startButton_.set_sensitive(false);
+        seedInput_.set_sensitive(false);
+        endButton_.set_sensitive(true);
+    } else {
+        startButton_.set_sensitive(true);
+        seedInput_.set_sensitive(true);
+        endButton_.set_sensitive(false);
+    }
 }
 
 void View::startButtonClicked() {
@@ -253,13 +261,12 @@ void View::endButtonClicked() {
 void View::updateCardsOnTable() {
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            cardsPlayed[i][j]->set(nullCardPixbuf);
+            cardsPlayed[i][j]->set(getNullCardImage());
         }
     }
 
     Cards cards = model_->getCardsOnTable();
     for (int i = 0; i < cards.size(); i++) {
-        // const Glib::RefPtr<Gdk::Pixbuf> cardPixbuf = deck.getCardImage(cards.at(i));
         Card card = *cards.at(i);
         cardsPlayed[card.getSuit()][card.getRank()]->set(getCardImage(card));
     }
@@ -277,7 +284,6 @@ void View::updateCurrentHand() {
         cards = Cards();
     }
 
-    cerr << cards.size() << endl;
     for (int i = 0; i < CARDS_PER_PLAYER; i++) {
         if (i >= cards.size()) {
             cardsInHand[i]->setCard(NULL, false);

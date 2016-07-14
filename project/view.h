@@ -62,7 +62,6 @@ private:
     Gtk::Frame tableFrame; // Contains cards on table
     Gtk::Table cardsOnTable;
     Gtk::Image *cardsPlayed[SUIT_COUNT][RANK_COUNT];
-    Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
 
     Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
     PlayerView *playerViews[NUM_PLAYERS];
