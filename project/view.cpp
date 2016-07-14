@@ -161,12 +161,14 @@ void View::displayCardsOnTable(SuitCards suitCards) {
 
 void View::displayHand(Cards cards) {
     cout << "Your hand: ";
-    displayCards(cards);
+    string message = displayCards(cards);
+    cout << message;
 }
 
 void View::displayLegalPlays(Cards cards) {
     cout << "Legal plays: ";
-    displayCards(cards);
+    string message = displayCards(cards);
+    cout << message;
 }
 
 void View::displayPlayCard(int playerNum, Card card) {
@@ -199,22 +201,24 @@ void View::displayCards(vector<int> ranks) {
 /**
  * Displays cards 13 per line. Will print a newline even if there are no cards
  */
-void View::displayCards(Cards cards) {
+string View::displayCards(Cards cards) {
+    string message = "";
     for (int i = 0; i < cards.size(); i++) {
-        cout << *cards.at(i);
+        message += Card::getDisplayRank(cards.at(i)->getRank()) +Card::getDisplaySuit(cards.at(i)->getSuit());
 
         // Newline at the end of 13 cards (mainly for deck_) / end of list
         if ((i+1) % CARDS_PER_PLAYER == 0 || (i+1) == cards.size()) {
-            cout << endl;
+            message += "\n";
         } else {
-            cout << " ";
+            message += " ";
         }
     }
 
     // Next line if no cards
     if (cards.size() == 0) {
-        cout << endl;
+        message+="\n";
     }
+    return message;
 }
 
 void View::displayVictory(int playerNum) {
@@ -228,10 +232,28 @@ void View::update() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         playerViews_[i]->update();
     }
+
     if (model_->didRoundJustStart() && model_->getCurrentPlayer() != -1) {
         string message = "Player " + to_string(model_->getCurrentPlayer() + 1) + "'s turn to play.";
         displayMessage("New Round", message);
+
         model_->roundJustStarted();
+    }
+    if (model_->isRoundOver()){
+        string message;
+        for (int i = 0; i < NUM_PLAYERS; i++){
+            // display player discards
+            message += "Player " + to_string(i+1) + "'s discards: ";
+            Cards discardedCards = model_->getPlayerDiscardedCards(i);
+            message += displayCards(discardedCards);
+
+            // display player score
+            message += "Player " + to_string(i+1) + "'s score: ";
+            message += to_string(model_->getPlayerPreviousScore(i)) + " + " + to_string(model_->getPlayerScore(i)) + " = " + to_string(model_->getPlayerTotalScore(i));
+            message += "\n\n";
+        }
+
+        displayMessage("End Round", message);
     }
 
     if (model_->isGameInProgress()) {

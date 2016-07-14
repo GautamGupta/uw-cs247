@@ -80,7 +80,7 @@ void PlayerView::onBtnClick() {
  * Update with new score and discard counts
  */
 void PlayerView::update() {
-    int score = model_->getPlayerScore(playerNum_);
+    int score = model_->getPlayerTotalScore(playerNum_);
     int discards = model_->getPlayerDiscardedCards(playerNum_).size();
     setLabels(score, discards);
 

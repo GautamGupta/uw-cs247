@@ -40,7 +40,7 @@ public:
     void errorDiscardCard();
 
     void displayCards(std::vector<int>);
-    void displayCards(Cards);
+    std::string displayCards(Cards);
 
     void displayVictory(int);
     Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();

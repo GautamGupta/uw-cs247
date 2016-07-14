@@ -138,6 +138,13 @@ int Model::getPlayerScore(int playerNum) const {
 }
 
 /**
+ * Get player's previous round score
+ */
+ int Model::getPlayerPreviousScore(int playerNum) const {
+     return players_.at(playerNum)->getPreviousScore();
+ }
+
+/**
  * Get player's total score (previous + current rounds)
  */
 int Model::getPlayerTotalScore(int playerNum) const {

@@ -26,6 +26,7 @@ public:
     const Cards& getPlayerDiscardedCards(int) const;
     bool isPlayerHuman(int) const;
     int getPlayerScore(int) const;
+    int getPlayerPreviousScore(int) const;
     int getPlayerTotalScore(int) const;
     int getLowestPlayerScore() const;
 
