@@ -12,7 +12,7 @@ public:
     virtual ~ComputerPlayer();
     ComputerPlayer(const Player&);
 
-    bool isHuman();
+    bool isHuman() const;
 };
 
 #endif

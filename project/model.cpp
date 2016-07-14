@@ -54,7 +54,7 @@ bool Model::isGameInProgress() const {
  */
 bool Model::isGameOver() const {
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        if (players_.at(i)->checkEndGame()) {
+        if (players_.at(i)->isGameOver()) {
             return true;
         }
     }
@@ -174,12 +174,10 @@ void Model::togglePlayer(int playerNum) {
 }
 
 /**
- * Add card to player
+ * Add cards to player
  */
 void Model::addPlayerCards(int playerNum, Cards &cards) {
-    for (int i = 0; i < cards.size(); i++) {
-        players_.at(playerNum)->addCard(cards.at(i));
-    }
+    players_.at(playerNum)->addCards(cards);
     notify();
 }
 

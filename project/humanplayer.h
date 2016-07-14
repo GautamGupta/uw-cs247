@@ -12,7 +12,7 @@ public:
     HumanPlayer(const Player&);
     virtual ~HumanPlayer();
 
-    bool isHuman();
+    bool isHuman() const;
 };
 
 #endif

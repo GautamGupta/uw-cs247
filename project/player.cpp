@@ -11,6 +11,34 @@ Player::Player() : score_(0), previousScore_(0) {}
 Player::~Player() {}
 
 /**
+ * Get score of current round
+ */
+int Player::getScore() const {
+    return score_;
+}
+
+/**
+ * Get score from previous rounds (cumulative)
+ */
+int Player::getPreviousScore() const {
+    return previousScore_;
+}
+
+/**
+ * Calculate total score
+ */
+int Player::getTotalScore() const {
+    return getPreviousScore() + getScore();
+}
+
+/**
+ * See if the user has > 80 pts
+ */
+bool Player::isGameOver() const {
+    return (getTotalScore() >= NUM_POINTS);
+}
+
+/**
  * Original card maintains the cards assigned to the player
  * at the start of the round.
  */
@@ -40,42 +68,9 @@ const Cards& Player::getDiscardedCards() const {
 }
 
 /**
- * Get score from previous rounds (cumulative)
- */
-int Player::getPreviousScore() const {
-    return previousScore_;
-}
-
-/**
- * Get score of current round
- */
-int Player::getScore() const {
-    return score_;
-}
-
-/**
- * Calculate total score
- */
-int Player::getTotalScore() const {
-    return getPreviousScore() + getScore();
-}
-
-/**
- * Reset a player
- */
-void Player::reset() {
-    previousScore_ = 0;
-    score_ = 0;
-    originalCards_.clear();
-    currentCards_.clear();
-    playedCards_.clear();
-    discardedCards_.clear();
-}
-
-/**
  * Get legal plays per straight game play. Needs played cards for the round.
  */
-Cards Player::getLegalPlays(Cards cardsOnTable) {
+Cards Player::getLegalPlays(Cards cardsOnTable) const {
     Cards legalPlays;
     Card firstCard = Card(SPADE, SEVEN);
 
@@ -112,31 +107,42 @@ Cards Player::getLegalPlays(Cards cardsOnTable) {
 }
 
 /**
- * Checks if a card is in the player's hand. If found it will return the index, if not it will return -1
+ * Checks if a card is in the player's hand.
+ * If found it will return the index.
+ * If not it will return -1
  */
-int Player::cardInHand(Card card) {
-    int index = 0;
-    bool cardInHand = false;
-
+int Player::getPositionInCurrentCards(Card card) const {
     for (int i = 0; i < getCurrentCards().size(); i++) {
         if (*getCurrentCards().at(i) == card) {
-            cardInHand = true;
-            break;
+            return i;
         }
-        index++;
-    }
-    if (!cardInHand) {
-      index = -1;
     }
 
-    return index;
+    return -1;
+}
+
+/**
+ * Assign cards to player (add to original and current)
+ */
+void Player::addCards(Cards &cards) {
+    originalCards_.insert(originalCards_.end(), cards.begin(), cards.end());
+    currentCards_.insert(currentCards_.end(), cards.begin(), cards.end());
+}
+
+/**
+ * Add score to previous score, clear all arrays, set score to 0
+ */
+void Player::startRound() {
+    int scoreTemp = getTotalScore();
+    reset();
+    previousScore_ = scoreTemp;
 }
 
 /**
  * Remove card from current cards and add to played cards
  */
 void Player::playCard(Card card) {
-    int index = cardInHand(card);
+    int index = getPositionInCurrentCards(card);
     if (index >= 0) {
         playedCards_.push_back(getCurrentCards().at(index));
         currentCards_.erase(getCurrentCards().begin() + index);
@@ -150,7 +156,7 @@ void Player::playCard(Card card) {
  * Add rank to score
  */
 void Player::discardCard(Card card) {
-    int index = cardInHand(card);
+    int index = getPositionInCurrentCards(card);
     if (index >= 0) {
         discardedCards_.push_back(getCurrentCards().at(index));
         currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
@@ -161,25 +167,13 @@ void Player::discardCard(Card card) {
 }
 
 /**
- * Assign card to player (add to original and current)
+ * Reset a player
  */
-void Player::addCard(shared_ptr<Card> card) {
-    originalCards_.push_back(card);
-    currentCards_.push_back(card);
-}
-
-/**
- * Add score to previous score, clear all arrays, set score to 0
- */
-void Player::startRound() {
-    int scoreTemp = getTotalScore();
-    reset();
-    previousScore_ = scoreTemp;
-}
-
-/**
- * See if the user has > 80 pts
- */
-bool Player::checkEndGame() const {
-    return (getTotalScore() >= NUM_POINTS);
+void Player::reset() {
+    previousScore_ = 0;
+    score_ = 0;
+    originalCards_.clear();
+    currentCards_.clear();
+    playedCards_.clear();
+    discardedCards_.clear();
 }

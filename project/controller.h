@@ -14,17 +14,17 @@ class Controller {
 public:
     Controller(Model*);
 
-    void startButtonClicked(int = DEFAULT_SEED);
-    void endButtonClicked();
-
     void startRound(Cards &);
+    void playComputer(int);
+    void playHuman(int, Card);
     void doneTurn();
     void rageQuit(int);
     void togglePlayer(int);
-    void playHuman(int, Card);
-    void playComputer(int);
 
     void shuffleCards(Cards &);
+
+    void startButtonClicked(int = DEFAULT_SEED);
+    void endButtonClicked();
 
     class InvalidPlayException{};
 

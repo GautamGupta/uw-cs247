@@ -2,48 +2,43 @@
 #define _PLAYER_
 
 #include "card.h"
-#include <ostream>
 #include <memory>
 #include <vector>
 
 /** Documentation of methods in .cpp file */
 
-enum PlayerType { HUMAN, COMPUTER };
-
 class Player {
 public:
     Player();
     virtual ~Player();
+    virtual bool isHuman() const = 0;
 
+    int getScore() const;
+    int getPreviousScore() const;
+    int getTotalScore() const;
+    bool isGameOver() const;
     const Cards& getOriginalCards() const;
     const Cards& getCurrentCards() const;
     const Cards& getPlayedCards() const;
     const Cards& getDiscardedCards() const;
-    int getScore() const;
-    int getPreviousScore() const;
-    int getTotalScore() const;
+    Cards getLegalPlays(Cards) const;
+    int getPositionInCurrentCards(Card) const;
 
-    Cards getLegalPlays(Cards);
-    virtual bool isHuman() = 0;
-
-    void addCard(std::shared_ptr<Card>);
+    void addCards(Cards &);
     void startRound();
-    bool checkEndGame() const;
-    void reset();
-
-    int cardInHand(Card);
     void playCard(Card);
     void discardCard(Card);
+    void reset();
 
     class CardNotFoundException{};
 
 protected:
+    int score_;
+    int previousScore_;
     Cards originalCards_;
     Cards currentCards_;
     Cards playedCards_;
     Cards discardedCards_;
-    int score_;
-    int previousScore_;
 };
 
 typedef std::vector< std::unique_ptr<Player> > Players;

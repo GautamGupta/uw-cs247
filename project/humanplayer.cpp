@@ -21,6 +21,6 @@ HumanPlayer::~HumanPlayer() {}
 /**
  * Return true as this is the human class
  */
-bool HumanPlayer::isHuman() {
+bool HumanPlayer::isHuman() const {
     return true;
 }

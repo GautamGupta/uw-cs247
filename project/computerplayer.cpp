@@ -21,6 +21,6 @@ ComputerPlayer::ComputerPlayer(const Player &player) : Player() {
 /**
  * Return false as this is the computer class
  */
-bool ComputerPlayer::isHuman() {
+bool ComputerPlayer::isHuman() const {
     return false;
 }

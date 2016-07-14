@@ -46,17 +46,44 @@ void Controller::startRound(Cards &cards) {
 }
 
 /**
- * Shuffle cards based on seed
+ * Computer's turn to play. Play if there are legal plays else discard
  */
-void Controller::shuffleCards(Cards &cards) {
-    int n = cards.size();
+void Controller::playComputer(int playerNum) {
+    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
 
-    while (n > 1) {
-        int k = (int) (rng() % n);
-        --n;
-        shared_ptr<Card> card = cards[n];
-        cards[n] = cards[k];
-        cards[k] = card;
+    // Play first card
+    if (legalPlays.size() > 0) {
+        model_->playCard(playerNum, *legalPlays.at(0));
+
+    // Discard first card
+    } else {
+        Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
+        model_->discardCard(playerNum, card);
+    }
+
+    doneTurn();
+}
+
+/**
+ * Play the specified card for human
+ */
+void Controller::playHuman(int playerNum, Card card) {
+    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
+
+    if (legalPlays.size() == 0) {
+        model_->discardCard(playerNum, card);
+        doneTurn();
+    } else {
+        for (int i = 0; i < legalPlays.size(); i++) {
+            if (*legalPlays.at(i) == card) {
+                model_->playCard(playerNum, card);
+                doneTurn();
+                return;
+            }
+        }
+
+        // Card not in legal plays
+        throw Controller::InvalidPlayException();
     }
 }
 
@@ -101,41 +128,17 @@ void Controller::togglePlayer(int playerNum) {
 }
 
 /**
- * Computer's turn to play. Play if there are legal plays else discard
+ * Shuffle cards based on seed
  */
-void Controller::playComputer(int playerNum) {
-    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
+void Controller::shuffleCards(Cards &cards) {
+    int n = cards.size();
 
-    // Play first card
-    if (legalPlays.size() > 0) {
-        model_->playCard(playerNum, *legalPlays.at(0));
-
-    // Discard first card
-    } else {
-        Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
-        model_->discardCard(playerNum, card);
-    }
-
-    doneTurn();
-}
-
-void Controller::playHuman(int playerNum, Card card) {
-    Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
-
-    if (legalPlays.size() == 0) {
-        model_->discardCard(playerNum, card);
-        doneTurn();
-    } else {
-        for (int i = 0; i < legalPlays.size(); i++) {
-            if (*legalPlays.at(i) == card) {
-                model_->playCard(playerNum, card);
-                doneTurn();
-                return;
-            }
-        }
-
-        // Card not in legal plays
-        throw Controller::InvalidPlayException();
+    while (n > 1) {
+        int k = (int) (rng() % n);
+        --n;
+        shared_ptr<Card> card = cards[n];
+        cards[n] = cards[k];
+        cards[k] = card;
     }
 }
 
