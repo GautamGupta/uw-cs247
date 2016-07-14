@@ -1,2 +1,5 @@
 # Bonus Work
 
+ 1. Computer player is more intelligent, discards the lowest-rank card in hand
+ 2. Only enable legal plays if the player has legal plays. (Also, we don't show
+    a computer's cards to the human player on round start/end.)
