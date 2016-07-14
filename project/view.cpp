@@ -279,19 +279,29 @@ void View::updateCardsOnTable() {
  * Update the current hand displayed for human player's view
  */
 void View::updateCurrentHand() {
-    Cards cards;
+    Cards cards, legalPlays;
 
-    if (model_->isGameInProgress()) {
+    if (model_->isGameInProgress() && model_->isPlayerHuman(model_->getCurrentPlayer())) {
         cards = model_->getPlayerCurrentCards(model_->getCurrentPlayer());
+        legalPlays = model_->getPlayerLegalPlays(model_->getCurrentPlayer());
     } else {
         cards = Cards();
+        legalPlays = Cards();
     }
 
     for (int i = 0; i < CARDS_PER_PLAYER; i++) {
         if (i >= cards.size()) {
             currentCards_[i]->setCard(NULL, false);
         } else {
-            currentCards_[i]->setCard(cards.at(i));
+            bool enabled = (legalPlays.size() == 0);
+            // Order of cards matters
+            for (int j = 0; j < legalPlays.size(); j++) {
+                if (*cards.at(i) == *legalPlays.at(j)) {
+                    enabled = true;
+                    break;
+                }
+            }
+            currentCards_[i]->setCard(cards.at(i), enabled);
         }
     }
 }
