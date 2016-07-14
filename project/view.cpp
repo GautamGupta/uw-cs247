@@ -228,13 +228,13 @@ void View::update() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         playerViews_[i]->update();
     }
-    if (model_->didRoundJustStart() && model_->getCurrentPlayer()!=-1) {
-        string playerNumber = integerToString(model_->getCurrentPlayer() + 1);
-        string message = "Player " + playerNumber + "'s turn to play.";
+    if (model_->didRoundJustStart() && model_->getCurrentPlayer() != -1) {
+        string message = "Player " + to_string(model_->getCurrentPlayer() + 1) + "'s turn to play.";
         displayMessage("New Round", message);
         model_->roundJustStarted();
     }
-    else if (model_->isGameInProgress()) {
+
+    if (model_->isGameInProgress()) {
         startButton_.set_sensitive(false);
         seedInput_.set_sensitive(false);
         endButton_.set_sensitive(true);
@@ -311,14 +311,4 @@ void View::displayMessage(string title, string message) {
     Gtk::MessageDialog dialogue(*this, title);
     dialogue.set_secondary_text(message);
     dialogue.run();
-}
-
-// Helper methods
-/**
- *
- */
-string View::integerToString(int num) {
-	ostringstream ostr;
-	ostr << num;
-	return ostr.str();
 }

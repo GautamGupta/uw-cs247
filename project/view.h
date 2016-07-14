@@ -47,9 +47,6 @@ public:
     Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
     void displayMessage(std::string title, std::string message);
 
-    //helper
-    std::string integerToString(int);
-
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
     Model *model_;

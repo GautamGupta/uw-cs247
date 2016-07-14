@@ -244,6 +244,7 @@ void Model::reset() {
     }
     currentPlayer_ = -1;
     numTurns_ = 0;
+    roundStarted_ = false;
 
     notify();
 }
