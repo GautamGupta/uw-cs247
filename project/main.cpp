@@ -8,8 +8,7 @@
 #include "model.h"
 #include "controller.h"
 #include "view.h"
-#include <iostream>
-#include <gtkmm/main.h>
+#include <gtkmm.h>
 
 using namespace std;
 

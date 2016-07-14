@@ -1,5 +1,5 @@
 /**
- * Model class. Is responsible keeping track of the deck of cards.
+ * Model class. Responsible keeping track of the players and gameplay.
  * It knows nothing about views or controllers.
  */
 

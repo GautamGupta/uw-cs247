@@ -1,5 +1,5 @@
 /**
- * Controller class. Is responsible for translating UI events (from the View)
+ * Controller class. Responsible for translating UI events (from the View)
  * into method calls to the Model.
  */
 
@@ -7,13 +7,9 @@
 #include "main.h"
 #include "model.h"
 #include "player.h"
-#include "computerplayer.h"
-#include "humanplayer.h"
 #include "card.h"
 #include <stdlib.h>
 #include <string>
-#include <cassert>
-#include <iostream>
 
 using namespace std;
 
@@ -154,7 +150,6 @@ void Controller::playHuman(int playerNum, Card card) {
  * (Re-)generate the cards, shuffle in starRound()
  */
 void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
-    cerr << "Start " << seed << endl;
     rng.seed(seed);
 
     Cards cards;
@@ -175,6 +170,5 @@ void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
  * Player types are retained.
  */
 void Controller::endButtonClicked() {
-    cerr << "End" << endl;
     model_->reset();
 }

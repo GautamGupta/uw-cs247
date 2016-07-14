@@ -1,5 +1,7 @@
 /**
- * Deck GUI
+ * Loads a series of pixmaps used for displaying the cards, as well as a card back used as a place marker in the
+ * display when we don't have a card yet to display. Use pixel buffers to share images since widgets cannot be
+ * shared.
  */
 
 #include "DeckGUI.h"

@@ -1,6 +1,5 @@
 /**
- * View class. Is responsible for buttons (that user clicks) and for displaying
- * the top card of the deck.
+ * View class. Responsible for input / output.
  */
 
 #include "main.h"
@@ -12,8 +11,7 @@
 #include "playerview.h"
 #include "cardview.h"
 #include <iostream>
-#include <cstdlib>
-#include <cassert>
+#include <stdlib.h>
 #include <algorithm>
 
 using namespace std;

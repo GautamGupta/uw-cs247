@@ -46,8 +46,6 @@ protected:
     int previousScore_;
 };
 
-std::ostream &operator<<(std::ostream &, const Player &);
-
 typedef std::vector< std::unique_ptr<Player> > Players;
 
 #endif

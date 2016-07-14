@@ -12,26 +12,26 @@ class Model;
 
 class Controller {
 public:
-   Controller(Model*);
+    Controller(Model*);
 
-   void startButtonClicked(int = DEFAULT_SEED);
-   void endButtonClicked();
+    void startButtonClicked(int = DEFAULT_SEED);
+    void endButtonClicked();
 
-   void startRound(Cards &);
-   void endRound();
-   void autoPlay();
-   void rageQuit(int);
-   void togglePlayer(int);
-   void playHuman(int, Card);
-   void playComputer(int);
+    void startRound(Cards &);
+    void endRound();
+    void autoPlay();
+    void rageQuit(int);
+    void togglePlayer(int);
+    void playHuman(int, Card);
+    void playComputer(int);
 
-   void shuffleCards(Cards &);
+    void shuffleCards(Cards &);
 
-   class InvalidPlayException{};
+    class InvalidPlayException{};
 
 private:
-   Model *model_;
-   std::mt19937 rng;
+    Model *model_;
+    std::mt19937 rng;
 };
 
 #endif

@@ -1,7 +1,3 @@
-/**
- * Subject class.  Abstract class for Observer Pattern
- */
-
 #ifndef MVC_SUBJECT_H
 #define MVC_SUBJECT_H
 

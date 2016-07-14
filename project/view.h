@@ -1,7 +1,3 @@
-/**
- * View class. Responsible for input/output.
- */
-
 #ifndef ST_VIEW_H
 #define ST_VIEW_H
 
