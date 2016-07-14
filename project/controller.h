@@ -15,20 +15,21 @@ public:
     Controller(Model*);
 
     void startRound(Cards &);
-    void playComputer(int);
-    void playHuman(int, Card);
-    void doneTurn();
     void rageQuit(int);
     void togglePlayer(int);
 
-    void shuffleCards(Cards &);
-
     void startButtonClicked(int = DEFAULT_SEED);
     void endButtonClicked();
+    void cardButtonClicked(Card);
 
     class InvalidPlayException{};
 
 private:
+    void playComputer(int);
+    void playHuman(int, Card);
+    void doneTurn();
+    void shuffleCards(Cards &);
+
     Model *model_;
     std::mt19937 rng;
 };

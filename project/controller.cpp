@@ -163,6 +163,13 @@ void Controller::startButtonClicked(int seed /* = DEFAULT_SEED */) {
 }
 
 /**
+ * Play a human card
+ */
+void Controller::cardButtonClicked(Card card) {
+    playHuman(model_->getCurrentPlayer(), card);
+}
+
+/**
  * End current game
  *
  * Player types are retained.

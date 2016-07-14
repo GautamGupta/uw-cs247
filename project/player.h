@@ -22,7 +22,6 @@ public:
     const Cards& getPlayedCards() const;
     const Cards& getDiscardedCards() const;
     Cards getLegalPlays(Cards) const;
-    int getPositionInCurrentCards(Card) const;
 
     void addCards(Cards &);
     void startRound();
@@ -33,6 +32,8 @@ public:
     class CardNotFoundException{};
 
 protected:
+    int getPositionInCurrentCards(Card) const;
+
     int score_;
     int previousScore_;
     Cards originalCards_;

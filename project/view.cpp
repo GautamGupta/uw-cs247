@@ -16,59 +16,60 @@
 
 using namespace std;
 
+const string View::TXT_TITLE = "Straights";
+const string View::TXT_ERROR = "Error";
+const string View::TXT_START_BTN = "Start new game with seed:";
+const string View::TXT_END_BTN = "End current game";
+const string View::TXT_CARDS_ON_TABLE_LBL = "Cards on the table";
+const string View::TXT_CURRENT_CARDS_LBL = "Your hand";
+
 View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller),
-        startButton_("Start new game with seed:"), endButton_("End current game") {
+        startButton_(TXT_START_BTN), endButton_(TXT_END_BTN) {
 
     // Sets some properties of the window.
-    set_title("Straights");
+    set_title(TXT_TITLE);
     set_border_width(10);
 
-    add(masterContainer);
+    // Master vertical container, 4 rows
+    add(masterBox_);
+    masterBox_.pack_start(gameBox_);
+    masterBox_.pack_start(cardsOnTableFrame_);
+    masterBox_.pack_start(playerBox_);
+    masterBox_.pack_start(currentCardsFrame_);
 
-    // Set up containers
-    masterContainer.pack_start(gameBox);
-    masterContainer.pack_start(tableFrame);
-    masterContainer.pack_start(playerBox);
-    masterContainer.pack_start(playerHandFrame);
-
-    // Set up gameBox
-    gameBox.pack_start(startButton_);
-    gameBox.pack_start(seedInput_);
-    gameBox.pack_end(endButton_);
-
-    seedInput_.set_text(to_string(DEFAULT_SEED));
-
-    // UI for gameBox
+    // Row 1: Horizontal - start game btn, seed text, end game btn
     startButton_.signal_clicked().connect(sigc::mem_fun(*this, &View::startButtonClicked));
     endButton_.signal_clicked().connect(sigc::mem_fun(*this, &View::endButtonClicked));
+    seedInput_.set_text(to_string(DEFAULT_SEED));
+    gameBox_.pack_start(startButton_);
+    gameBox_.pack_start(seedInput_);
+    gameBox_.pack_end(endButton_);
 
-    // UI for cards on table
-    tableFrame.set_label("Cards on the table");
-    tableFrame.add(cardsOnTable);
-    cardsOnTable.set_row_spacings(5);
-    cardsOnTable.set_col_spacings(5);
+    // Row 2: 4 rows x 13 cols table - 52 cards on table
+    cardsOnTableFrame_.set_label(TXT_CARDS_ON_TABLE_LBL);
+    cardsOnTableFrame_.add(cardsOnTableTable_);
+    cardsOnTableTable_.set_row_spacings(5);
+    cardsOnTableTable_.set_col_spacings(5);
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            cardsPlayed[i][j] = new Gtk::Image(getNullCardImage());
-            cardsOnTable.attach(*cardsPlayed[i][j], j, j+1, i, i+1);
+            cardsOnTable_[i][j] = new Gtk::Image(getNullCardImage());
+            cardsOnTableTable_.attach(*cardsOnTable_[i][j], j, j+1, i, i+1);
         }
     }
 
-    // UI for playerBox
+    // Row 3: Horizontal - 4 players (id, computer/human/rage, score, discards)
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        playerViews[i] = new PlayerView(model_, controller_, this, i);
-        playerBox.pack_start(*playerViews[i]);
+        playerViews_[i] = new PlayerView(model_, controller_, this, i);
+        playerBox_.pack_start(*playerViews_[i]);
     }
 
-    // Set up playerHandFrame
-    playerHandFrame.add(playerHandBox);
-
-    // UI for Player's Hand
-    playerHandFrame.set_label("Your hand");
+    // Row 4: Horizontal - player's hand, 13 cards
+    currentCardsFrame_.add(currentCardsBox_);
+    currentCardsFrame_.set_label(TXT_CURRENT_CARDS_LBL);
     for (int i = 0; i < CARDS_PER_PLAYER; i++) {
-        cardsInHand[i] = new CardView(model_, controller_, this);
-        playerHandBox.add(*cardsInHand[i]);
+        currentCards_[i] = new CardView(model_, controller_, this);
+        currentCardsBox_.add(*currentCards_[i]);
     }
 
     // The final step is to display the buttons (they display themselves)
@@ -86,16 +87,16 @@ View::View(Model *model, Controller *controller) :
 View::~View() {
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            delete cardsPlayed[i][j];
+            delete cardsOnTable_[i][j];
         }
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        delete playerViews[i];
+        delete playerViews_[i];
     }
 
     for (int i = 0; i < CARDS_PER_PLAYER; i++) {
-        delete cardsInHand[i];
+        delete currentCards_[i];
     }
 }
 
@@ -202,7 +203,7 @@ void View::displayCards(Cards cards) {
     for (int i = 0; i < cards.size(); i++) {
         cout << *cards.at(i);
 
-        // Newline at the end of 13 cards (mainly for deck) / end of list
+        // Newline at the end of 13 cards (mainly for deck_) / end of list
         if ((i+1) % CARDS_PER_PLAYER == 0 || (i+1) == cards.size()) {
             cout << endl;
         } else {
@@ -225,7 +226,7 @@ void View::update() {
     updateCurrentHand();
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
-        playerViews[i]->update();
+        playerViews_[i]->update();
     }
 
     if (model_->isGameInProgress()) {
@@ -258,14 +259,14 @@ void View::endButtonClicked() {
 void View::updateCardsOnTable() {
     for (int i = 0; i < SUIT_COUNT; i++) {
         for (int j = 0; j < RANK_COUNT; j++) {
-            cardsPlayed[i][j]->set(getNullCardImage());
+            cardsOnTable_[i][j]->set(getNullCardImage());
         }
     }
 
     Cards cards = model_->getCardsOnTable();
     for (int i = 0; i < cards.size(); i++) {
         Card card = *cards.at(i);
-        cardsPlayed[card.getSuit()][card.getRank()]->set(getCardImage(card));
+        cardsOnTable_[card.getSuit()][card.getRank()]->set(getCardImage(card));
     }
 }
 
@@ -283,19 +284,19 @@ void View::updateCurrentHand() {
 
     for (int i = 0; i < CARDS_PER_PLAYER; i++) {
         if (i >= cards.size()) {
-            cardsInHand[i]->setCard(NULL, false);
+            currentCards_[i]->setCard(NULL, false);
         } else {
-            cardsInHand[i]->setCard(cards.at(i));
+            currentCards_[i]->setCard(cards.at(i));
         }
     }
 }
 
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
-    return deck.getNullCardImage();
+    return deck_.getNullCardImage();
 }
 
 Glib::RefPtr<Gdk::Pixbuf> View::getCardImage(Card card) {
-    return deck.getCardImage(card);
+    return deck_.getCardImage(card);
 }
 
 /**

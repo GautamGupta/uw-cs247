@@ -12,13 +12,6 @@ class View;
 
 class PlayerView : public Gtk::Frame {
 public:
-    PlayerView(Model*, Controller*, View*, int);
-    virtual ~PlayerView();
-    void setToggleButton(std::string, bool);
-    void setLabels(int = 0, int = 0);
-    void update();
-
-private:
     static const std::string TXT_HUMAN;
     static const std::string TXT_COMPUTER;
     static const std::string TXT_RAGE;
@@ -27,6 +20,13 @@ private:
     static const std::string TXT_PLAYER;
     static const std::string TXT_RAGE_MSG;
 
+    PlayerView(Model*, Controller*, View*, int);
+    virtual ~PlayerView();
+    void setToggleButton(std::string, bool);
+    void setLabels(int = 0, int = 0);
+    void update();
+
+private:
     Model* model_;
     Controller* controller_;
     View* view_;

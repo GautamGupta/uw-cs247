@@ -20,14 +20,19 @@ CardView::~CardView() {
 
 void CardView::cardButtonClicked() {
     try {
-        controller_->playHuman(model_->getCurrentPlayer(), *card_);
+        controller_->cardButtonClicked(*card_);
     } catch (Player::CardNotFoundException &e) {
-        view_->displayMessage("Error", "That card was not found.");
+        view_->displayMessage(View::TXT_ERROR, "The card was not found.");
     } catch (Controller::InvalidPlayException &e) {
-        view_->displayMessage("Error", "You can not play that card.");
+        view_->displayMessage(View::TXT_ERROR, "The card is not legal play for this turn.");
     }
 }
 
+/**
+ * Set the view to a particular card
+ * @param card        Must be a ptr so that NULL can be passed in
+ * @param sensitivity Enabled?
+ */
 void CardView::setCard(shared_ptr<Card> card, bool sensitivity /* = true */) {
     card_ = card;
     set_sensitive(sensitivity);
