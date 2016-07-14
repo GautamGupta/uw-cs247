@@ -94,8 +94,6 @@ void Controller::autoPlay() {
  * Displays the winner if game is over otherwise starts a new round.
  */
 void Controller::endRound() {
-    model_->endRound();
-
     for (int i = 0; i < NUM_PLAYERS; i++) {
         // view()->endRound(i, *model_->player(i));
     }
@@ -103,15 +101,13 @@ void Controller::endRound() {
     if (model_->isGameOver()) {
         int lowestScore = model_->lowestScore();
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            if (model_->calculatePlayerScore(i) == lowestScore) {
+            if (model_->getPlayerTotalScore(i) == lowestScore) {
                 // view()->displayVictory(i);
             }
         }
         model_->reset();
     } else {
         Cards cards = model_->getDeck();
-        //TEST
-        // cout << "New Round has started" << endl;
         startRound(cards);
     }
 }
@@ -137,7 +133,6 @@ void Controller::togglePlayer(int playerNum) {
  * @param playerNum Player index
  */
 void Controller::playComputer(int playerNum) {
-
     Cards legalPlays = model_->getLegalPlays(playerNum);
 
     // Play first card
@@ -149,13 +144,6 @@ void Controller::playComputer(int playerNum) {
         Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
         model_->discardCard(playerNum, card);
     }
-
-    //Test
-    // if(model_->isRoundOver()) {
-    //     cout << "Round has ended" << endl;
-    //     endRound();
-    // }
-
 }
 
 void Controller::playHuman(int playerNum, Card card) {
@@ -177,9 +165,10 @@ void Controller::playHuman(int playerNum, Card card) {
                 return;
             }
         }
-    }
 
-    throw Controller::InvalidPlayException();
+        // Card not in legal plays
+        throw Controller::InvalidPlayException();
+    }
 }
 
 /**

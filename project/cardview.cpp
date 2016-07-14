@@ -9,6 +9,7 @@ using namespace std;
 CardView::CardView(Model* model, Controller* controller, View* view) : model_(model), controller_(controller), view_(view) {
     cardImage_ = new Gtk::Image(view_->getNullCardImage());
     set_image(*cardImage_);
+    set_sensitive(false);
 
     signal_clicked().connect(sigc::mem_fun(*this, &CardView::cardButtonClicked));
 }

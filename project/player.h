@@ -21,14 +21,13 @@ public:
     const Cards& getDiscardedCards() const;
     int getScore() const;
     int getPreviousScore() const;
-    int calculateScore() const;
+    int getTotalScore() const;
 
     Cards getLegalPlays(Cards);
     virtual bool isHuman() = 0;
 
     void addCard(std::shared_ptr<Card>);
     void startRound();
-    void endRound();
     bool checkEndGame() const;
     void reset();
 

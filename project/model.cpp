@@ -54,15 +54,6 @@ void Model::startRound() {
 }
 
 /**
- * Calculate scores for every player
- */
-void Model::endRound() {
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        players_.at(i)->endRound();
-    }
-}
-
-/**
  * Resets the game
  */
 void Model::reset() {
@@ -106,10 +97,10 @@ bool Model::isGameOver() {
  * See what's the lowest score in the game
  */
 int Model::lowestScore() {
-    int lowestScore = players_.at(0)->calculateScore();
+    int lowestScore = getPlayerTotalScore(0);
     for (int i = 1; i < NUM_PLAYERS; i++) {
-        if (players_.at(i)->calculateScore() < lowestScore) {
-            lowestScore = players_.at(i)->calculateScore();
+        if (getPlayerTotalScore(i) < lowestScore) {
+            lowestScore = getPlayerTotalScore(i);
         }
     }
     return lowestScore;
@@ -118,8 +109,8 @@ int Model::lowestScore() {
 /**
  * Calculates score of player at index i
  */
-int Model::calculatePlayerScore(int i) const {
-    return players_.at(i)->calculateScore();
+int Model::getPlayerTotalScore(int i) const {
+    return players_.at(i)->getTotalScore();
 }
 
 /**
@@ -238,5 +229,5 @@ const Cards& Model::getPlayerDiscardedCards(int playerNum) {
 }
 
 int Model::getPlayerScore(int playerNum) const {
-    return getPlayer(playerNum)->getScore();
+    return players_.at(playerNum)->getScore();
 }

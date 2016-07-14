@@ -49,10 +49,17 @@ int Player::getPreviousScore() const {
 }
 
 /**
- * Get score of current round (call endRound())
+ * Get score of current round
  */
 int Player::getScore() const {
     return score_;
+}
+
+/**
+ * Calculate total score
+ */
+int Player::getTotalScore() const {
+    return getPreviousScore() + getScore();
 }
 
 /**
@@ -142,12 +149,14 @@ void Player::playCard(Card card) {
 
 /**
  * Remove card from current cards and add to discarded cards
+ * Add rank to score
  */
 void Player::discardCard(Card card) {
     int index = cardInHand(card);
     if (index >= 0) {
         discardedCards_.push_back(getCurrentCards().at(index));
         currentCards_.erase(getCurrentCards().begin() + index); // Removes the card in hand
+        score_ += card.getRank() + 1; // index + 1
     } else {
         throw CardNotFoundException();
     }
@@ -165,32 +174,14 @@ void Player::addCard(shared_ptr<Card> card) {
  * Add score to previous score, clear all arrays, set score to 0
  */
 void Player::startRound() {
-    int scoreTemp = previousScore_ + score_;
+    int scoreTemp = getTotalScore();
     reset();
     previousScore_ = scoreTemp;
-}
-
-/**
- * Calculate score and store it
- */
-void Player::endRound() {
-    int score = 0;
-    for (int i = 0; i < getDiscardedCards().size(); i++) {
-        score += getDiscardedCards().at(i)->getRank() + 1; // index+1
-    }
-    score_ = score;
 }
 
 /**
  * See if the user has > 80 pts
  */
 bool Player::checkEndGame() const {
-    return (calculateScore() >= NUM_POINTS);
-}
-
-/**
- * Calculate total score
- */
-int Player::calculateScore() const {
-    return previousScore_ + score_;
+    return (getTotalScore() >= NUM_POINTS);
 }

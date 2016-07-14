@@ -32,17 +32,15 @@ public:
     void startRound();
     void donePlay();
     bool isRoundOver();
-    void endRound();
     bool isGameInProgress();
     bool isGameOver();
     int lowestScore();
-    int calculatePlayerScore(int) const;
+    int getPlayerTotalScore(int) const;
     void reset();
 
     const Cards& getPlayerCurrentCards(int);
     const Cards& getPlayerDiscardedCards(int);
     int getPlayerScore(int) const;
-
 
 private:
     Players players_;
