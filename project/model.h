@@ -14,6 +14,8 @@ public:
     Model();
 
     int getCurrentPlayer() const;
+    bool didRoundJustStart() const;
+    void roundJustStarted();
     bool isRoundOver() const;
     bool isGameInProgress() const;
     bool isGameOver() const;
@@ -40,6 +42,7 @@ private:
     Players players_;
     int currentPlayer_;
     int numTurns_;
+    bool roundStarted_;
 };
 
 #endif

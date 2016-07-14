@@ -19,7 +19,7 @@ using namespace std;
  * Set current player to -1 (means game isn't in progress)
  * Set num plays to 0 (num cards played / discarded)
  */
-Model::Model() : currentPlayer_(-1), numTurns_(0) {
+Model::Model() : currentPlayer_(-1), numTurns_(0), roundStarted_(false) {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.push_back(unique_ptr<Player>(new HumanPlayer()));
     }
@@ -33,6 +33,20 @@ Model::Model() : currentPlayer_(-1), numTurns_(0) {
 int Model::getCurrentPlayer() const {
     return currentPlayer_;
 }
+
+/**
+ * Check if round started
+ */
+bool Model::didRoundJustStart() const {
+    return roundStarted_;
+}
+
+/**
+ * Set round to not be in started
+ */
+void Model::roundJustStarted() {
+    roundStarted_ = false;
+ }
 
 /**
  * Check if 52 cards have been played / discarded in the round
@@ -215,6 +229,8 @@ void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.at(i)->startRound();
     }
+
+    roundStarted_ = true;
 
     notify();
 }
