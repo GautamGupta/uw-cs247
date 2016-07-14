@@ -176,10 +176,12 @@ void Model::togglePlayer(int playerNum) {
     if (isHuman(playerNum)) {
         unique_ptr<Player> newPlayer(new ComputerPlayer(*players_.at(playerNum)));
         players_[playerNum].release();
+        players_.erase(players_.begin() + playerNum);
         players_.insert(players_.begin() + playerNum, move(newPlayer));
     } else {
         unique_ptr<Player> newPlayer(new HumanPlayer(*players_.at(playerNum)));
         players_[playerNum].release();
+        players_.erase(players_.begin() + playerNum);
         players_.insert(players_.begin() + playerNum, move(newPlayer));
     }
 }
