@@ -65,15 +65,13 @@ void PlayerView::setToggleButton(string text, bool sensitive) {
  *  2. Ragequit during gameplay
  */
 void PlayerView::onBtnClick() {
-    // Ragequit
+    // Rage quit
     if (toggleBtn.get_label() == TXT_RAGE) {
-        setToggleButton(TXT_RAGE, false);
         controller_->rageQuit(playerNum_);
         cout << _sprintf(TXT_RAGE_MSG, playerNum_+1) << endl;
 
     // Toggle Human <-> Computer
     } else {
-        toggleBtn.set_label((toggleBtn.get_label() == TXT_HUMAN) ? TXT_COMPUTER : TXT_HUMAN);
         controller_->togglePlayer(playerNum_);
     }
 }
@@ -87,8 +85,12 @@ void PlayerView::update() {
     setLabels(score, discards);
 
     if (model_->isGameInProgress()) {
-        bool enabled = (model_->currentPlayer() == playerNum_);
-        setToggleButton(TXT_RAGE, enabled);
+        if (model_->isHuman(playerNum_)) {
+            bool enabled = (model_->currentPlayer() == playerNum_);
+            setToggleButton(TXT_RAGE, enabled);
+        } else {
+            setToggleButton(TXT_COMPUTER, false);
+        }
     } else {
         if (model_->isHuman(playerNum_)) {
             setToggleButton(TXT_HUMAN, true);

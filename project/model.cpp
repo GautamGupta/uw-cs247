@@ -184,6 +184,8 @@ void Model::togglePlayer(int playerNum) {
         players_.erase(players_.begin() + playerNum);
         players_.insert(players_.begin() + playerNum, move(newPlayer));
     }
+
+    notify();
 }
 
 /**

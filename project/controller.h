@@ -32,6 +32,6 @@ public:
 private:
    Model *model_;
    std::mt19937 rng;
-}; // Controller
+};
 
 #endif

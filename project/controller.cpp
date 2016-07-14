@@ -44,22 +44,6 @@ void Controller::startRound(Cards &cards) {
         }
     }
 
-    // // TEST: DOES START ROUND WITH SEED WORK?
-    // Cards deck = model_->getDeck();
-    // for (int i = 0; i< deck.size(); i++){
-    //     cout << *deck[i] << endl;
-    // }
-
-    // // TEST: CHECK PLAYERS' CARDS
-    // for (int i = 0; i < NUM_PLAYERS; i++) {
-    //     Cards currentCards = model_->getPlayerCurrentCards(i);
-    //     cout << "Player " << i+1 << endl;
-    //     for (int j = 0; j < currentCards.size(); j++){
-    //         cout << *currentCards[j] << endl;
-    //     }
-    //     cout << endl;
-    // }
-
     autoPlay();
 }
 
@@ -115,7 +99,7 @@ void Controller::endRound() {
  */
 void Controller::rageQuit(int playerNum) {
     togglePlayer(playerNum);
-    playComputer(playerNum);
+    autoPlay();
 }
 
 /**
@@ -146,11 +130,6 @@ void Controller::playComputer(int playerNum) {
 
 void Controller::playHuman(int playerNum, Card card) {
     Cards legalPlays = model_->getLegalPlays(playerNum);
-
-    for (int j = 0; j < legalPlays.size(); j++){
-        cout << *legalPlays[j] << endl;
-    }
-    cout << endl;
 
     if (legalPlays.size() == 0) {
         model_->discardCard(playerNum, card);
