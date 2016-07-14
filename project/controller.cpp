@@ -57,8 +57,14 @@ void Controller::playComputer(int playerNum) {
 
     // Discard first card
     } else {
-        Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
-        model_->discardCard(playerNum, card);
+        Card lowestRankCard = *(model_->getPlayerCurrentCards(playerNum).at(0));
+        for (int i = 1; i < model_->getPlayerCurrentCards(playerNum).size(); i++) {
+            Card card = *(model_->getPlayerCurrentCards(playerNum).at(i));
+            if (card.getRank() < lowestRankCard.getRank()) {
+                lowestRankCard = card;
+            }
+        }
+        model_->discardCard(playerNum, lowestRankCard);
     }
 
     doneTurn();
@@ -96,12 +102,6 @@ void Controller::playHuman(int playerNum, Card card) {
 void Controller::doneTurn() {
     if (model_->isRoundOver()) {
         if (model_->isGameOver()) {
-            int lowestPlayerScore = model_->getLowestPlayerScore();
-            for (int i = 0; i < NUM_PLAYERS; i++) {
-                if (model_->getPlayerTotalScore(i) == lowestPlayerScore) {
-                    // view()->displayVictory(i);
-                }
-            }
             model_->reset();
         } else {
             Cards cards = model_->getDeck();

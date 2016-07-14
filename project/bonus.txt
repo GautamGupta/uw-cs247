@@ -1,2 +1,3 @@
 # Bonus Work
 
+ 1. Computer player is more intelligent, discards the lowest-rank card in hand
