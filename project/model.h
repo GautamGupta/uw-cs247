@@ -27,7 +27,7 @@ public:
     Cards getPlayerLegalPlays(int) const;
     const Cards& getPlayerCurrentCards(int) const;
     const Cards& getPlayerDiscardedCards(int) const;
-    bool isPlayerHuman(int i) const;
+    bool isPlayerHuman(int) const;
     int getPlayerScore(int) const;
     int getPlayerTotalScore(int) const;
     int getLowestPlayerScore() const;
@@ -41,11 +41,10 @@ public:
     void startRound();
     void reset();
 
-
 private:
-    Players players_;     // Array of 4 players
-    int currentPlayer_;   // Index of player that has the next turn
-    int numPlays_;        // Number of plays that have happened in the round (# plays + # discards)
-}; // Model
+    Players players_;
+    int currentPlayer_;
+    int numPlays_;
+};
 
 #endif

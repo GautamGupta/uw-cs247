@@ -15,13 +15,22 @@
 
 using namespace std;
 
+/**
+ * Initialize 4 humans
+ * Set current player to -1 (means game isn't in progress)
+ * Set num plays to 0 (num cards played / discarded)
+ */
 Model::Model() : currentPlayer_(-1), numPlays_(0) {
-    // Initialize 4 humans
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.push_back(unique_ptr<Player>(new HumanPlayer()));
     }
 }
 
+/**
+ * Get player whose turn it is to play
+ *
+ * -1 means game isn't in progress
+ */
 int Model::getCurrentPlayer() const {
     return currentPlayer_;
 }
@@ -87,27 +96,36 @@ Cards Model::getPlayerLegalPlays(int playerNum) const {
     return players_.at(playerNum)->getLegalPlays(getCardsOnTable());
 }
 
+/**
+ * Get player's current cards (that can be played / discarded)
+ */
 const Cards& Model::getPlayerCurrentCards(int playerNum) const {
     return players_.at(playerNum)->getCurrentCards();
 }
 
+/**
+ * Get player's discarded cards
+ */
 const Cards& Model::getPlayerDiscardedCards(int playerNum) const {
     return players_.at(playerNum)->getDiscardedCards();
 }
 
 /**
- * Checks if player at index i is human
+ * Checks if player is a human
  */
 bool Model::isPlayerHuman(int playerNum) const {
     return players_.at(playerNum)->isHuman();
 }
 
+/**
+ * Get player's current round score
+ */
 int Model::getPlayerScore(int playerNum) const {
     return players_.at(playerNum)->getScore();
 }
 
 /**
- * Calculates score of player at index i
+ * Get player's total score (previous + current rounds)
  */
 int Model::getPlayerTotalScore(int playerNum) const {
     return players_.at(playerNum)->getTotalScore();
@@ -128,7 +146,8 @@ int Model::getLowestPlayerScore() const {
 
 /**
  * Set current player to index
- * Set start to the player who has 7S
+ *
+ * Start: To the player who has 7S
  */
 void Model::setCurrentPlayer(int currentPlayer) {
     currentPlayer_ = currentPlayer;
@@ -137,7 +156,6 @@ void Model::setCurrentPlayer(int currentPlayer) {
 
 /**
  * Switch player type
- * @param int Index to toggle
  */
 void Model::togglePlayer(int playerNum) {
     // Can't really refactor duplicate code due to use of unique_ptr

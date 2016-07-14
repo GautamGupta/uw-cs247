@@ -63,7 +63,7 @@ private:
     Gtk::Table cardsOnTable;
     Gtk::Image *cardsPlayed[SUIT_COUNT][RANK_COUNT];
 
-    Gtk::HBox playerBox; // Contains Player ID, computer/human, points and discards
+    Gtk::HBox playerBox; // Contains Player ID, computer/human, score and discards
     PlayerView *playerViews[NUM_PLAYERS];
 
     Gtk::Frame playerHandFrame; // Contains player's hand
