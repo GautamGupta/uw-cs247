@@ -18,8 +18,7 @@ public:
     void endButtonClicked();
 
     void startRound(Cards &);
-    void endRound();
-    void autoPlay();
+    void doneTurn();
     void rageQuit(int);
     void togglePlayer(int);
     void playHuman(int, Card);

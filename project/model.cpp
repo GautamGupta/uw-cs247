@@ -11,7 +11,6 @@
 #include "computerplayer.h"
 #include <vector>
 #include <map>
-#include <iostream>
 
 using namespace std;
 
@@ -213,9 +212,12 @@ void Model::doneTurn() {
  * Start round for every player
  */
 void Model::startRound() {
+    numTurns_ = 0;
+
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.at(i)->startRound();
     }
+
     notify();
 }
 

@@ -40,7 +40,9 @@ void Controller::startRound(Cards &cards) {
         }
     }
 
-    autoPlay();
+    if (!model_->isPlayerHuman(model_->getCurrentPlayer())) {
+        playComputer(model_->getCurrentPlayer());
+    }
 }
 
 /**
@@ -59,34 +61,27 @@ void Controller::shuffleCards(Cards &cards) {
 }
 
 /**
- * Play all computer plays until it's a human's turn to play
+ * 1. Checks if the round is over (52 cards played / discarded)
+ *     1.1 Checks if anyone scored > 80 pts and ends the game at that point.
+ *     1.2 Starts a new round otherwise
+ * 2. If the new player is a computer, play for computer
  */
-void Controller::autoPlay() {
-    while (!model_->isRoundOver() && !model_->isPlayerHuman(model_->getCurrentPlayer())) {
-        playComputer(model_->getCurrentPlayer());
-    }
-}
-
-/**
- * End the round. Checks if anyone scored > 80 pts and ends the game at that point.
- * Displays the winner if game is over otherwise starts a new round.
- */
-void Controller::endRound() {
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        // view()->endRound(i, *model_->player(i));
-    }
-
-    if (model_->isGameOver()) {
-        int getLowestPlayerScore = model_->getLowestPlayerScore();
-        for (int i = 0; i < NUM_PLAYERS; i++) {
-            if (model_->getPlayerTotalScore(i) == getLowestPlayerScore) {
-                // view()->displayVictory(i);
+void Controller::doneTurn() {
+    if (model_->isRoundOver()) {
+        if (model_->isGameOver()) {
+            int lowestPlayerScore = model_->getLowestPlayerScore();
+            for (int i = 0; i < NUM_PLAYERS; i++) {
+                if (model_->getPlayerTotalScore(i) == lowestPlayerScore) {
+                    // view()->displayVictory(i);
+                }
             }
+            model_->reset();
+        } else {
+            Cards cards = model_->getDeck();
+            startRound(cards);
         }
-        model_->reset();
-    } else {
-        Cards cards = model_->getDeck();
-        startRound(cards);
+    } else if (!model_->isPlayerHuman(model_->getCurrentPlayer())) {
+        playComputer(model_->getCurrentPlayer());
     }
 }
 
@@ -95,7 +90,7 @@ void Controller::endRound() {
  */
 void Controller::rageQuit(int playerNum) {
     togglePlayer(playerNum);
-    autoPlay();
+    playComputer(model_->getCurrentPlayer());
 }
 
 /**
@@ -107,8 +102,6 @@ void Controller::togglePlayer(int playerNum) {
 
 /**
  * Computer's turn to play. Play if there are legal plays else discard
- *
- * @param playerNum Player index
  */
 void Controller::playComputer(int playerNum) {
     Cards legalPlays = model_->getPlayerLegalPlays(playerNum);
@@ -122,6 +115,8 @@ void Controller::playComputer(int playerNum) {
         Card card = *(model_->getPlayerCurrentCards(playerNum).at(0));
         model_->discardCard(playerNum, card);
     }
+
+    doneTurn();
 }
 
 void Controller::playHuman(int playerNum, Card card) {
@@ -129,12 +124,12 @@ void Controller::playHuman(int playerNum, Card card) {
 
     if (legalPlays.size() == 0) {
         model_->discardCard(playerNum, card);
-        autoPlay();
+        doneTurn();
     } else {
         for (int i = 0; i < legalPlays.size(); i++) {
             if (*legalPlays.at(i) == card) {
                 model_->playCard(playerNum, card);
-                autoPlay();
+                doneTurn();
                 return;
             }
         }
