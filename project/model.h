@@ -32,14 +32,14 @@ public:
     void addPlayerCards(int, Cards &);
     void playCard(int, Card);
     void discardCard(int, Card);
-    void donePlay();
+    void doneTurn();
     void startRound();
     void reset();
 
 private:
     Players players_;
     int currentPlayer_;
-    int numPlays_;
+    int numTurns_;
 };
 
 #endif

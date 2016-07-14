@@ -20,9 +20,9 @@ View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller),
         startButton_("Start new game with seed:"), endButton_("End current game") {
 
-	// Sets some properties of the window.
+    // Sets some properties of the window.
     set_title("Straights");
-	set_border_width(10);
+    set_border_width(10);
 
     add(masterContainer);
 
@@ -71,11 +71,11 @@ View::View(Model *model, Controller *controller) :
         playerHandBox.add(*cardsInHand[i]);
     }
 
-	// The final step is to display the buttons (they display themselves)
-	show_all();
+    // The final step is to display the buttons (they display themselves)
+    show_all();
 
-	// Register view as observer of model
-	model_->subscribe(this);
+    // Register view as observer of model
+    model_->subscribe(this);
 
     update();
 }
@@ -221,7 +221,6 @@ void View::displayVictory(int playerNum) {
 }
 
 void View::update() {
-    cerr << "View update" <<endl;
     updateCardsOnTable();
     updateCurrentHand();
 
@@ -271,7 +270,7 @@ void View::updateCardsOnTable() {
 }
 
 /**
- * This function updates the current hand displayed for human player's view
+ * Update the current hand displayed for human player's view
  */
 void View::updateCurrentHand() {
     Cards cards;
@@ -304,10 +303,6 @@ Glib::RefPtr<Gdk::Pixbuf> View::getCardImage(Card card) {
  */
 void View::displayMessage(string title, string message) {
     Gtk::MessageDialog dialogue(*this, title);
-  	dialogue.set_secondary_text(message);
-  	dialogue.run();
-}
-
-void View::playBeep() {
-    cout << '\a' << endl;
+    dialogue.set_secondary_text(message);
+    dialogue.run();
 }

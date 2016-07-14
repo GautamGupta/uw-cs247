@@ -10,14 +10,14 @@ class Card;
 
 class CardView : public Gtk::Button {
 public:
-	CardView(Model*, Controller*, View*);
+    CardView(Model*, Controller*, View*);
     virtual ~CardView();
-	void setCard(std::shared_ptr<Card>, bool = true);
+    void setCard(std::shared_ptr<Card>, bool = true);
 
 private:
-	Model *model_;
-	View *view_;
-	Controller *controller_;
+    Model *model_;
+    View *view_;
+    Controller *controller_;
     std::shared_ptr<Card> card_;
     Gtk::Image *cardImage_;
 

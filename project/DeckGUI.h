@@ -8,14 +8,14 @@
 
 class DeckGUI {
 public:
-	DeckGUI();
-	virtual ~DeckGUI();
+    DeckGUI();
+    virtual ~DeckGUI();
     Glib::RefPtr<Gdk::Pixbuf> getCardImage(Suit, Rank);
-	Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
-	Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
+    Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
+    Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
 
 private:
-	std::vector< Glib::RefPtr< Gdk::Pixbuf > > deck;
+    std::vector< Glib::RefPtr< Gdk::Pixbuf > > deck;
 };
 
 #endif

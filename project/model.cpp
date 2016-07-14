@@ -20,7 +20,7 @@ using namespace std;
  * Set current player to -1 (means game isn't in progress)
  * Set num plays to 0 (num cards played / discarded)
  */
-Model::Model() : currentPlayer_(-1), numPlays_(0) {
+Model::Model() : currentPlayer_(-1), numTurns_(0) {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.push_back(unique_ptr<Player>(new HumanPlayer()));
     }
@@ -40,7 +40,7 @@ int Model::getCurrentPlayer() const {
  * ie. if round is over
  */
 bool Model::isRoundOver() const {
-    return numPlays_ == NUM_CARDS;
+    return numTurns_ == NUM_CARDS;
 }
 
 /**
@@ -189,7 +189,7 @@ void Model::addPlayerCards(int playerNum, Cards &cards) {
  */
 void Model::playCard(int playerNum, Card card) {
     players_.at(playerNum)->playCard(card);
-    donePlay();
+    doneTurn();
 }
 
 /**
@@ -197,15 +197,15 @@ void Model::playCard(int playerNum, Card card) {
  */
 void Model::discardCard(int playerNum, Card card) {
     players_.at(playerNum)->discardCard(card);
-    donePlay();
+    doneTurn();
 }
 
 /**
  * 1. Increment # plays
  * 2. Set next player (and notify)
  */
-void Model::donePlay() {
-    numPlays_++;
+void Model::doneTurn() {
+    numTurns_++;
     setCurrentPlayer((getCurrentPlayer() + 1) % NUM_PLAYERS);
 }
 
@@ -227,7 +227,7 @@ void Model::reset() {
         players_.at(i)->reset();
     }
     currentPlayer_ = -1;
-    numPlays_ = 0;
+    numTurns_ = 0;
 
     notify();
 }

@@ -15,7 +15,7 @@ CardView::CardView(Model* model, Controller* controller, View* view) : model_(mo
 }
 
 CardView::~CardView() {
-	delete cardImage_;
+    delete cardImage_;
 }
 
 void CardView::cardButtonClicked() {

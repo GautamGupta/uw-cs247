@@ -19,7 +19,7 @@ class CardView;
 class View : public Gtk::Window, public Observer {
 public:
     View(Model*, Controller*);
-	~View();
+    ~View();
     virtual void update();  // Observer Pattern: concrete update() method
 
     char inputPlayer(int);
@@ -79,9 +79,6 @@ private:
     // Update view functions
     void updateCardsOnTable();
     void updateCurrentHand();
-
-    // Beep function
-    void playBeep();
 };
 
 #endif
