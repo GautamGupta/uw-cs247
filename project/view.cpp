@@ -11,8 +11,10 @@
 #include "playerview.h"
 #include "cardview.h"
 #include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -22,6 +24,13 @@ const string View::TXT_START_BTN = "Start new game with seed:";
 const string View::TXT_END_BTN = "End current game";
 const string View::TXT_CARDS_ON_TABLE_LBL = "Cards on the table";
 const string View::TXT_CURRENT_CARDS_LBL = "Your hand";
+const string View::TXT_NEW_ROUND = "New Round";
+const string View::TXT_END_ROUND = "Round Ends";
+const string View::TXT_END_GAME = "Game Over";
+const string View::TXT_PLAYER_TURN = "Player %d's turn to play.";
+const string View::TXT_PLAYER_DISCARDS = "Player %d discards: ";
+const string View::TXT_PLAYER_SCORE = "Player %d score: ";
+const string View::TXT_PLAYER_WINS = "Player %d wins!";
 
 View::View(Model *model, Controller *controller) :
         model_(model), controller_(controller),
@@ -101,172 +110,8 @@ View::~View() {
 }
 
 /**
- * Start a new round
+ * Get the seed and start game
  */
-void View::startRound(int playerNum) {
-    cout << "A new round begins. It's player " << (playerNum + 1) << "'s turn to play." << endl;
-}
-
-/**
- * Display all discards and scores for round end
- */
-void View::endRound(int playerNum, Player &player) {
-    cout << "Player " << (playerNum + 1) << "'s discards: ";
-    displayCards(player.getDiscardedCards());
-
-    cout << "Player " << (playerNum + 1) << "'s score: "
-        << player.getPreviousScore() << " + " << player.getScore()
-        << " = " << (player.getPreviousScore() + player.getScore()) << endl;
-}
-
-/**
- * Show cards on table separated by suits for human play
- *
- * @param SuitCards Hashmap of Suit -> vector of cards
- */
-void View::displayCardsOnTable(SuitCards suitCards) {
-    cout << "Cards on the table:" << endl;
-
-    // Order matters
-    for (int suitNum = CLUB; suitNum < SUIT_COUNT; suitNum++) {
-        Suit suit = static_cast<Suit>(suitNum);
-        vector<int> ranks;
-
-        for (int i = 0; i < suitCards[suit].size(); i++) {
-            ranks.push_back((int) suitCards[suit].at(i)->getRank());
-        }
-        sort(ranks.begin(), ranks.end());
-
-        switch (suit) {
-            case CLUB :
-                cout << "Clubs:";
-                break;
-            case DIAMOND :
-                cout << "Diamonds:";
-                break;
-            case HEART :
-                cout << "Hearts:";
-                break;
-            case SPADE :
-                cout << "Spades:";
-                break;
-
-            default :
-                break;
-        }
-
-        displayCards(ranks);
-    }
-}
-
-void View::displayHand(Cards cards) {
-    cout << "Your hand: ";
-    string message = displayCards(cards);
-    cout << message;
-}
-
-void View::displayLegalPlays(Cards cards) {
-    cout << "Legal plays: ";
-    string message = displayCards(cards);
-    cout << message;
-}
-
-void View::displayPlayCard(int playerNum, Card card) {
-    cout << "Player " << (playerNum + 1) << " plays " << card << "." << endl;
-}
-
-void View::errorPlayCard() {
-    cout << "This is not a legal play." << endl;
-}
-
-void View::displayDiscardCard(int playerNum, Card card) {
-    cout << "Player " << (playerNum + 1) << " discards " << card << "." << endl;
-}
-
-void View::errorDiscardCard() {
-    cout << "You have a legal play. You may not discard." << endl;
-}
-
-/**
- * Displays ranks separated by space, followed by a newline
- */
-void View::displayCards(vector<int> ranks) {
-    for (int i = 0; i < ranks.size(); i++) {
-        cout << " " << Card::getDisplayRank(ranks.at(i));
-    }
-
-    cout << endl;
-}
-
-/**
- * Displays cards 13 per line. Will print a newline even if there are no cards
- */
-string View::displayCards(Cards cards) {
-    string message = "";
-    for (int i = 0; i < cards.size(); i++) {
-        message += Card::getDisplayRank(cards.at(i)->getRank()) +Card::getDisplaySuit(cards.at(i)->getSuit());
-
-        // Newline at the end of 13 cards (mainly for deck_) / end of list
-        if ((i+1) % CARDS_PER_PLAYER == 0 || (i+1) == cards.size()) {
-            message += "\n";
-        } else {
-            message += " ";
-        }
-    }
-
-    // Next line if no cards
-    if (cards.size() == 0) {
-        message+="\n";
-    }
-    return message;
-}
-
-void View::displayVictory(int playerNum) {
-    cout << "Player " << (playerNum + 1) << " wins!" << endl;
-}
-
-void View::update() {
-    updateCardsOnTable();
-    updateCurrentHand();
-
-    for (int i = 0; i < NUM_PLAYERS; i++) {
-        playerViews_[i]->update();
-    }
-
-    if (model_->didRoundJustStart() && model_->getCurrentPlayer() != -1) {
-        string message = "Player " + to_string(model_->getCurrentPlayer() + 1) + "'s turn to play.";
-        displayMessage("New Round", message);
-
-        model_->roundJustStarted();
-    }
-    if (model_->isRoundOver()){
-        string message;
-        for (int i = 0; i < NUM_PLAYERS; i++){
-            // display player discards
-            message += "Player " + to_string(i+1) + "'s discards: ";
-            Cards discardedCards = model_->getPlayerDiscardedCards(i);
-            message += displayCards(discardedCards);
-
-            // display player score
-            message += "Player " + to_string(i+1) + "'s score: ";
-            message += to_string(model_->getPlayerPreviousScore(i)) + " + " + to_string(model_->getPlayerScore(i)) + " = " + to_string(model_->getPlayerTotalScore(i));
-            message += "\n\n";
-        }
-
-        displayMessage("End Round", message);
-    }
-
-    if (model_->isGameInProgress()) {
-        startButton_.set_sensitive(false);
-        seedInput_.set_sensitive(false);
-        endButton_.set_sensitive(true);
-    } else {
-        startButton_.set_sensitive(true);
-        seedInput_.set_sensitive(true);
-        endButton_.set_sensitive(false);
-    }
-}
-
 void View::startButtonClicked() {
     int seed = atoi(seedInput_.get_text().c_str());
     if (!seed) {
@@ -276,8 +121,60 @@ void View::startButtonClicked() {
     controller_->startButtonClicked(seed);
 }
 
+/**
+ * Reset model, end game
+ */
 void View::endButtonClicked() {
     controller_->endButtonClicked();
+}
+
+/**
+ * Return string of cards 13 per line.
+ * Will return a newline even if there are no cards
+ */
+string View::displayCards(Cards cards) {
+    string message;
+
+    for (int i = 0; i < cards.size(); i++) {
+        message += cards.at(i)->getDisplay();
+
+        // Newline at the end of 13 cards (mainly for deck_) / end of list
+        if ((i+1) % CARDS_PER_PLAYER == 0 || (i+1) == cards.size()) {
+            message += "\n";
+        } else {
+            message += " ";
+        }
+    }
+
+    // Newline if no cards
+    if (cards.size() == 0) {
+        message += "\n";
+    }
+
+    return message;
+}
+
+void View::update() {
+    updateGameBox();
+    updateCardsOnTable();
+    updateCurrentCards();
+    updatePlayerViews();
+    displayMessages();
+}
+
+/**
+ * Enable / Disable buttons / text input when apt
+ */
+void View::updateGameBox() {
+    if (model_->isGameInProgress()) {
+        startButton_.set_sensitive(false);
+        seedInput_.set_sensitive(false);
+        endButton_.set_sensitive(true);
+    } else {
+        startButton_.set_sensitive(true);
+        seedInput_.set_sensitive(true);
+        endButton_.set_sensitive(false);
+    }
 }
 
 /**
@@ -298,9 +195,18 @@ void View::updateCardsOnTable() {
 }
 
 /**
+ * Update the 4 player views with score / discards
+ */
+void View::updatePlayerViews() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        playerViews_[i]->update();
+    }
+}
+
+/**
  * Update the current hand displayed for human player's view
  */
-void View::updateCurrentHand() {
+void View::updateCurrentCards() {
     Cards cards, legalPlays;
 
     if (model_->isGameInProgress() && model_->isPlayerHuman(model_->getCurrentPlayer())) {
@@ -328,19 +234,79 @@ void View::updateCurrentHand() {
     }
 }
 
+/**
+ * Display dialogues when appropriate
+ */
+void View::displayMessages() {
+    string message;
+
+    // On round start
+    if (model_->isRoundStarting()) {
+        message = _sprintf(TXT_PLAYER_TURN, model_->getCurrentPlayer() + 1) + "\n";
+        displayDialogue(TXT_NEW_ROUND, message);
+
+    // On round end
+    } else if (model_->isRoundOver()) {
+        for (int i = 0; i < NUM_PLAYERS; i++){
+            // Player discards
+            message += _sprintf(TXT_PLAYER_DISCARDS, i+1);
+            Cards discardedCards = model_->getPlayerDiscardedCards(i);
+            message += displayCards(discardedCards);
+
+            // Player score
+            message += _sprintf(TXT_PLAYER_SCORE, i+1);
+            message += to_string(model_->getPlayerPreviousScore(i)) + " + " + to_string(model_->getPlayerScore(i)) + " = " + to_string(model_->getPlayerTotalScore(i));
+            message += "\n\n";
+        }
+
+        displayDialogue(TXT_END_ROUND, message);
+
+        // On game end
+        if (model_->isGameOver()) {
+            int lowestPlayerScore = model_->getLowestPlayerScore();
+            message = "";
+            for (int i = 0; i < NUM_PLAYERS; i++) {
+                if (model_->getPlayerTotalScore(i) == lowestPlayerScore) {
+                    message += _sprintf(TXT_PLAYER_WINS, i+1) + "\n";
+                }
+            }
+            displayDialogue(TXT_END_GAME, message);
+        }
+    }
+}
+
+/**
+ * Get null card image
+ */
 Glib::RefPtr<Gdk::Pixbuf> View::getNullCardImage() {
     return deck_.getNullCardImage();
 }
 
+/**
+ * Get image for specified card
+ */
 Glib::RefPtr<Gdk::Pixbuf> View::getCardImage(Card card) {
     return deck_.getCardImage(card);
 }
 
 /**
  * Displays a pop up dialogue with a title and message
+ * Also send to cout
  */
-void View::displayMessage(string title, string message) {
+void View::displayDialogue(string title, string message) {
+    cout << title << endl;
+    cout << message;
+
     Gtk::MessageDialog dialogue(*this, title);
     dialogue.set_secondary_text(message);
     dialogue.run();
+}
+
+/**
+ * Custom sprintf with length constraint and 1 parameter
+ */
+string View::_sprintf(string text, int num) {
+    char cText[text.length()];
+    sprintf(cText, text.c_str(), num);
+    return string(cText);
 }

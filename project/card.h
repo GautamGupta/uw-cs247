@@ -1,8 +1,6 @@
 #ifndef _CARD_
 #define _CARD_
 
-#include <istream>
-#include <ostream>
 #include <memory>
 #include <vector>
 #include <map>
@@ -14,14 +12,13 @@ enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
             EIGHT, NINE, TEN, JACK, QUEEN, KING, RANK_COUNT };
 
 class Card {
-    friend std::istream &operator>>(std::istream &, Card &);
-
 public:
     Card(Suit, Rank);
     virtual ~Card();
 
     Suit getSuit() const;
     Rank getRank() const;
+    std::string getDisplay() const;
 
     static std::string getDisplaySuit(int);
     static std::string getDisplayRank(int);
@@ -32,8 +29,6 @@ private:
 };
 
 bool operator==(const Card &, const Card &);
-
-std::ostream &operator<<(std::ostream &, const Card &);
 
 typedef std::vector< std::shared_ptr< Card > > Cards;
 typedef std::map< Suit, Cards > SuitCards;

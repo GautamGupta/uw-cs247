@@ -35,18 +35,11 @@ int Model::getCurrentPlayer() const {
 }
 
 /**
- * Check if round started
+ * Check if round just started
  */
-bool Model::didRoundJustStart() const {
-    return roundStarted_;
+bool Model::isRoundStarting() const {
+    return (isGameInProgress() && numTurns_ == 0);
 }
-
-/**
- * Set round to not be in started
- */
-void Model::roundJustStarted() {
-    roundStarted_ = false;
- }
 
 /**
  * Check if 52 cards have been played / discarded in the round
@@ -199,7 +192,6 @@ void Model::togglePlayer(int playerNum) {
  */
 void Model::addPlayerCards(int playerNum, Cards &cards) {
     players_.at(playerNum)->addCards(cards);
-    notify();
 }
 
 /**

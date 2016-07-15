@@ -24,28 +24,23 @@ public:
     static const std::string TXT_END_BTN;
     static const std::string TXT_CARDS_ON_TABLE_LBL;
     static const std::string TXT_CURRENT_CARDS_LBL;
+    static const std::string TXT_NEW_ROUND;
+    static const std::string TXT_END_ROUND;
+    static const std::string TXT_END_GAME;
+    static const std::string TXT_PLAYER_TURN;
+    static const std::string TXT_PLAYER_DISCARDS;
+    static const std::string TXT_PLAYER_SCORE;
+    static const std::string TXT_PLAYER_WINS;
 
     View(Model*, Controller*);
     ~View();
     void update(); // Observer Pattern: concrete update() method
 
-    void startRound(int);
-    void endRound(int, Player &);
-    void displayCardsOnTable(SuitCards);
-    void displayHand(Cards);
-    void displayLegalPlays(Cards);
-    void displayPlayCard(int, Card);
-    void errorPlayCard();
-    void displayDiscardCard(int, Card);
-    void errorDiscardCard();
-
-    void displayCards(std::vector<int>);
-    std::string displayCards(Cards);
-
-    void displayVictory(int);
     Glib::RefPtr<Gdk::Pixbuf> getNullCardImage();
     Glib::RefPtr<Gdk::Pixbuf> getCardImage(Card);
-    void displayMessage(std::string title, std::string message);
+    void displayDialogue(std::string title, std::string message);
+
+    static std::string _sprintf(std::string, int);
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
@@ -81,8 +76,13 @@ private:
     void startButtonClicked();
     void endButtonClicked();
 
+    void updateGameBox();
     void updateCardsOnTable();
-    void updateCurrentHand();
+    void updatePlayerViews();
+    void updateCurrentCards();
+    void displayMessages();
+
+    std::string displayCards(Cards);
 };
 
 #endif

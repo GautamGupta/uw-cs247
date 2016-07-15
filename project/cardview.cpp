@@ -22,9 +22,9 @@ void CardView::cardButtonClicked() {
     try {
         controller_->cardButtonClicked(*card_);
     } catch (Player::CardNotFoundException &e) {
-        view_->displayMessage(View::TXT_ERROR, "The card was not found.");
+        view_->displayDialogue(View::TXT_ERROR, "The card was not found.");
     } catch (Controller::InvalidPlayException &e) {
-        view_->displayMessage(View::TXT_ERROR, "The card is not legal play for this turn.");
+        view_->displayDialogue(View::TXT_ERROR, "The card is not legal play for this turn.");
     }
 }
 

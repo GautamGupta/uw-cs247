@@ -22,6 +22,13 @@ Rank Card::getRank() const {
 }
 
 /**
+ * Return a card <rank><suit> like 7S
+ */
+string Card::getDisplay() const {
+    return Card::getDisplayRank(getRank()) + Card::getDisplaySuit(getSuit());
+}
+
+/**
  * Get display char for particular suit
  */
 string Card::getDisplaySuit(int suit) {
@@ -43,12 +50,4 @@ string Card::getDisplayRank(int rank) {
  */
 bool operator==(const Card &a, const Card &b) {
     return a.getSuit() == b.getSuit() && a.getRank() == b.getRank();
-}
-
-/**
- * Output a card <rank><suit> like 7S
- */
-ostream &operator<<(ostream &out, const Card &c) {
-    out << Card::getDisplayRank(c.getRank()) << Card::getDisplaySuit(c.getSuit());
-    return out;
 }

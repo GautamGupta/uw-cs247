@@ -14,8 +14,7 @@ public:
     Model();
 
     int getCurrentPlayer() const;
-    bool didRoundJustStart() const;
-    void roundJustStarted();
+    bool isRoundStarting() const;
     bool isRoundOver() const;
     bool isGameInProgress() const;
     bool isGameOver() const;

@@ -18,7 +18,6 @@ public:
     static const std::string TXT_SCORE;
     static const std::string TXT_DISCARDS;
     static const std::string TXT_PLAYER;
-    static const std::string TXT_RAGE_MSG;
 
     PlayerView(Model*, Controller*, View*, int);
     virtual ~PlayerView();
