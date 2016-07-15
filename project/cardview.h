@@ -10,6 +10,9 @@ class Card;
 
 class CardView : public Gtk::Button {
 public:
+    static const std::string TXT_CARD_NOT_FOUND_ERROR;
+    static const std::string TXT_INVALID_PLAY_ERROR;
+
     CardView(Model*, Controller*, View*);
     virtual ~CardView();
     void setCard(std::shared_ptr<Card>, bool = true);

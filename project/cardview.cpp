@@ -1,3 +1,7 @@
+/**
+ * Clickable card button for cards in hand
+ */
+
 #include "cardview.h"
 #include "model.h"
 #include "view.h"
@@ -5,6 +9,9 @@
 #include <gtkmm.h>
 
 using namespace std;
+
+const string CardView::TXT_CARD_NOT_FOUND_ERROR = "The card was not found.";
+const string CardView::TXT_INVALID_PLAY_ERROR = "The card is not legal play for this turn.";
 
 CardView::CardView(Model* model, Controller* controller, View* view) : model_(model), controller_(controller), view_(view) {
     cardImage_ = new Gtk::Image(view_->getNullCardImage());
@@ -18,13 +25,16 @@ CardView::~CardView() {
     delete cardImage_;
 }
 
+/**
+ * Card button click signal
+ */
 void CardView::cardButtonClicked() {
     try {
         controller_->cardButtonClicked(*card_);
     } catch (Player::CardNotFoundException &e) {
-        view_->displayDialogue(View::TXT_ERROR, "The card was not found.");
+        view_->displayDialogue(View::TXT_ERROR, TXT_CARD_NOT_FOUND_ERROR);
     } catch (Controller::InvalidPlayException &e) {
-        view_->displayDialogue(View::TXT_ERROR, "The card is not legal play for this turn.");
+        view_->displayDialogue(View::TXT_ERROR, TXT_INVALID_PLAY_ERROR);
     }
 }
 
