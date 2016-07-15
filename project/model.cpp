@@ -19,7 +19,7 @@ using namespace std;
  * Set current player to -1 (means game isn't in progress)
  * Set num plays to 0 (num cards played / discarded)
  */
-Model::Model() : currentPlayer_(-1), numTurns_(0), roundStarted_(false) {
+Model::Model() : currentPlayer_(-1), numTurns_(0) {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.push_back(unique_ptr<Player>(new HumanPlayer()));
     }
@@ -184,11 +184,15 @@ void Model::togglePlayer(int playerNum) {
         players_.insert(players_.begin() + playerNum, move(newPlayer));
     }
 
-    notify();
+    // Avoid double notify when game is in progress
+    if (!isGameInProgress()) {
+        notify();
+    }
 }
 
 /**
  * Add cards to player
+ * Doesn't notify to avoid double notify
  */
 void Model::addPlayerCards(int playerNum, Cards &cards) {
     players_.at(playerNum)->addCards(cards);
@@ -228,10 +232,6 @@ void Model::startRound() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         players_.at(i)->startRound();
     }
-
-    roundStarted_ = true;
-
-    notify();
 }
 
 /**
@@ -243,7 +243,6 @@ void Model::reset() {
     }
     currentPlayer_ = -1;
     numTurns_ = 0;
-    roundStarted_ = false;
 
     notify();
 }

@@ -42,7 +42,6 @@ private:
     Players players_;
     int currentPlayer_;
     int numTurns_;
-    bool roundStarted_;
 };
 
 #endif
