@@ -12,6 +12,6 @@ clean:
 	rm -rf ${DEPENDS} ${OBJECTS} ${EXEC}
 
 zip:
-	zip -o ${EXEC}.zip *.h *.cpp Makefile bonus.txt img
+	zip -o ${EXEC}.zip *.h *.cpp Makefile bonus.txt img/*
 
 -include ${DEPENDS} # reads the .d files and reruns dependencies
