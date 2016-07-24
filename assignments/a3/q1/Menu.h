@@ -6,10 +6,16 @@
 #include <iostream>
 
 #include "MenuComponent.h"
-
+#include "ComponentIterator.h"
 
 class Menu : public MenuComponent {
 public:
+    // iterator
+    class iterator : public ComponentIterator {
+    public:
+        iterator( Menu* m = 0 );
+    };
+
     // constructor
     Menu (const std::string);
     virtual ~Menu();
@@ -23,6 +29,8 @@ public:
     // implement shared operations
     virtual void menuDepthInc();
     virtual int size() const;
+    virtual ComponentIterator begin();
+    virtual ComponentIterator end();
 
 protected:
     virtual void print ( std::ostream& ) const;

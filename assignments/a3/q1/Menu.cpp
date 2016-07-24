@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 //****************************************************************************
 // MENU
 //****************************************************************************
@@ -70,6 +69,13 @@ void Menu::menuDepthInc() {
     }
 }
 
+ComponentIterator Menu::begin() {
+
+}
+
+ComponentIterator Menu::end() {
+
+}
 
 void Menu::print ( ostream& sout ) const {
     sout << "\n" << menuDepth() << name() << ":";
