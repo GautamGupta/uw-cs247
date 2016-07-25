@@ -90,7 +90,7 @@ int main ( ) {
 
     // enable reading of boolean values "true" and "false"
     cin >> boolalpha;
-    
+
     // get input command
     cout << "Command: ";
     string command;
@@ -149,7 +149,7 @@ int main ( ) {
                     int index = readIndex( cin );
                     if ( !menus[index] ) throw NoMenu( index );
 
-                    
+
                     for ( auto it = menus[index]->begin(); it != menus[index]->end(); ++it ) {
                         cout << *it << endl;
                     }
@@ -173,7 +173,7 @@ int main ( ) {
                 }
             }// switch command
         } // try
-        
+
         catch ( NoMenu& e ) {
             cout << "Menu Element " << e.index() << " does not exist." << endl;
         }

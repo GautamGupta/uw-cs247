@@ -13,10 +13,10 @@ using namespace std;
 Menu::Menu (const string name) : MenuComponent(name) {}
 
 Menu::~Menu() {
-	for (vector<MenuComponent*>::iterator i = entries_.begin(); i != entries_.end(); ++i) {
-        if ( *i ) {
-            delete *i;
-            *i = NULL;
+	for (auto it = entries_.begin(); it != entries_.end(); ++it) {
+        if (*it) {
+            delete *it;
+            *it = NULL;
         }
     }
 }
@@ -69,14 +69,8 @@ void Menu::menuDepthInc() {
     }
 }
 
-ComponentIterator Menu::begin() {
-
-}
-
-ComponentIterator Menu::end() {
-
-}
-
 void Menu::print ( ostream& sout ) const {
     sout << "\n" << menuDepth() << name() << ":";
 }
+
+Menu::Iterator::Iterator(Menu *menu) : ComponentIterator::ComponentIterator(menu) {}

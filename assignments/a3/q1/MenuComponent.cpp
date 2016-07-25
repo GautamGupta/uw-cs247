@@ -1,5 +1,6 @@
 #include <string>
 #include "MenuComponent.h"
+#include "ComponentIterator.h"
 
 using namespace std;
 
@@ -14,4 +15,12 @@ void MenuComponent::menuDepthInc () {
 ostream& operator<< ( ostream& sout, const MenuComponent* mc ) {
     mc->print(sout);
     return sout;
+}
+
+ComponentIterator MenuComponent::begin() {
+    return ComponentIterator(this);
+}
+
+ComponentIterator MenuComponent::end() {
+    return ComponentIterator(NULL);
 }

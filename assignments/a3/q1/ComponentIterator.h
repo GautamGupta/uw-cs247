@@ -3,7 +3,8 @@
 
 #include <stack>
 #include <iterator>
-#include "MenuComponent.h"
+
+class MenuComponent;
 
 class ComponentIterator : std::iterator< std::forward_iterator_tag, MenuComponent* > {
     friend bool operator== ( const ComponentIterator&, const ComponentIterator& );
@@ -13,13 +14,18 @@ class ComponentIterator : std::iterator< std::forward_iterator_tag, MenuComponen
 public:
     ComponentIterator( MenuComponent* = 0 );
     ~ComponentIterator();
-    ComponentIterator( const ComponentIterator& );
+    // ComponentIterator( const ComponentIterator& );
+    bool hasNext();
     MenuComponent* operator->() const;
     MenuComponent* operator* () const;
-    void begin();
 private:
-    MenuComponent* menu_;
-    std::stack<MenuComponent*> istack_;
+    // MenuComponent* menu_;
+    struct IterNode {
+        MenuComponent *node_;
+        int cursor_;
+        IterNode(MenuComponent*, int cursor_);
+    };
+    std::stack<IterNode*> istack_;
 };
 
 bool operator== ( const ComponentIterator&, const ComponentIterator& );

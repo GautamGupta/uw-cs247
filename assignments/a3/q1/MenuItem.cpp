@@ -1,4 +1,3 @@
-
 #include <sstream>
 #include <iomanip>
 
@@ -35,14 +34,6 @@ void MenuItem::caloriesIs ( int c ) {
     calories_ = c;
 }
 
-ComponentIterator MenuItem::begin() {
-
-}
-
-ComponentIterator MenuItem::end() {
-
-}
-
 void MenuItem::print ( ostream& sout ) const {
     sout.precision(2);
     sout.setf(ios::fixed, ios::floatfield);
@@ -50,3 +41,5 @@ void MenuItem::print ( ostream& sout ) const {
     if ( isVeggie() )
         sout << " (V)";
 }
+
+MenuItem::Iterator::Iterator(MenuItem *item) : ComponentIterator::ComponentIterator(item) {}

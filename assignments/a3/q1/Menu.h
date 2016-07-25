@@ -10,10 +10,9 @@
 
 class Menu : public MenuComponent {
 public:
-    // iterator
-    class iterator : public ComponentIterator {
+    class Iterator : public ComponentIterator {
     public:
-        iterator( Menu* m = 0 );
+        Iterator( Menu* = 0 );
     };
 
     // constructor
@@ -21,16 +20,14 @@ public:
     virtual ~Menu();
 
     // implement composite
-    virtual void add( MenuComponent* newEntry );
-    virtual void remove( std::string name );
+    virtual void add( MenuComponent* );
+    virtual void remove( std::string );
     virtual int numChildren() const;
-    virtual MenuComponent* getChild(int i) const;
+    virtual MenuComponent* getChild(int) const;
 
     // implement shared operations
     virtual void menuDepthInc();
     virtual int size() const;
-    virtual ComponentIterator begin();
-    virtual ComponentIterator end();
 
 protected:
     virtual void print ( std::ostream& ) const;

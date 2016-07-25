@@ -35,8 +35,8 @@ public:
     std::string menuDepth() const { return menuDepth_; }        // depth of menu component in composite structure (used to indent the element when printing
     virtual void menuDepthInc ();                               // increment the depth of the menu component
     virtual int size() const { return 1; }                      // number of elements in menu component, including all descendents and including self
-    virtual ComponentIterator begin() = 0;
-    virtual ComponentIterator end() = 0;
+    virtual ComponentIterator begin();
+    virtual ComponentIterator end();
 
 protected:
     virtual void print ( std::ostream& ) const = 0;             // used to within operator<< to create a polymorphic operator<<
