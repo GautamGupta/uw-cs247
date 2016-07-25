@@ -111,66 +111,66 @@ int main ( ) {
         try {
             switch (op) {
                 case MENU: {
-                               int index = readIndex( cin );
-                               string name = readName( cin );
-                               delete menus[index];
-                               menus[index] = new Menu( name );
-                               break;
-                           }
+                    int index = readIndex( cin );
+                    string name = readName( cin );
+                    delete menus[index];
+                    menus[index] = new Menu( name );
+                    break;
+                }
 
                 case AddC: {
-                               int index = readIndex( cin );
-                               int index2 = readIndex( cin );
-                               if ( !menus[index] ) throw NoMenu( index );
-                               if ( !menus[index2] ) throw NoMenu( index2 );
-                               menus[index]->add(menus[index2]);
-                               menus[index2] = NULL;
-                               break;
-                           }
+                    int index = readIndex( cin );
+                    int index2 = readIndex( cin );
+                    if ( !menus[index] ) throw NoMenu( index );
+                    if ( !menus[index2] ) throw NoMenu( index2 );
+                    menus[index]->add(menus[index2]);
+                    menus[index2] = NULL;
+                    break;
+                }
 
                 case ITEM: {
-                               int index = readIndex( cin );
-                               string name = readName( cin );
+                    int index = readIndex( cin );
+                    string name = readName( cin );
 
-                               float price;
-                               int calories;
-                               bool veg;
-                               cin >> price >> calories >> veg;
-                               if ( cin.fail() ) {
-                                   sinCleanup( cin );
-                                   throw SyntaxError();
-                               }
+                    float price;
+                    int calories;
+                    bool veg;
+                    cin >> price >> calories >> veg;
+                    if ( cin.fail() ) {
+                        sinCleanup( cin );
+                        throw SyntaxError();
+                    }
 
-                               delete menus[index];
-                               menus[index] = new MenuItem ( name, price, calories, veg );
-                               break;
-                           }
+                    delete menus[index];
+                    menus[index] = new MenuItem ( name, price, calories, veg );
+                    break;
+                }
 
                 case Print: {
-                                int index = readIndex( cin );
-                                if ( !menus[index] ) throw NoMenu( index );
+                    int index = readIndex( cin );
+                    if ( !menus[index] ) throw NoMenu( index );
 
-                                for ( auto it = menus[index]->begin(); it != menus[index]->end(); it++ ) {
-                                    cout << *it << endl;
-                                }
+                    for ( auto it = menus[index]->begin(); it != menus[index]->end(); it++ ) {
+                        cout << *it << endl;
+                    }
 
-                                break;
-                            }
+                    break;
+                }
 
                 case Remove: {
-                                 int index = readIndex( cin );
-                                 if ( !menus[index] ) throw NoMenu( index );
+                    int index = readIndex( cin );
+                    if ( !menus[index] ) throw NoMenu( index );
 
-                                 string name = readName( cin );
-                                 menus[index]->remove( name );
-                                 break;
-                             }
+                    string name = readName( cin );
+                    menus[index]->remove( name );
+                    break;
+                }
 
                 default: {
-                             cout << "Invalid command." << endl;
-                             break;
-                         }
-            }// switch command
+                    cout << "Invalid command." << endl;
+                    break;
+                }
+            } // switch command
         } // try
 
         catch ( NoMenu& e ) {
