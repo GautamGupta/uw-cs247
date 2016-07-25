@@ -37,10 +37,8 @@ public:
     virtual int size() const { return 1; }                    // number of elements in menu component, including all descendents and including self
     virtual ComponentIterator begin() = 0;
     virtual ComponentIterator end() = 0;
-
 protected:
     virtual void print ( std::ostream& ) const = 0;
-
 private:
     std::string name_;
     std::string menuDepth_;

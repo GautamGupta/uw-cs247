@@ -193,6 +193,12 @@ int main ( ) {
 
     } // while cin OK
 
+    cout << endl << "Veggie Items:" << endl;
+    for_each(menus[0]->begin(), menus[0]->end(), [](const MenuComponent &item) {
+        if (item.isVeggie()) {
+            cout << "\t" << item.name() << ", $" << item.price() << ", cal=" << item.calories() << " (V)" << endl;
+        }
+    });
 
     for ( int i = 0; i < 10; i++ ) {
         if ( menus[i] )
