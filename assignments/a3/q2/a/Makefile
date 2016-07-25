@@ -11,5 +11,8 @@ $(EXEC): $(OBJECTS)
 clean:
 	rm -f *.o $(EXEC) $(TESTS) $(DEPENDS)
 
+zip:
+	zip -o STL_a.zip main.cpp *.o *.h Makefile
+
 -include ${DEPENDS}
 
