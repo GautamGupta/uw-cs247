@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "MenuItem.h"
 #include "Menu.h"
@@ -194,9 +195,9 @@ int main ( ) {
     } // while cin OK
 
     cout << endl << "Veggie Items:" << endl;
-    for_each(menus[0]->begin(), menus[0]->end(), [](const MenuComponent &item) {
-        if (item.isVeggie()) {
-            cout << "\t" << item.name() << ", $" << item.price() << ", cal=" << item.calories() << " (V)" << endl;
+    for_each(menus[0]->begin(), menus[0]->end(), [](const MenuComponent *item) {
+        if (item->isVeggie()) {
+            cout << "\t" << item->name() << ", $" << item->price() << ", cal=" << item->calories() << " (V)" << endl;
         }
     });
 
