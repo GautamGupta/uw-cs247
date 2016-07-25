@@ -83,6 +83,7 @@ void operator++(ComponentIterator &it) {
     it.istack_.pop();
 
     if (top->cursor_ == top->node_->numChildren()) {
+        delete top;
         return operator++(it);
     }
 
@@ -101,6 +102,9 @@ void operator++(ComponentIterator &it) {
     operator++(it); // recurse
 }
 
+/**
+ * Post
+ */
 void operator++(ComponentIterator &it, int i) {
     ++it;
 }

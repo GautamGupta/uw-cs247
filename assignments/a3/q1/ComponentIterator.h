@@ -23,7 +23,7 @@ private:
     struct IterNode {
         MenuComponent *node_;
         int cursor_;
-        IterNode(MenuComponent*, int cursor_);
+        IterNode(MenuComponent*, int);
     };
     std::stack<IterNode*> istack_;
 };
