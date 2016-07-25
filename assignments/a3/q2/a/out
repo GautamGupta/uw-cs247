@@ -2,54 +2,5 @@ Test harness for Menu Composite and Iterator
 
 Command: 
 Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-Command: 
-sugary stuff:
-
-	tea:
-		green tea, $0.95, cal=3 (V)
-		earl gray, $1.25, cal=9 (V)
-		english breakfast, $1.15, cal=4 (V)
-
-	cookies:
-		chocolate chip, $2.95, cal=70 (V)
-		oatmeal, $2.45, cal=55 (V)
-		double chocolate chip, $3.25, cal=100 (V)
-		peanut butter AND chocolate chip, $4.20, cal=69 (V)
-
-	whipped cream:
-		vanilla, $0.55, cal=45
-		coconut, $0.45, cal=65 (V)
-
-Command: 
 Veggie Items:
-	green tea, $0.95, cal=3 (V)
-	earl gray, $1.25, cal=9 (V)
-	english breakfast, $1.15, cal=4 (V)
-	chocolate chip, $2.95, cal=70 (V)
-	oatmeal, $2.45, cal=55 (V)
-	double chocolate chip, $3.25, cal=100 (V)
-	peanut butter AND chocolate chip, $4.20, cal=69 (V)
-	coconut, $0.45, cal=65 (V)
+	bread for a duck, $0.00, cal=60 (V)
