@@ -12,7 +12,7 @@ clean:
 	rm -f *.o $(EXEC) $(TESTS) $(DEPENDS)
 
 zip:
-	zip -FS -o STL_a.zip main.cpp MenuComponent.o MenuItem.o Menu.o ComponentIterator.o *.h Makefile
+	zip -FS -o STL_a.zip *.cpp *.h Makefile
 
 -include ${DEPENDS}
 

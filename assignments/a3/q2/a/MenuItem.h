@@ -9,11 +9,9 @@
 
 class MenuItem : public MenuComponent {
 public:
-    class iterator;
-    friend class iterator;
-    class iterator : public ComponentIterator {
+    class Iterator : public ComponentIterator {
     public:
-        iterator( MenuItem* mi = 0 );
+        Iterator( MenuItem* = 0 );
     };
 
     // constructor
@@ -23,16 +21,15 @@ public:
     // implement leaf operations
     virtual bool isVeggie() const;
     virtual float price() const;
-    virtual void priceIs( float p );
+    virtual void priceIs( float );
     virtual int calories() const;
-    virtual void caloriesIs( int c );
+    virtual void caloriesIs( int );
 
     // implement shared operations
-    virtual ComponentIterator begin();
-    virtual ComponentIterator end();
 
 protected:
     virtual void print ( std::ostream& ) const;
+
 private:
     float price_;
     int calories_;
