@@ -205,10 +205,8 @@ int main ( ) {
     });
 
     if (it != menu->end()) {
-        while (it != menu->end()) {
-            cout << *it << endl;
-            it++;
-        }
+        ostream_iterator<const MenuComponent*> out_it(cout, "\n");
+        copy(it->begin(), it->end(), out_it);
     } else {
         cout << endl << "Menu " << name << " does not exist." << endl;
     }
