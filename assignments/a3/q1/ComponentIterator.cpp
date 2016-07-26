@@ -12,13 +12,7 @@ ComponentIterator::ComponentIterator(MenuComponent *menuComponent /* = 0 */) :
     }
 }
 
-ComponentIterator::~ComponentIterator() {
-    while (!istack_.empty()) {
-        ComponentIterator::IterNode *top = istack_.top();
-        istack_.pop();
-        delete top;
-    }
-}
+ComponentIterator::~ComponentIterator() {}
 
 ComponentIterator::IterNode::IterNode(MenuComponent *menuComponent, int cursor) :
         node_(menuComponent), cursor_(cursor) {}

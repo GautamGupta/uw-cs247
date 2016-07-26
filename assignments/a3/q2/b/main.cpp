@@ -73,7 +73,7 @@ string readName( istream& sin ) {
     string name;
 
     sin >> quotes;
-    getline( sin, name, '\"');
+    getline(sin, name, '\"');
 
     if ( sin.fail() ) {
         sinCleanup( sin );
@@ -194,19 +194,26 @@ int main ( ) {
 
     } // while cin OK
 
-    // Q2a start
+    // Q2 start
 
-    cout.precision(2);
-    cout.setf(ios::fixed, ios::floatfield);
+    cout << endl << "Enter name of menu element to be printed: " << endl;
+    string name = readName(cin);
+    MenuComponent* menu = menus[0];
 
-    cout << endl << "Veggie Items:" << endl;
-    for_each(menus[0]->begin(), menus[0]->end(), [](const MenuComponent *item) {
-        if (item->isVeggie()) {
-            cout << "\t" << item->name() << ", $" << item->price() << ", cal=" << item->calories() << " (V)" << endl;
-        }
+    auto it = find_if(menu->begin(), menu->end(), [&name](const MenuComponent *item) -> bool {
+        return (item != NULL && item->name() == name);
     });
 
-    // Q2a end
+    if (it != menu->end()) {
+        while (it != menu->end()) {
+            cout << *it << endl;
+            it++;
+        }
+    } else {
+        cout << endl << "Menu " << name << " does not exist." << endl;
+    }
+
+    // Q2 end
 
     for ( int i = 0; i < 10; i++ ) {
         if ( menus[i] )
