@@ -1,0 +1,28 @@
+i 2 "green tea" 0.95 3 true
+i 3 "earl gray" 1.25 9 true
+i 4 "english breakfast" 1.15 4 true
+m 1 "tea"
+a 1 2
+a 1 3
+a 1 4
+i 3 "chocolate chip" 2.95 70 true
+i 4 "oatmeal" 2.45 55 true
+i 5 "double chocolate chip" 3.25 100 true
+i 6 "peanut butter AND chocolate chip" 4.20 69 true
+m 2 "cookies"
+a 2 3
+a 2 4
+a 2 5
+a 2 6
+m 3 "whipped cream"
+i 4 "vanilla" 0.55 45 false
+i 5 "coconut" 0.45 65 true
+a 3 4
+a 3 5
+m 0 "sugary stuff"
+a 0 1
+a 0 2
+a 0 3
+p 0
+d
+1.01
