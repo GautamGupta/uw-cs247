@@ -30,7 +30,7 @@ ComponentIterator::IterNode::IterNode(MenuComponent *menuComponent, int cursor) 
 bool ComponentIterator::hasNext() {
     while (!istack_.empty()) {
         ComponentIterator::IterNode *top = istack_.top();
-        if (top->cursor_ < top->node_->size()) {
+        if (top->cursor_ < top->node_->numChildren()) {
             return true;
         }
         istack_.pop();
@@ -82,11 +82,6 @@ void operator++(ComponentIterator &it) {
     ComponentIterator::IterNode *top = it.istack_.top();
     it.istack_.pop();
 
-    if (top->cursor_ == top->node_->numChildren()) {
-        delete top;
-        return operator++(it);
-    }
-
     // if cursor == -1, advance cursor and return node
     if (top->cursor_ == -1) {
         top->cursor_ += 1;
@@ -99,7 +94,7 @@ void operator++(ComponentIterator &it) {
     top->cursor_ += 1;
     it.istack_.push(top); // advance cursor to next child
     it.istack_.push(new ComponentIterator::IterNode(elem, -1)); // push new cursor
-    operator++(it); // recurse
+    ++it; // recurse
 }
 
 /**
