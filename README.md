@@ -1,1 +1,1 @@
-In the spirit of open source, not plagiarism. :)
+In the spirit of open source, not plagiarism.
